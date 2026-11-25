@@ -687,6 +687,7 @@ td.st .maps { margin-top: 6px; }
       <button type="button" data-go="s-sz">Shenzhen</button>
       <button type="button" data-go="s-hk">Hong Kong</button>
       <button type="button" data-go="open">To decide</button>
+      <button type="button" data-go="wear">What to wear</button>
     </nav>
     <div class="pane-body">
 <nav class="route" aria-label="Route overview">
@@ -702,63 +703,8 @@ td.st .maps { margin-top: 6px; }
     </ol>
   </nav>
   <section class="stop" aria-labelledby="weather">
-    <div class="stop-head"><h2 id="weather">Weather</h2><span class="nights" id="wx-status">Typical December weather</span></div>
+    <div class="stop-head"><h2 id="weather">Weather today</h2><span class="nights" id="wx-status">Typical December weather</span></div>
     <div class="wx-today" id="wx-today" aria-live="polite"></div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>City</th><th>Typical day</th><th>Typical night</th><th>What it's like</th></tr></thead>
-        <tbody>
-          <tr><td class="st"><b>Beijing</b><span class="dir">16–20 Dec</span></td><td class="num">3°C</td><td class="num">−7°C</td><td>Sunny, very dry, cold wind. Dark by about 17:00.</td></tr>
-          <tr><td class="st"><b>Xi'an</b><span class="dir">20–22 Dec</span></td><td class="num">6°C</td><td class="num">−3°C</td><td>Dry, often grey or hazy.</td></tr>
-          <tr><td class="st"><b>Chengdu</b><span class="dir">22–24 Dec</span></td><td class="num">10°C</td><td class="num">4°C</td><td>Overcast and damp, little sun. Feels colder than it reads.</td></tr>
-          <tr><td class="st"><b>Yangshuo</b><span class="dir">24–27 Dec</span></td><td class="num">14°C</td><td class="num">6°C</td><td>Mild, misty mornings on the river, some drizzle.</td></tr>
-          <tr><td class="st"><b>Shenzhen</b><span class="dir">27–29 Dec</span></td><td class="num">21°C</td><td class="num">13°C</td><td>Dry and mostly sunny.</td></tr>
-          <tr><td class="st"><b>Hong Kong</b><span class="dir">29–31 Dec</span></td><td class="num">20°C</td><td class="num">14°C</td><td>Dry and mild, cool evenings by the harbour.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="didi">
-      <div class="didi-col">
-        <h3>Beijing &amp; Xi'an · −10 to +5°C</h3>
-        <ul>
-          <li><b>Proper winter coat</b> (down or insulated), thermal base layers, hat, gloves and a scarf.</li>
-          <li><b>Warm, comfortable shoes</b> for long walks on stone. Thick socks.</li>
-          <li><b>The Great Wall is windier</b> and several degrees colder than the city.</li>
-          <li><b>Very dry air:</b> lip balm and moisturiser.</li>
-          <li>Indoors is well heated, so wear layers you can take off.</li>
-        </ul>
-      </div>
-      <div class="didi-col">
-        <h3>Chengdu · 4 to 10°C, damp</h3>
-        <ul>
-          <li>The damp cold feels sharper than the number, and many restaurants, temples and shops have little heating.</li>
-          <li><b>Keep a warm mid-layer on indoors</b> (fleece or light down) under your coat.</li>
-          <li>The Panda Base is outdoors in the morning: dress warmly for 2–3 hours.</li>
-        </ul>
-      </div>
-      <div class="didi-col">
-        <h3>Yangshuo · 6 to 14°C</h3>
-        <ul>
-          <li><b>Fleece plus a light rain jacket</b>, and a small umbrella.</li>
-          <li>On the Li River boat or a bamboo raft it's windy and cooler than on land.</li>
-          <li>Comfortable shoes for cycling and walking between villages.</li>
-        </ul>
-      </div>
-      <div class="didi-col">
-        <h3>Shenzhen &amp; Hong Kong · 13 to 22°C</h3>
-        <ul>
-          <li><b>T-shirt and light layers</b> by day, a sweater or light jacket for evenings and air-conditioning.</li>
-          <li>New Year's Eve outdoors in Hong Kong is pleasant, around 15°C.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="howto">
-      <ol>
-        <li><b>Pack layers, not bulk.</b> The trip runs from about −10°C to +22°C. You'll need the winter coat only for the first week, then carry it south.</li>
-        <li><b>Air quality:</b> still winter days in the north can be smoggy. Check the AQI (for example the IQAir app) and bring a few KN95/N95 masks.</li>
-        <li><b>Rain gear:</b> one small umbrella covers Chengdu and Yangshuo.</li>
-      </ol>
-    </div>
     <p class="foot">Live forecast from Open-Meteo (free) for the next 16 days. Your trip dates fill in from about 1 Dec; until then each city shows typical December values, marked “typ.”. Typical values are long-term averages, rounded.</p>
   </section>
 
@@ -917,6 +863,64 @@ td.st .maps { margin-top: 6px; }
       <li>Plans for Shenzhen (28 Dec) and Hong Kong (30–31 Dec).</li>
       <li>Which Li River option, and what to do on the second Yangshuo day.</li>
     </ul>
+  </section>
+  <section class="stop" aria-labelledby="wear">
+    <div class="stop-head"><h2 id="wear">Typical weather &amp; what to wear</h2><span class="nights">December averages</span></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>City</th><th>Typical day</th><th>Typical night</th><th>What it's like</th></tr></thead>
+        <tbody>
+          <tr><td class="st"><b>Beijing</b><span class="dir">16–20 Dec</span></td><td class="num">3°C</td><td class="num">−7°C</td><td>Sunny, very dry, cold wind. Dark by about 17:00.</td></tr>
+          <tr><td class="st"><b>Xi'an</b><span class="dir">20–22 Dec</span></td><td class="num">6°C</td><td class="num">−3°C</td><td>Dry, often grey or hazy.</td></tr>
+          <tr><td class="st"><b>Chengdu</b><span class="dir">22–24 Dec</span></td><td class="num">10°C</td><td class="num">4°C</td><td>Overcast and damp, little sun. Feels colder than it reads.</td></tr>
+          <tr><td class="st"><b>Yangshuo</b><span class="dir">24–27 Dec</span></td><td class="num">14°C</td><td class="num">6°C</td><td>Mild, misty mornings on the river, some drizzle.</td></tr>
+          <tr><td class="st"><b>Shenzhen</b><span class="dir">27–29 Dec</span></td><td class="num">21°C</td><td class="num">13°C</td><td>Dry and mostly sunny.</td></tr>
+          <tr><td class="st"><b>Hong Kong</b><span class="dir">29–31 Dec</span></td><td class="num">20°C</td><td class="num">14°C</td><td>Dry and mild, cool evenings by the harbour.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="didi">
+      <div class="didi-col">
+        <h3>Beijing &amp; Xi'an · −10 to +5°C</h3>
+        <ul>
+          <li><b>Proper winter coat</b> (down or insulated), thermal base layers, hat, gloves and a scarf.</li>
+          <li><b>Warm, comfortable shoes</b> for long walks on stone. Thick socks.</li>
+          <li><b>The Great Wall is windier</b> and several degrees colder than the city.</li>
+          <li><b>Very dry air:</b> lip balm and moisturiser.</li>
+          <li>Indoors is well heated, so wear layers you can take off.</li>
+        </ul>
+      </div>
+      <div class="didi-col">
+        <h3>Chengdu · 4 to 10°C, damp</h3>
+        <ul>
+          <li>The damp cold feels sharper than the number, and many restaurants, temples and shops have little heating.</li>
+          <li><b>Keep a warm mid-layer on indoors</b> (fleece or light down) under your coat.</li>
+          <li>The Panda Base is outdoors in the morning: dress warmly for 2–3 hours.</li>
+        </ul>
+      </div>
+      <div class="didi-col">
+        <h3>Yangshuo · 6 to 14°C</h3>
+        <ul>
+          <li><b>Fleece plus a light rain jacket</b>, and a small umbrella.</li>
+          <li>On the Li River boat or a bamboo raft it's windy and cooler than on land.</li>
+          <li>Comfortable shoes for cycling and walking between villages.</li>
+        </ul>
+      </div>
+      <div class="didi-col">
+        <h3>Shenzhen &amp; Hong Kong · 13 to 22°C</h3>
+        <ul>
+          <li><b>T-shirt and light layers</b> by day, a sweater or light jacket for evenings and air-conditioning.</li>
+          <li>New Year's Eve outdoors in Hong Kong is pleasant, around 15°C.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="howto">
+      <ol>
+        <li><b>Pack layers, not bulk.</b> The trip runs from about −10°C to +22°C. You'll need the winter coat only for the first week, then carry it south.</li>
+        <li><b>Air quality:</b> still winter days in the north can be smoggy. Check the AQI (for example the IQAir app) and bring a few KN95/N95 masks.</li>
+        <li><b>Rain gear:</b> one small umbrella covers Chengdu and Yangshuo.</li>
+      </ol>
+    </div>
   </section>
     </div>
   </section>
@@ -1085,7 +1089,7 @@ td.st .maps { margin-top: 6px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611251430">25 Nov 2026, 14:30</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611251432">25 Nov 2026, 14:32</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
         </div>

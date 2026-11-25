@@ -1,4 +1,4 @@
-const CACHE = 'china2026-202611251430';
+const CACHE = 'china2026-202611251432';
 const CORE = ['./', './apple-touch-icon.png', './manifest.webmanifest'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
