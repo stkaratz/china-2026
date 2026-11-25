@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="China 2026">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="apple-touch-icon.png">
+<style>
+:root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; font: 14px/1.5 system-ui, -apple-system, sans-serif; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+<title>China 2026 Itinerary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column — route strip on top, then the trip day by day, grouped by city, flights called out as tickets. */
+:root {
+  --bg: #f3f5f2;
+  --surface: #ffffff;
+  --ink: #18231f;
+  --muted: #5d6b65;
+  --line: #d9e0dc;
+  --jade: #24705f;
+  --jade-soft: #e1eee9;
+  --seal: #b3402c;
+  --seal-soft: #f6e5e1;
+  --f-display: "Sora", "Avenir Next", system-ui, sans-serif;
+  --f-body: "Inter", system-ui, -apple-system, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111816; --surface: #18211e; --ink: #e5ece8; --muted: #93a39c; --line: #2a3632;
+    --jade: #5dbba3; --jade-soft: #1c302a; --seal: #e3826d; --seal-soft: #352220; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111816; --surface: #18211e; --ink: #e5ece8; --muted: #93a39c; --line: #2a3632;
+  --jade: #5dbba3; --jade-soft: #1c302a; --seal: #e3826d; --seal-soft: #352220; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 860px; margin: 0 auto; padding-block: 40px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 40px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2rem, 6vw, 2.9rem); font-weight: 700; line-height: 1.1; }
+h2 { font-size: 1.35rem; font-weight: 600; }
+p { margin: 0; }
+.eyebrow { font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--jade); }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+
+/* Header */
+header { display: flex; flex-direction: column; gap: 12px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 24px; color: var(--muted); font-size: 0.9rem; }
+.facts b { color: var(--ink); font-weight: 600; }
+
+/* Route strip */
+.route { overflow-x: auto; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding-block: 18px; }
+.route ol { list-style: none; margin: 0; padding: 0; display: flex; min-width: 640px; }
+.route li { flex: 1; position: relative; display: flex; flex-direction: column; gap: 2px; padding-top: 18px; }
+.route li::before { content: ""; position: absolute; top: 4px; left: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--jade); }
+.route li::after { content: ""; position: absolute; top: 8px; left: 14px; right: 6px; height: 2px; background: var(--line); }
+.route li:last-child::after { display: none; }
+.route li.air::before { background: var(--seal); }
+.route .city { font-family: var(--f-display); font-weight: 600; font-size: 0.98rem; }
+.route .sub { font-family: var(--f-mono); font-size: 0.72rem; color: var(--muted); }
+
+/* Flights */
+.tickets { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.ticket { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+.ticket .leg { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 8px; }
+.ticket .leg div:last-child { text-align: right; }
+.ticket .code { font-family: var(--f-display); font-size: 1.5rem; font-weight: 600; line-height: 1; }
+.ticket .time { font-family: var(--f-mono); font-size: 0.82rem; color: var(--muted); }
+.ticket .dur { font-family: var(--f-mono); font-size: 0.72rem; color: var(--seal); text-align: center; padding-bottom: 4px; border-bottom: 1px dashed var(--seal); }
+.ticket .tag { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--seal); }
+
+/* Day by day */
+.stop { display: flex; flex-direction: column; gap: 14px; }
+.stop-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; padding-bottom: 8px; border-bottom: 2px solid var(--ink); }
+.stop-head .cn { font-family: var(--f-body); font-weight: 400; color: var(--muted); font-size: 1rem; margin-left: 6px; }
+.stop-head .nights { font-family: var(--f-mono); font-size: 0.78rem; color: var(--muted); }
+.days { display: flex; flex-direction: column; }
+.day { display: grid; grid-template-columns: 92px 1fr; gap: 16px; padding-block: 12px; border-bottom: 1px solid var(--line); }
+.day:last-child { border-bottom: 0; }
+.date { font-family: var(--f-mono); font-variant-numeric: tabular-nums; font-size: 0.82rem; line-height: 1.35; }
+.date .dow { color: var(--muted); display: block; }
+.body { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.body h3 { font-size: 1rem; font-weight: 600; }
+.body ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; }
+.chip { display: inline-block; font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 99px; vertical-align: 2px; margin-left: 6px; white-space: nowrap; }
+.chip.move { background: var(--jade-soft); color: var(--jade); }
+.chip.tbd { background: var(--seal-soft); color: var(--seal); }
+.chip.plane { background: var(--seal-soft); color: var(--seal); }
+.ideas { background: var(--jade-soft); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; font-size: 0.92rem; }
+.ideas b { color: var(--jade); }
+
+/* Hotels */
+.zh { font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", var(--f-body); }
+.hotels { display: flex; flex-direction: column; }
+.hotel { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding-block: 16px; border-bottom: 1px solid var(--line); }
+.hotel:last-child { border-bottom: 0; }
+.hotel .where { display: flex; flex-direction: column; gap: 2px; }
+.hotel .where b { font-family: var(--f-display); font-weight: 600; }
+.hotel .where span { font-family: var(--f-mono); font-size: 0.75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.hotel .info { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.hotel h3 { font-size: 1rem; font-weight: 600; }
+.hotel .zh-name { font-size: 1.05rem; }
+.addr { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 6px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.addr .zh { font-size: 1.05rem; flex: 1 1 220px; min-width: 0; overflow-wrap: anywhere; }
+.addr .en { flex-basis: 100%; font-size: 0.85rem; color: var(--muted); }
+.copy { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.04em; padding: 4px 10px; border-radius: 99px; border: 1px solid var(--jade); background: transparent; color: var(--jade); cursor: pointer; }
+.copy:hover { background: var(--jade-soft); }
+.copy:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
+.hotel.todo h3 { color: var(--seal); }
+
+/* Stations */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 860px; font-size: 0.9rem; }
+td.num { font-family: var(--f-mono); font-size: 0.8rem; font-variant-numeric: tabular-nums; white-space: nowrap; line-height: 1.5; }
+td.num b { font-family: var(--f-display); font-size: 0.9rem; }
+tr.alt td { background: var(--bg); color: var(--muted); }
+tr.alt td.st b { color: var(--ink); }
+.foot { font-size: 0.82rem; color: var(--muted); }
+.risk { display: flex; flex-direction: column; }
+.risk-row { display: grid; grid-template-columns: 92px 1fr auto; gap: 16px; align-items: start; padding-block: 12px; border-bottom: 1px solid var(--line); }
+.risk-row:last-child { border-bottom: 0; }
+.risk-row .body p { font-size: 0.92rem; }
+.level { font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+.level.low { background: var(--jade-soft); color: var(--jade); }
+.level.mid { background: var(--seal-soft); color: var(--seal); }
+.level.high { background: var(--seal); color: var(--surface); }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+th { font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+td.st b { font-family: var(--f-display); font-weight: 600; }
+td.st .dir { display: block; font-family: var(--f-mono); font-size: 0.72rem; color: var(--muted); }
+td .zh { font-size: 1.05rem; white-space: nowrap; }
+td.code { font-family: var(--f-mono); white-space: nowrap; }
+.warn { color: var(--seal); }
+
+/* Booking timeline */
+.book { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.book-row { display: grid; grid-template-columns: 104px 1fr; gap: 16px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.book-row:last-child { border-bottom: 0; }
+.book-row.now { background: var(--jade-soft); border-radius: 10px 10px 0 0; }
+.book-row .date b { display: block; font-family: var(--f-display); font-size: 1rem; font-weight: 600; }
+.book-row .body h3 { font-size: 0.98rem; }
+.book-row .meta { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.84rem; color: var(--muted); }
+.book-row .meta b { color: var(--ink); font-weight: 600; }
+.kind { font-family: var(--f-mono); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; margin-right: 6px; vertical-align: 2px; }
+.kind.train { background: var(--jade-soft); color: var(--jade); }
+.kind.sight { background: var(--seal-soft); color: var(--seal); }
+.kind.hotel { background: var(--line); color: var(--ink); }
+
+.book-row .body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.book-row .body h3 + .meta + h3 { margin-top: 8px; }
+
+/* Train guide */
+.howto { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; }
+.howto ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 0.92rem; }
+.guide { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 12px; }
+.tcard { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.tcard header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; font-family: var(--f-mono); font-size: 0.75rem; color: var(--muted); }
+.tcard header b { color: var(--seal); font-weight: 500; }
+.tcard h3 { font-size: 1.05rem; }
+.tcard .app { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 0.88rem; padding: 8px 10px; background: var(--bg); border-radius: 6px; }
+.tcard .app b { font-family: var(--f-mono); font-weight: 500; }
+.tcard p { font-size: 0.86rem; }
+table.fare { min-width: 0; font-size: 0.84rem; }
+.tcard { overflow-x: auto; }
+@media (max-width: 400px) { .guide { grid-template-columns: 1fr; } }
+table.fare th, table.fare td { padding: 6px 6px; }
+table.fare td.code { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pick { font-family: var(--f-mono); font-size: 0.66rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; background: var(--jade); color: var(--surface); }
+.pick.bk { background: var(--line); color: var(--ink); }
+
+/* Setup checklist */
+.setup { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.task { display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.task:last-child { border-bottom: 0; }
+.task input[type="checkbox"] { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--jade); cursor: pointer; }
+.task label { cursor: pointer; }
+.task h3 { font-size: 1rem; display: inline; }
+.task .when { font-family: var(--f-mono); font-size: 0.72rem; color: var(--seal); margin-left: 6px; white-space: nowrap; }
+.task ol { margin: 6px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; font-size: 0.9rem; color: var(--muted); }
+.task ol b { color: var(--ink); font-weight: 600; }
+.task.done h3 { text-decoration: line-through; color: var(--muted); }
+.progress { font-family: var(--f-mono); font-size: 0.78rem; color: var(--muted); }
+
+/* Booking links */
+a { color: var(--jade); text-underline-offset: 2px; }
+a:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
+.links { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 12px; }
+.lcard { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.lcard header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; font-family: var(--f-mono); font-size: 0.75rem; color: var(--muted); }
+.lcard header b { color: var(--seal); font-weight: 500; }
+.lcard h3 { font-size: 1.05rem; }
+.lcard .how { font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.lcard ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 0.9rem; }
+.lcard ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 3px; font-size: 0.88rem; }
+.lcard .addr { margin-top: 0; padding: 8px 10px; }
+.lcard p { font-size: 0.86rem; }
+
+/* DiDi */
+.didi { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.didi-col { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.didi-col h3 { font-size: 0.95rem; }
+.didi-col.yes h3 { color: var(--jade); }
+.didi-col.no h3 { color: var(--seal); }
+.didi-col ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 0.92rem; }
+.didi-col li b { font-weight: 600; }
+
+/* Notes */
+.notes { display: flex; flex-direction: column; gap: 12px; }
+.notes ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+
+@media (max-width: 520px) {
+  .day, .hotel, .book-row { grid-template-columns: 1fr; gap: 4px; }
+  .book-row .date b { display: inline; margin-right: 6px; }
+  .risk-row { grid-template-columns: 1fr auto; gap: 4px 12px; }
+  .risk-row .date { grid-column: 1; }
+  .risk-row .level { grid-column: 2; grid-row: 1; }
+  .risk-row .body { grid-column: 1 / -1; }
+  .hotel .where { flex-direction: row; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+  .date .dow { display: inline; margin-left: 6px; }
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">Trip plan · draft</span>
+    <h1>China 2026</h1>
+    <div class="facts">
+      <span><b>15 Dec 2026 → 1 Jan 2027</b></span>
+      <span><b>6</b> cities</span>
+      <span><b>15</b> nights on the ground, 2 on planes</span>
+      <span>All legs in China by <b>high-speed train</b></span>
+      <span>China &amp; Hong Kong are <b>UTC+8</b>, 7 h ahead of Copenhagen</span>
+    </div>
+  </header>
+
+  <nav class="route" aria-label="Route overview">
+    <ol>
+      <li class="air"><span class="city">Copenhagen</span><span class="sub">15 Dec</span></li>
+      <li><span class="city">Beijing</span><span class="sub">16–20 Dec · 4 nts</span></li>
+      <li><span class="city">Xi'an</span><span class="sub">20–22 Dec · 2 nts</span></li>
+      <li><span class="city">Chengdu</span><span class="sub">22–24 Dec · 2 nts</span></li>
+      <li><span class="city">Yangshuo</span><span class="sub">24–27 Dec · 3 nts</span></li>
+      <li><span class="city">Shenzhen</span><span class="sub">27–29 Dec · 2 nts</span></li>
+      <li><span class="city">Hong Kong</span><span class="sub">29–31 Dec · 2 nts</span></li>
+      <li class="air"><span class="city">Copenhagen</span><span class="sub">1 Jan · via IST</span></li>
+    </ol>
+  </nav>
+
+  <section class="stop" aria-labelledby="flights">
+    <div class="stop-head"><h2 id="flights">Flights</h2><span class="nights">times are local</span></div>
+    <div class="tickets">
+      <div class="ticket">
+        <span class="tag">Outbound · Tue 15 Dec</span>
+        <div class="leg">
+          <div><div class="code">CPH</div><div class="time">18:00 · 15 Dec</div></div>
+          <div class="dur">8h 55m</div>
+          <div><div class="code">BJS</div><div class="time">09:55 · 16 Dec</div></div>
+        </div>
+      </div>
+      <div class="ticket">
+        <span class="tag">Return leg 1 · Thu 31 Dec</span>
+        <div class="leg">
+          <div><div class="code">HKG</div><div class="time">23:15 · 31 Dec</div></div>
+          <div class="dur">11h 55m</div>
+          <div><div class="code">IST</div><div class="time">06:10 · 1 Jan</div></div>
+        </div>
+      </div>
+      <div class="ticket">
+        <span class="tag">Return leg 2 · Fri 1 Jan</span>
+        <div class="leg">
+          <div><div class="code">IST</div><div class="time">08:20 · 1 Jan</div></div>
+          <div class="dur">3h 20m</div>
+          <div><div class="code">CPH</div><div class="time">09:40 · 1 Jan</div></div>
+        </div>
+        <span class="time mono muted">2h 10m connection in Istanbul</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="stop" aria-labelledby="setup">
+    <div class="stop-head"><h2 id="setup">Set up before the booking days</h2><span class="progress" id="setup-progress">tick as you go</span></div>
+    <div class="setup">
+      <div class="task">
+        <input type="checkbox" id="t-dpm-register">
+        <div><label for="t-dpm-register"><h3>Register on the Forbidden City site</h3></label><span class="when">now</span>
+          <ol><li>Create an account on <a href="https://bookingticket.dpm.org.cn/" target="_blank" rel="noopener">bookingticket.dpm.org.cn</a> with your email and verify it.</li></ol>
+        </div>
+      </div>
+      <div class="task">
+        <input type="checkbox" id="t-dpm-visitors">
+        <div><label for="t-dpm-visitors"><h3>Add both passports on the Forbidden City site</h3></label><span class="when">now · 5 min</span>
+          <ol>
+            <li>Log in, open your account area (top right): <b>Personal Center / My Account</b>, then <b>Visitors / Contacts</b>.</li>
+            <li>Add each of you: ID type <b>Passport</b>, name exactly as printed (capitals, surname first if one field), passport number, nationality.</li>
+            <li>No visitor section? Then visitors are added at checkout. Keep both passports next to you on the day.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="task">
+        <input type="checkbox" id="t-dpm-rehearsal">
+        <div><label for="t-dpm-rehearsal"><h3>Rehearse the Forbidden City release</h3></label><span class="when">Sat 28 Nov · 13:00 CPH</span>
+          <ol>
+            <li><b>12:50:</b> log in, and open <a href="https://time.is" target="_blank" rel="noopener">time.is</a> in another tab.</li>
+            <li><b>13:00:00:</b> refresh, pick <b>Sat 5 Dec</b>, afternoon slot, add both visitors.</li>
+            <li>Go up to the payment page and <b>stop there, don't pay</b>.</li>
+            <li>Note how long it took and how fast 5 Dec showed sold out.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="task">
+        <input type="checkbox" id="t-mao-test">
+        <div><label for="t-mao-test"><h3>Test the Mao Mausoleum website</h3></label><span class="when">now · 5 min</span>
+          <ol>
+            <li>Open <a href="https://jnt.mfu.com.cn/page/" target="_blank" rel="noopener">jnt.mfu.com.cn</a> and switch to English if offered.</li>
+            <li>Personal reservation (个人预约) → log in / register.</li>
+            <li>If it takes your phone number: register, add both passports, stop. You book on 13 Dec.</li>
+            <li>If it only takes Chinese (+86) numbers: try the WeChat mini program instead, otherwise skip the Mausoleum.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="task">
+        <input type="checkbox" id="t-wechat">
+        <div><label for="t-wechat"><h3>Set up WeChat with a card</h3></label><span class="when">this week</span>
+          <ol>
+            <li>Install <b>WeChat</b> and register with your phone number. If it asks for a friend to scan a QR code, any WeChat user can do it.</li>
+            <li><b>Me → Settings → General → Language → English.</b></li>
+            <li><b>Me → Services (Pay) → Wallet → Cards → Add card</b>: your Visa or Mastercard, with passport verification if asked.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="task">
+        <input type="checkbox" id="t-tam-mp">
+        <div><label for="t-tam-mp"><h3>Set up the Tiananmen mini program</h3></label><span class="when">this week</span>
+          <ol>
+            <li>Chats tab → search bar → paste <span class="zh">天安门广场预约参观</span> (Copy button in “Where to book the sights”).</li>
+            <li>Open the result marked <b>Mini Program</b>, then <b>··· → Add to My Mini Programs</b>.</li>
+            <li>Allow login (允许). Under <b>我的</b> (Me), find saved visitors (常用联系人 / 参观人) and add both of you: 证件类型 = <b>护照</b>, 姓名 = name as in passport, 证件号码 = passport number.</li>
+            <li>Don't book yet. Booking opens around 12 Dec.</li>
+            <li>Do the same in <span class="zh">毛主席纪念堂预约瞻仰</span> if the Mausoleum website didn't work.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="task">
+        <input type="checkbox" id="t-trip">
+        <div><label for="t-trip"><h3>Save both passports in Trip.com</h3></label><span class="when">this week</span>
+          <ol><li>Trip.com app → <b>Account → Traveler / Passenger info</b> → add both passports, so the Panda Base (9 Dec) and Terracotta Warriors (14 Dec) checkouts take a minute.</li></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stop" aria-labelledby="booking">
+    <div class="stop-head"><h2 id="booking">Booking timeline</h2><span class="nights">Beijing time · Copenhagen is 7 h behind</span></div>
+    <div class="book">
+      <div class="book-row now">
+        <div class="date"><b>Now</b>any day</div>
+        <div class="body">
+          <h3><span class="kind sight">Sight</span>Great Wall, Fri 18 Dec: already booked</h3>
+          <div class="meta"><span>Tickets included by the agency. Make sure they have your passport details, since Great Wall tickets are real-name, and confirm the pick-up time.</span></div>
+        </div>
+      </div>
+      <div class="book-row">
+        <div class="date"><b>6 Dec</b>Sunday</div>
+        <div class="body">
+          <h3><span class="kind train">Train</span>Beijing → Xi'an, for Sun 20 Dec</h3>
+          <div class="meta"><span><b>G365</b> 09:55 → 14:05 · backup <b>G353</b></span><span>Beijingxi → Xianbei</span><span>12306</span></div>
+        </div>
+      </div>
+      <div class="book-row">
+        <div class="date"><b>8 Dec</b>Tuesday</div>
+        <div class="body">
+          <h3><span class="kind train">Train</span>Xi'an → Chengdu, for Tue 22 Dec</h3>
+          <div class="meta"><span><b>G321</b> 11:25 → 14:30 · backup <b>G1839</b></span><span>Xianbei → Chengdudong</span><span>12306</span></div>
+        </div>
+      </div>
+      <div class="book-row">
+        <div class="date"><b>9 Dec</b>Wednesday</div>
+        <div class="body">
+          <h3><span class="kind sight">Sight</span>Giant Panda Base, for Wed 23 Dec</h3>
+          <div class="meta"><span>Opens 14 days ahead</span><span>WeChat mini program 成都大熊猫繁育研究基地 or panda.org.cn</span><span>Passport needed</span></div>
+        </div>
+      </div>
+      <div class="book-row">
+        <div class="date"><b>10 Dec</b>Thursday</div>
+        <div class="body">
+          <h3><span class="kind train">Train</span>Chengdu → Yangshuo, for Thu 24 Dec <span class="chip tbd">only 2 trains</span></h3>
+          <div class="meta"><span><b>D1807</b> 10:05 → 16:35 · backup <b>D1822</b></span><span>Chengdudong → Yangshuo</span><span>Be online at release time · if sold out, join the waitlist at once</span></div>
+        </div>
+      </div>
+      <div class="book-row">
+        <div class="date"><b>10 Dec</b>Thursday 20:00<br><span class="muted">13:00 in CPH</span></div>
+        <div class="body">
+          <h3><span class="kind sight">Sight</span>Forbidden City safety ticket, for Thu 17 Dec <span class="chip move">optional</span></h3>
+          <div class="meta"><span>Weekday tickets are easier to get. Hold one for Thursday in case Saturday sells out, and cancel it once Saturday is booked. Costs ¥40 at most.</span></div>
+        </div>
+      </div>
+      <div class="book-row">
+        <div class="date"><b>12 Dec</b>Saturday 20:00<br><span class="muted">13:00 in CPH</span></div>
+        <div class="body">
+          <h3><span class="kind sight">Sight</span>Forbidden City, for Sat 19 Dec <span class="chip tbd">weekend, sells out in minutes</span></h3>
+          <div class="meta"><span>Opens 7 days ahead at 20:00 for everyone, foreigners included</span><span>bookingticket.dpm.org.cn (English, email login, no Chinese phone) or WeChat 故宫博物院</span><span>Passport number must match</span></div>
+        </div>
+      </div>
+      <div class="book-row">
+        <div class="date"><b>12 Dec</b>Saturday</div>
+        <div class="body">
+          <h3><span class="kind sight">Sight</span>Tiananmen Square, for Sat 19 Dec</h3>
+          <div class="meta"><span>Opens 1–7 days ahead · no fixed release time</span><span>WeChat mini program 天安门广场预约参观</span><span>Passport needed</span></div>
+        </div>
+      </div>
+      <div class="book-row">
+        <div class="date"><b>13 Dec</b>Sunday</div>
+        <div class="body">
+          <h3><span class="kind train">Train</span>Yangshuo → Shenzhen, for Sun 27 Dec</h3>
+          <div class="meta"><span><b>G2929</b> 11:25 → 14:04 · backup <b>G3741</b></span><span>Yangshuo → Shenzhenbei</span><span>12306</span></div>
+        </div>
+      </div>
+      <div class="book-row">
+        <div class="date"><b>13 Dec</b>Sunday ~12:00<br><span class="muted">05:00 in CPH</span></div>
+        <div class="body">
+          <h3><span class="kind sight">Sight</span>Mao Mausoleum, for Sat 19 Dec <span class="chip move">optional</span></h3>
+          <div class="meta"><span>Free · opens about 6 days ahead around noon</span><span>WeChat 毛主席纪念堂</span><span>The booking may ask for a Chinese phone number. If it does, skip it.</span></div>
+        </div>
+      </div>
+      <div class="book-row">
+        <div class="date"><b>14 Dec</b>Monday</div>
+        <div class="body">
+          <h3><span class="kind sight">Sight</span>Terracotta Warriors, for Mon 21 Dec</h3>
+          <div class="meta"><span>Opens 7 days ahead · no tickets at the gate</span><span>Official site or WeChat 秦始皇帝陵博物院</span><span>Passport needed</span></div>
+        </div>
+      </div>
+      <div class="book-row">
+        <div class="date"><b>15 Dec</b>Tuesday</div>
+        <div class="body">
+          <h3><span class="kind train">Train</span>Shenzhen → Hong Kong, for Tue 29 Dec <span class="chip move">nothing to book</span></h3>
+          <div class="meta"><span>You cross on foot at Luohu and take the MTR, which needs no ticket in advance.</span><span>Fallback only: <b>G5807</b> Futian → West Kowloon, bought on the day</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="foot">Train sales open 15 days ahead, counting the travel day. Each station releases at its own hour: search the date in 12306 a few days before and the app shows the sale time. Book trains on 12306 yourself and not again on Trip.com: one passport cannot hold two overlapping tickets.</p>
+  </section>
+
+  <section class="stop" aria-labelledby="links">
+    <div class="stop-head"><h2 id="links">Where to book the sights</h2><span class="nights">mini programs: paste the name into WeChat search</span></div>
+    <div class="links">
+      <article class="lcard">
+        <header><span>Book <b>Wed 9 Dec</b></span><span>for Wed 23 Dec</span></header>
+        <h3>Giant Panda Base</h3>
+        <span class="how">Easiest · Trip.com, in English</span>
+        <ul><li><a href="https://www.trip.com/travel-guide/attraction/chengdu/chengdu-research-base-of-giant-panda-breeding-76342" target="_blank" rel="noopener">Trip.com: Chengdu Research Base of Giant Panda Breeding</a> (an authorized seller listed by the base)</li><li><a href="https://www.panda.org.cn/en/service/ticket/" target="_blank" rel="noopener">Official ticket info</a></li></ul>
+        <ol><li>Date 23 Dec, adult ×2</li><li>Both passports</li><li>Pay ¥55 each</li></ol>
+        <span class="how">Alternative · WeChat mini program</span>
+        <div class="addr"><span class="zh">成都大熊猫繁育研究基地</span><button class="copy" type="button" id="copy-mp-panda">Copy</button><span class="en">购票 → date → 成人票 → add visitors (护照) → 支付</span></div>
+      </article>
+      <article class="lcard">
+        <header><span>Book <b>Sat 12 Dec, 13:00 CPH</b></span><span>for Sat 19 Dec</span></header>
+        <h3>Forbidden City</h3>
+        <span class="how">Official website, in English · no WeChat or Chinese phone</span>
+        <ul><li><a href="https://bookingticket.dpm.org.cn/" target="_blank" rel="noopener">bookingticket.dpm.org.cn</a> (booking)</li><li><a href="https://intl.dpm.org.cn/visit.html" target="_blank" rel="noopener">intl.dpm.org.cn</a> (hours and prices)</li></ul>
+        <ol><li><b>Now:</b> register with email and add both passports as visitors</li><li><b>On the day:</b> 19 Dec, <b>afternoon</b> slot</li><li>Tick both visitors, pay ¥40 each</li></ol>
+        <p class="muted">The site shows a high-traffic notice even on quiet days. Expect it to be slow at release.</p>
+      </article>
+      <article class="lcard">
+        <header><span>Book <b>12–18 Dec</b></span><span>for Sat 19 Dec</span></header>
+        <h3>Tiananmen Square</h3>
+        <span class="how">WeChat mini program</span>
+        <div class="addr"><span class="zh">天安门广场预约参观</span><button class="copy" type="button" id="copy-mp-tam">Copy</button><span class="en">个人预约 → 19 Dec → 上午 (morning) → add visitors, 证件类型 = 护照 → 提交</span></div>
+        <span class="how">Website · Chinese only</span>
+        <ul><li><a href="https://yuyue2026.tamgw.beijing.gov.cn/web/" target="_blank" rel="noopener">yuyue2026.tamgw.beijing.gov.cn</a> (reportedly rejects foreign phone numbers)</li></ul>
+      </article>
+      <article class="lcard">
+        <header><span>Book <b>Sun 13 Dec, ~05:30 CPH</b></span><span>for Sat 19 Dec</span></header>
+        <h3>Mao Mausoleum <span class="chip move">optional</span></h3>
+        <span class="how">Official website · has an English option</span>
+        <ul><li><a href="https://jnt.mfu.com.cn/page/" target="_blank" rel="noopener">jnt.mfu.com.cn</a> (personal reservation, 个人预约)</li></ul>
+        <ol><li>Log in (may need a Chinese mobile number, so try registering now)</li><li>19 Dec, time slot, both passports, submit</li></ol>
+        <span class="how">Alternative · WeChat mini program</span>
+        <div class="addr"><span class="zh">毛主席纪念堂预约瞻仰</span><button class="copy" type="button" id="copy-mp-mao">Copy</button><span class="en">Free. 2 no-shows lock the account for 120 days. If neither works, skip it.</span></div>
+      </article>
+      <article class="lcard">
+        <header><span>Book <b>Mon 14 Dec</b></span><span>for Mon 21 Dec</span></header>
+        <h3>Terracotta Warriors</h3>
+        <span class="how">Trip.com · linked from the museum's own site</span>
+        <ul><li><a href="https://www.trip.com/travel-guide/attraction/xi-an/emperor-qinshihuang-s-mausoleum-site-museum-75682/?locale=en_xx&amp;curr=USD" target="_blank" rel="noopener">Trip.com: Emperor Qinshihuang's Mausoleum Site Museum</a></li><li><a href="https://www.bmy.com.cn/jingtai/bmyweb/ticketing.html" target="_blank" rel="noopener">Official ticket page</a> (its “Ticket” link goes to Trip.com)</li></ul>
+        <ol><li>21 Dec, adult ×2</li><li>Both passports, pay ¥120 each</li></ol>
+        <span class="how">Alternative · WeChat mini program</span>
+        <div class="addr"><span class="zh">秦始皇帝陵博物院</span><button class="copy" type="button" id="copy-mp-bmy">Copy</button><span class="en">Fallback if sold out: a half-day tour from Xi'an with tickets included.</span></div>
+      </article>
+      <article class="lcard">
+        <header><span>Mini program words</span><span>use Google Lens to read the rest</span></header>
+        <h3>Cheat sheet</h3>
+        <ul>
+          <li><span class="zh">护照</span> passport · <span class="zh">证件号码</span> ID number</li>
+          <li><span class="zh">添加参观人</span> add visitor · <span class="zh">个人预约</span> personal booking</li>
+          <li><span class="zh">购票</span> buy tickets · <span class="zh">预约</span> reserve</li>
+          <li><span class="zh">提交</span> submit · <span class="zh">支付</span> pay · <span class="zh">确定</span> OK</li>
+          <li><span class="zh">已约满</span> fully booked · <span class="zh">余票</span> tickets left</li>
+          <li><span class="zh">上午</span> morning · <span class="zh">下午</span> afternoon</li>
+          <li><span class="zh">希腊</span> Greece · <span class="zh">丹麦</span> Denmark</li>
+        </ul>
+      </article>
+    </div>
+    <p class="foot">Step-by-step setup is in “Set up before the booking days” above.</p>
+  </section>
+
+  <section class="stop" aria-labelledby="trainguide">
+    <div class="stop-head"><h2 id="trainguide">Train booking guide</h2><span class="nights">what to type and tap on each booking day</span></div>
+    <div class="howto">
+      <ol>
+        <li>Open <b>Railway 12306</b> in English. Type the station names exactly as shown below (pinyin, no spaces or apostrophes) and pick the travel date.</li>
+        <li>Find the train number, then tap the class: <b>second-class seat</b>, <b>first class seat</b> or <b>business class seat</b>.</li>
+        <li>Choose seats on the seat map. Window seats are <b>A</b> and <b>F</b> in second and first class. Pick D + F (or A + B) to sit together.</li>
+        <li>Pay. If the class is sold out, tap <b>Waitlist</b> (候补) on the main train straight away, then book the backup.</li>
+      </ol>
+    </div>
+    <div class="guide">
+      <article class="tcard">
+        <header><span class="when">Book <b>Sun 6 Dec</b></span><span class="for">for Sun 20 Dec</span></header>
+        <h3>Beijing → Xi'an</h3>
+        <div class="app"><span>From <b>Beijingxi</b> <span class="zh">北京西</span></span><span>To <b>Xianbei</b> <span class="zh">西安北</span></span></div>
+        <table class="fare">
+          <thead><tr><th></th><th>Train</th><th>Time</th><th>2nd</th><th>1st</th><th>Business</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pick">Main</span></td><td class="code">G365</td><td class="code">09:55 → 14:05<br><span class="muted">4h10</span></td><td class="code">¥587</td><td class="code">¥939</td><td class="code">¥1,945</td></tr>
+            <tr><td><span class="pick bk">Backup</span></td><td class="code">G353</td><td class="code">12:55 → 17:08<br><span class="muted">4h13</span></td><td class="code">¥618</td><td class="code">¥988</td><td class="code">¥1,945</td></tr>
+          </tbody>
+        </table>
+        <p class="muted">DiDi to <span class="zh">北京西站</span>. For G365 leave the hotel around 08:30.</p>
+      </article>
+      <article class="tcard">
+        <header><span class="when">Book <b>Tue 8 Dec</b></span><span class="for">for Tue 22 Dec</span></header>
+        <h3>Xi'an → Chengdu</h3>
+        <div class="app"><span>From <b>Xianbei</b> <span class="zh">西安北</span></span><span>To <b>Chengdudong</b> <span class="zh">成都东</span></span></div>
+        <table class="fare">
+          <thead><tr><th></th><th>Train</th><th>Time</th><th>2nd</th><th>1st</th><th>Business</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pick">Main</span></td><td class="code">G321</td><td class="code">11:25 → 14:30<br><span class="muted">3h05</span></td><td class="code">¥300</td><td class="code">¥481</td><td class="code">¥940</td></tr>
+            <tr><td><span class="pick bk">Backup</span></td><td class="code">G1839</td><td class="code">11:30 → 14:58<br><span class="muted">3h28</span></td><td class="code">¥285</td><td class="code">¥455</td><td class="code">¥829</td></tr>
+          </tbody>
+        </table>
+        <p class="muted">DiDi to <span class="zh">西安北站</span>. Leave the hotel around 10:00. No fast trains to Chengdu leave from the central Xi'an station.</p>
+      </article>
+      <article class="tcard">
+        <header><span class="when">Book <b>Thu 10 Dec</b></span><span class="for">for Thu 24 Dec</span></header>
+        <h3>Chengdu → Yangshuo <span class="chip tbd">only 2 direct</span></h3>
+        <div class="app"><span>From <b>Chengdudong</b> <span class="zh">成都东</span></span><span>To <b>Yangshuo</b> <span class="zh">阳朔</span></span></div>
+        <table class="fare">
+          <thead><tr><th></th><th>Train</th><th>Time</th><th>2nd</th><th>1st</th><th>Business</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pick">Main</span></td><td class="code">D1807</td><td class="code">10:05 → 16:35<br><span class="muted">6h30</span></td><td class="code">¥479</td><td class="code">¥768</td><td class="code">—</td></tr>
+            <tr><td><span class="pick bk">Backup</span></td><td class="code">D1822</td><td class="code">07:41 → 15:16<br><span class="muted">7h35</span></td><td class="code">¥432</td><td class="code">¥691</td><td class="code">—</td></tr>
+          </tbody>
+        </table>
+        <p class="muted">DiDi to <span class="zh">成都东站</span>. For D1807 leave the hotel around 08:45. Hotel in Yangshuo around 17:45.</p>
+      </article>
+      <article class="tcard">
+        <header><span class="when">Book <b>Sun 13 Dec</b></span><span class="for">for Sun 27 Dec</span></header>
+        <h3>Yangshuo → Shenzhen <span class="chip tbd">3 trains a day</span></h3>
+        <div class="app"><span>From <b>Yangshuo</b> <span class="zh">阳朔</span></span><span>To <b>Shenzhenbei</b> <span class="zh">深圳北</span></span></div>
+        <table class="fare">
+          <thead><tr><th></th><th>Train</th><th>Time</th><th>2nd</th><th>1st</th><th>Premium</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pick">Main</span></td><td class="code">G2929</td><td class="code">11:25 → 14:04<br><span class="muted">2h39</span></td><td class="code">¥235.5</td><td class="code">¥356.5</td><td class="code">¥409.5</td></tr>
+            <tr><td><span class="pick bk">Backup</span></td><td class="code">G3741</td><td class="code">10:20 → 13:23<br><span class="muted">3h03</span></td><td class="code">¥263.5</td><td class="code">¥400.5</td><td class="code">¥756.5</td></tr>
+          </tbody>
+        </table>
+        <p class="muted">DiDi to <span class="zh">阳朔站</span>. For G2929 leave the hotel around 09:45 (the station is 55 min away). Last resort: G2905 at 20:04.</p>
+      </article>
+      <article class="tcard">
+        <header><span class="when">Book <b>Tue 15 Dec</b> or later</span><span class="for">for Tue 29 Dec</span></header>
+        <h3>Shenzhen → Hong Kong <span class="chip move">fallback only</span></h3>
+        <div class="app"><span>From <b>Futian</b> <span class="zh">福田</span></span><span>To <span class="zh">香港西九龙</span></span></div>
+        <table class="fare">
+          <thead><tr><th></th><th>Train</th><th>Time</th><th>2nd</th><th>1st</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><span class="pick">Main</span></td><td class="code">G5807</td><td class="code">13:54 → 14:08<br><span class="muted">14 min</span></td><td class="code">¥68</td><td class="code">¥109</td><td></td></tr>
+            <tr><td><span class="pick bk">Backup</span></td><td class="code">G5621</td><td class="code">14:34 → 14:48<br><span class="muted">14 min</span></td><td class="code">¥68</td><td class="code">¥109</td><td></td></tr>
+          </tbody>
+        </table>
+        <p class="muted">The plan is to cross on foot at Luohu, so this is only a fallback (for example if a suitcase is over the MTR size limit). The English 12306 search did not list Hong Kong West Kowloon. Switch the app to Chinese and type 香港西九龙, or buy at the Futian ticket office on the day. DiDi to <span class="zh">福田站</span> (8.6 km, ~20 min) and be there 45 min early.</p>
+      </article>
+    </div>
+    <p class="foot">Times and prices from 12306 for the same weekday in late November (current timetable). The next timetable change is expected in January, so December should match, but check on the booking day. Prices now vary by train and demand and can be 5–20% lower on quiet trains.</p>
+  </section>
+
+  <section class="stop" aria-labelledby="hotels">
+    <div class="stop-head"><h2 id="hotels">Hotels</h2><span class="nights">show the Chinese address to a taxi or paste it into DiDi</span></div>
+    <div class="hotels">
+      <div class="hotel">
+        <div class="where"><b>Beijing</b><span>16–20 Dec · 4 nts</span></div>
+        <div class="info">
+          <h3>Manxin Mansion Beijing Houhai and Drum Tower Courtyard</h3>
+          <span class="zh zh-name">北京后海鼓楼四合院漫心府</span>
+          <div class="addr"><span class="zh">北京市西城区旧鼓楼大街西绦胡同2号</span><button class="copy" type="button" id="copy-bj">Copy</button><span class="en">No. 2 West Tao Hutong, Jiugulou Street, Xicheng District, Beijing</span></div>
+        </div>
+      </div>
+      <div class="hotel">
+        <div class="where"><b>Xi'an</b><span>20–22 Dec · 2 nts</span></div>
+        <div class="info">
+          <h3>Four Points by Sheraton Xi'an Bell Tower</h3>
+          <span class="zh zh-name">西安钟楼福朋喜来登酒店（回民街店）</span>
+          <div class="addr"><span class="zh">西安市莲湖区西大街79号</span><button class="copy" type="button" id="copy-xa">Copy</button><span class="en">No. 79 West Street, Lianhu District, Xi'an</span></div>
+        </div>
+      </div>
+      <div class="hotel">
+        <div class="where"><b>Chengdu</b><span>22–24 Dec · 2 nts</span></div>
+        <div class="info">
+          <h3>The Hidden House (Kuanzhai Alley · People's Park)</h3>
+          <span class="zh zh-name">隐栖堂美学生活院子酒店（成都宽窄巷子人民公园地铁站店）</span>
+          <div class="addr"><span class="zh">成都市青羊区将军街5号</span><button class="copy" type="button" id="copy-cd">Copy</button><span class="en">No. 5 Jiangjun Street, Qingyang District, Chengdu</span></div>
+        </div>
+      </div>
+      <div class="hotel">
+        <div class="where"><b>Yangshuo</b><span>24–27 Dec · 3 nts</span></div>
+        <div class="info">
+          <h3>BO·HUI Hotel (West Street &amp; Lijiang River)</h3>
+          <span class="zh zh-name">BO·洄酒店（阳朔西街漓江店）</span>
+          <div class="addr"><span class="zh">桂林市阳朔县阳朔镇滨江路11号</span><button class="copy" type="button" id="copy-ys">Copy</button><span class="en">No. 11 Binjiang Road, Yangshuo Town, Yangshuo, Guangxi</span></div>
+        </div>
+      </div>
+      <div class="hotel">
+        <div class="where"><b>Shenzhen</b><span>27–29 Dec · 2 nts</span></div>
+        <div class="info">
+          <h3>Crowne Plaza Hotel &amp; Suites Landmark Shenzhen</h3>
+          <span class="zh zh-name">深圳富苑皇冠假日套房酒店</span>
+          <div class="addr"><span class="zh">深圳市罗湖区南湖路3018号</span><button class="copy" type="button" id="copy-sz">Copy</button><span class="en">No. 3018 Nanhu Road, Luohu District, Shenzhen · 310 m from Guomao metro (国贸, Line 1) · 1.7 km from the Luohu border crossing</span></div>
+        </div>
+      </div>
+      <div class="hotel">
+        <div class="where"><b>Hong Kong</b><span>29–31 Dec · 2 nts</span></div>
+        <div class="info">
+          <h3>Stanford Hillview Hotel</h3>
+          <span class="zh zh-name">香港仕德福山景酒店</span>
+          <div class="addr"><span class="zh">香港九龍尖沙咀天文台道13-17號</span><button class="copy" type="button" id="copy-hk">Copy</button><span class="en">13–17 Observatory Road, Tsim Sha Tsui, Kowloon, Hong Kong</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stop" aria-labelledby="stations">
+    <div class="stop-head"><h2 id="stations">Train stations</h2><span class="nights">“12306” is the spelling on the ticket and in the 12306 app</span></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Station</th><th>12306</th><th>Chinese</th><th>DiDi from hotel</th><th>Metro from hotel</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="st"><b>Beijing West</b><span class="dir">Beijing · depart 20 Dec</span></td><td class="code">Beijingxi</td><td><span class="zh">北京西站</span></td><td class="num">12.2 km<br>32–62 min<br>≈ ¥40–55</td><td class="num"><b>48 min</b><br>Line 8 → Line 7<br>¥4</td><td>Almost all trains to Xi'an leave from here.</td></tr>
+          <tr><td class="st"><b>Xi'an North</b><span class="dir">Xi'an · arrive 20, depart 22 Dec</span></td><td class="code">Xi'anbei</td><td><span class="zh">西安北站</span></td><td class="num">15.8 km<br>34–55 min<br>≈ ¥35–45</td><td class="num"><b>43 min</b><br>Line 2 direct<br>¥4</td><td>Most high-speed trains to and from Beijing and Chengdu.</td></tr>
+          <tr class="alt"><td class="st"><b>Xi'an</b><span class="dir">Xi'an · some trains</span></td><td class="code">Xi'an</td><td><span class="zh">西安站</span></td><td class="num">7.1 km<br>~29 min<br>≈ ¥17–25</td><td class="num"><b>22 min</b><br>Line 6 → Line 4</td><td>Old central station, listed by Trip.com. A few G/D trains to Beijing and Chengdu use it. Prefer it when the times fit.</td></tr>
+          <tr><td class="st"><b>Chengdu East</b><span class="dir">Chengdu · arrive 22, depart 24 Dec</span></td><td class="code">Chengdudong</td><td><span class="zh">成都东站</span></td><td class="num">8.9 km<br>~37 min<br>≈ ¥22–30</td><td class="num"><b>31 min</b><br>Line 2 direct<br>¥4</td><td>Main high-speed station.</td></tr>
+          <tr class="alt"><td class="st"><b>Chengdu West</b><span class="dir">Chengdu · some trains</span></td><td class="code">Chengduxi</td><td><span class="zh">成都西站</span></td><td class="num">9.6 km<br>~36 min<br>≈ ¥23–30</td><td class="num">41–52 min<br>Line 4</td><td>About as far as Chengdu East. Fine if the ticket says this one.</td></tr>
+          <tr><td class="st"><b>Yangshuo</b><span class="dir">Yangshuo · arrive 24, depart 27 Dec</span></td><td class="code">Yangshuo</td><td><span class="zh">阳朔站</span></td><td class="num">34 km<br>~55 min<br>≈ ¥100–115</td><td class="num">—</td><td><span class="warn">The station is in Xingping, outside town.</span> Shuttle bus ¥20 with a change, about 1 h. Local taxis often skip the meter, so use DiDi or agree the price first.</td></tr>
+          <tr><td class="st"><b>Shenzhen North</b><span class="dir">Shenzhen · arrive 27 Dec</span></td><td class="code">Shenzhenbei</td><td><span class="zh">深圳北站</span></td><td class="num">16.8 km<br>~42 min<br>≈ ¥50–65</td><td class="num"><b>45 min</b><br>Line 5 direct<br>¥5</td><td>Trains from Yangshuo arrive here. Line 5 towards 大剧院 (Grand Theater), 14 stops to <b>Hubei 湖贝</b>, exit F, then 500 m on foot.</td></tr>
+          <tr><td class="st"><b>Luohu Port</b><span class="dir">Shenzhen · cross 29 Dec</span></td><td class="code">—</td><td><span class="zh">罗湖口岸</span></td><td class="num">2.7 km<br>~16 min<br>≈ ¥12–15</td><td class="num">walk 1.7 km<br>~23 min</td><td>Border crossing on foot. DiDi to <span class="zh">罗湖口岸(出境)</span>. On the Hong Kong side, MTR East Rail from Lo Wu to Hung Hom, about 40 min. No ticket to book.</td></tr>
+          <tr class="alt"><td class="st"><b>Futian</b><span class="dir">Shenzhen · fallback</span></td><td class="code">Futian</td><td><span class="zh">福田站</span></td><td class="num">8.6 km<br>~20 min<br>≈ ¥28–35</td><td class="num">36 min<br>Line 1, Guomao → Shopping Park<br>¥3</td><td>High-speed train to West Kowloon. The metro route has 1.1 km of walking, so take a DiDi with suitcases.</td></tr>
+          <tr><td class="st"><b>Hung Hom</b><span class="dir">Hong Kong · arrive 29 Dec</span></td><td class="code">—</td><td><span class="zh">紅磡</span></td><td class="num">~1 km<br>short taxi</td><td class="num">—</td><td>End of the East Rail ride from Lo Wu, 890 m from the hotel.</td></tr>
+          <tr class="alt"><td class="st"><b>Hong Kong West Kowloon</b><span class="dir">Hong Kong · fallback</span></td><td class="code">Xianggang Xijiulong</td><td><span class="zh">香港西九龙站</span></td><td class="num">1.9 km<br>~10 min<br>≈ HK$30–50 (taxi)</td><td class="num">—</td><td>Immigration for both sides is inside the station.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <p class="foot">Distances and times from Amap (高德地图). DiDi times are the range Amap predicted for a weekday and a Sunday late morning; rush hour (07:30–09:30, 17:00–19:30) can be longer. Fares are estimates from local taxi rates: DiDi Express usually costs about the same or a little less, and the app shows the exact price before you book.</p>
+
+  <section class="stop" aria-labelledby="traffic">
+    <div class="stop-head"><h2 id="traffic">Traffic risk on travel days</h2><span class="nights">getting to a train or plane on time</span></div>
+    <div class="risk">
+      <div class="risk-row">
+        <div class="date">20 Dec<span class="dow">Sun</span></div>
+        <div class="body"><h3>Hotel → Beijing West</h3><p class="muted">Amap predicts 32–44 min on a Sunday late morning. The same trip measured 62 min on a weekday morning, with the 2nd Ring Road in red. Take the metro (48 min, no traffic) or a DiDi with an extra 30 min of slack.</p></div>
+        <span class="level mid">Medium</span>
+      </div>
+      <div class="risk-row">
+        <div class="date">22 Dec<span class="dow">Tue</span></div>
+        <div class="body"><h3>Hotel → Xi'an North</h3><p class="muted">Weekday prediction 34–50 min for 15.8 km, worse in rush hour. Metro Line 2 is direct from Bell Tower in 43 min. If your train leaves from Xi'an Station (西安站) instead, it is a short 22 min.</p></div>
+        <span class="level mid">Medium</span>
+      </div>
+      <div class="risk-row">
+        <div class="date">24 Dec<span class="dow">Thu</span></div>
+        <div class="body"><h3>Hotel → Chengdu East</h3><p class="muted">The morning train you want falls in the weekday rush, and Chengdu roads clog easily. Metro Line 2 is direct from People's Park in 31 min, which makes it the safe choice.</p></div>
+        <span class="level high">High by car</span>
+      </div>
+      <div class="risk-row">
+        <div class="date">27 Dec<span class="dow">Sun</span></div>
+        <div class="body"><h3>Hotel → Yangshuo station</h3><p class="muted">34 km of country road, about 55 min, little traffic. The risk is finding a car: book the DiDi in advance or ask the hotel to arrange one the night before.</p></div>
+        <span class="level low">Low</span>
+      </div>
+      <div class="risk-row">
+        <div class="date">29 Dec<span class="dow">Tue</span></div>
+        <div class="body"><h3>Shenzhen hotel → Luohu Port</h3><p class="muted">2.7 km, about 16 min by DiDi. The border queue is the only unknown: allow 30–60 min for both immigration checks.</p></div>
+        <span class="level low">Low</span>
+      </div>
+      <div class="risk-row">
+        <div class="date">31 Dec<span class="dow">Thu</span></div>
+        <div class="body"><h3>Hotel → Hong Kong Airport</h3><p class="muted">New Year's Eve: Tsim Sha Tsui fills with crowds for the harbour fireworks and roads near the waterfront are usually closed in the evening. A taxi is about HK$250–350 and could get stuck. Take the Airport Express from Kowloon Station instead, and leave by about 20:00.</p></div>
+        <span class="level high">High</span>
+      </div>
+    </div>
+    <p class="foot">Arrival legs (from a station to the hotel) only cost time, so a DiDi is fine there. Plan to reach any station 30–45 min before departure for security and passport checks.</p>
+  </section>
+
+  <section class="stop" aria-labelledby="s-bj">
+    <div class="stop-head"><h2 id="s-bj">Beijing <span class="cn">北京</span></h2><span class="nights">16–20 Dec · 4 nights</span></div>
+    <div class="days">
+      <div class="day">
+        <div class="date">15 Dec<span class="dow">Tue</span></div>
+        <div class="body"><h3>Leave Copenhagen <span class="chip plane">18:00 flight</span></h3><p class="muted">Overnight flight to Beijing.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">16 Dec<span class="dow">Wed</span></div>
+        <div class="body"><h3>Arrive Beijing 09:55</h3><p class="muted">Check in, rest, easy first afternoon to beat the jet lag.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">17 Dec<span class="dow">Thu</span></div>
+        <div class="body"><h3>Free day</h3><p class="muted">Easy sights, nothing to book.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">18 Dec<span class="dow">Fri</span></div>
+        <div class="body"><h3>Great Wall <span class="chip move">booked</span></h3><p class="muted">Tour with tickets included. Check the agency has your passport details and the pick-up time.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">19 Dec<span class="dow">Sat</span></div>
+        <div class="body"><h3>Mao Mausoleum, Tiananmen Square &amp; Forbidden City</h3><p class="muted">Mausoleum first: it opens 08:00 and closes at 12:00, with no bags allowed inside. Then the square, then walk north through the Meridian Gate into the Forbidden City. All three need advance booking with your passport, and Saturday Forbidden City tickets go in minutes (see the booking timeline).</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stop" aria-labelledby="s-xa">
+    <div class="stop-head"><h2 id="s-xa">Xi'an <span class="cn">西安</span></h2><span class="nights">20–22 Dec · 2 nights</span></div>
+    <div class="days">
+      <div class="day">
+        <div class="date">20 Dec<span class="dow">Sun</span></div>
+        <div class="body"><h3>Beijing → Xi'an <span class="chip move">travel day</span></h3><p class="muted"><b>G365</b> Beijing West 09:55 → Xi'an North 14:05 (backup G353, 12:55 → 17:08). Leave the hotel around 08:30.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">21 Dec<span class="dow">Mon</span></div>
+        <div class="body"><h3>Terracotta Warriors</h3><p class="muted">About 1 h east of the city centre. Plan most of the day for it. Tickets only online, booked from 14 Dec.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stop" aria-labelledby="s-cd">
+    <div class="stop-head"><h2 id="s-cd">Chengdu <span class="cn">成都</span></h2><span class="nights">22–24 Dec · 2 nights</span></div>
+    <div class="days">
+      <div class="day">
+        <div class="date">22 Dec<span class="dow">Tue</span></div>
+        <div class="body"><h3>Xi'an → Chengdu <span class="chip move">travel day</span></h3><p class="muted"><b>G321</b> Xi'an North 11:25 → Chengdu East 14:30 (backup G1839, 11:30 → 14:58). Leave the hotel around 10:00.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">23 Dec<span class="dow">Wed</span></div>
+        <div class="body"><h3>Giant pandas</h3><p class="muted">Chengdu Research Base of Giant Panda Breeding (成都大熊猫繁育研究基地), the big main base. Enter by the <b>West Gate (西门)</b>, which opens at <b>08:00</b> in winter (Nov–Feb). Be there for opening: the pandas are most active early and sleep by midday.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stop" aria-labelledby="s-ys">
+    <div class="stop-head"><h2 id="s-ys">Yangshuo <span class="cn">阳朔</span></h2><span class="nights">24–27 Dec · 3 nights</span></div>
+    <div class="days">
+      <div class="day">
+        <div class="date">24 Dec<span class="dow">Thu</span></div>
+        <div class="body"><h3>Chengdu → Yangshuo <span class="chip move">travel day</span></h3><p class="muted"><b>D1807</b> Chengdu East 10:05 → Yangshuo 16:35 (backup D1822, 07:41 → 15:16). Then about 55 min by car to the hotel. Leave the Chengdu hotel around 08:45.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">25 Dec<span class="dow">Fri</span></div>
+        <div class="body"><h3>Li River <span class="chip tbd">to choose</span></h3><p class="muted">Either the boat cruise from Guilin down to Yangshuo, or the shorter bamboo-raft stretch between Yangdi and Xingping (the scenery on the 20-yuan note).</p></div>
+      </div>
+      <div class="day">
+        <div class="date">26 Dec<span class="dow">Sat</span></div>
+        <div class="body">
+          <h3>Second Yangshuo day <span class="chip tbd">to choose</span></h3>
+          <div class="ideas">
+            <span><b>Yulong River</b> · slow bamboo raft through the karst countryside, often combined with cycling between villages.</span>
+            <span><b>Xianggong Hill</b> · the classic viewpoint over the Li River bends, best at sunrise.</span>
+            <span><b>Moon Hill</b> · short climb to a natural stone arch.</span>
+            <span><b>Longji Rice Terraces</b> · full-day trip, about 3 h each way. In December the terraces are bare, not green.</span>
+            <span><b>Impression Liu Sanjie</b> · evening light show on the river, staged by Zhang Yimou.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stop" aria-labelledby="s-sz">
+    <div class="stop-head"><h2 id="s-sz">Shenzhen <span class="cn">深圳</span></h2><span class="nights">27–29 Dec · 2 nights</span></div>
+    <div class="days">
+      <div class="day">
+        <div class="date">27 Dec<span class="dow">Sun</span></div>
+        <div class="body"><h3>Yangshuo → Shenzhen <span class="chip move">travel day</span></h3><p class="muted"><b>G2929</b> Yangshuo 11:25 → Shenzhen North 14:04 (backup G3741, 10:20 → 13:23). Leave the hotel around 09:45. From Shenzhen North: Metro Line 5 direct to Hubei (湖贝), exit F, 45 min in all, or DiDi about 42 min.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">28 Dec<span class="dow">Mon</span></div>
+        <div class="body"><h3>Shenzhen <span class="chip tbd">plan to add</span></h3></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stop" aria-labelledby="s-hk">
+    <div class="stop-head"><h2 id="s-hk">Hong Kong <span class="cn">香港</span></h2><span class="nights">29–31 Dec · 2 nights</span></div>
+    <div class="days">
+      <div class="day">
+        <div class="date">29 Dec<span class="dow">Tue</span></div>
+        <div class="body"><h3>Shenzhen → Hong Kong <span class="chip move">travel day</span></h3><p class="muted">DiDi 16 min to Luohu Port (罗湖口岸(出境)) and cross the border on foot. Then take the MTR East Rail from Lo Wu to Hung Hom (about 40 min, Octopus or contactless card, First Class has more room for bags) and a short taxi to the hotel. About 1.5–2 h door to door, nothing to book.<br><span class="foot">Fallback: DiDi to Futian (20 min), high-speed train G5807 13:54 → West Kowloon 14:08, bought on the day.</span></p></div>
+      </div>
+      <div class="day">
+        <div class="date">30 Dec<span class="dow">Wed</span></div>
+        <div class="body"><h3>Hong Kong <span class="chip tbd">plan to add</span></h3></div>
+      </div>
+      <div class="day">
+        <div class="date">31 Dec<span class="dow">Thu</span></div>
+        <div class="body"><h3>Last day, fly out at 23:15 <span class="chip plane">night flight</span></h3><p class="muted">Be at the airport by about 20:45. Avoid taxis tonight: take the Airport Express from Kowloon Station and leave the hotel by about 20:00. The midnight harbour fireworks happen after take-off.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">1 Jan<span class="dow">Fri</span></div>
+        <div class="body"><h3>Istanbul 06:10 → Copenhagen 09:40</h3><p class="muted">Home on New Year's morning.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="notes" aria-labelledby="open">
+    <div class="stop-head"><h2 id="open">Still to decide</h2></div>
+    <ul>
+      <li>Train tickets and sight tickets: follow the booking timeline at the top.</li>
+      <li>Hong Kong check-out is 31 Dec but the flight is at 23:15, so arrange luggage storage at the hotel.</li>
+      <li>Plans for Shenzhen (28 Dec) and Hong Kong (30–31 Dec).</li>
+      <li>Which Li River option, and what to do on the second Yangshuo day.</li>
+    </ul>
+  </section>
+
+  <section class="stop" aria-labelledby="didi">
+    <div class="stop-head"><h2 id="didi">DiDi with two big suitcases</h2><span class="nights">2 people · 2 × 20 kg</span></div>
+    <div class="didi">
+      <div class="didi-col yes">
+        <h3>Choose</h3>
+        <ul>
+          <li><b>Premier 专车</b>: large sedans such as Camry, Passat or Accord with a full-size boot. First choice. Costs about 1.5–2× Express.</li>
+          <li><b>6-Seater 六座</b>: van or MPV, always fits. Use it on train days when there is no time to lose.</li>
+          <li><b>Comfort 优享</b>: a step above Express with bigger cars. Usually fits, not always, and not offered in every city.</li>
+        </ul>
+      </div>
+      <div class="didi-col no">
+        <h3>Avoid</h3>
+        <ul>
+          <li><b>Discount Express 特惠快车</b>: small electric cars with small boots. The most likely to leave you behind.</li>
+          <li><b>Carpool 拼车</b>: shared with other riders, no room for luggage.</li>
+          <li><b>Taxi 出租车</b> in Chengdu and Xi'an: many run on gas with the tank taking half the boot.</li>
+          <li><b>Express 快车</b>: a lottery between a big sedan and a small EV. Fine without luggage, risky with it.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="addr"><span class="zh">师傅您好，我们两个人，有两个大行李箱（每个20公斤），后备箱放得下吗？谢谢！</span><button class="copy" type="button" id="copy-didi">Copy</button><span class="en">Send this in the DiDi chat as soon as a driver accepts: “Hello, we are two people with two large suitcases (20 kg each). Will they fit in the boot? Thanks!” If the reply is 放不下 (won't fit), cancel straight away while it is still free.</span></div>
+    <p class="foot">Yangshuo: book Premier or 6-Seater in advance, or ask the hotel to arrange a car. Hong Kong taxis take two suitcases without trouble.</p>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  var boxes = document.querySelectorAll('.setup input[type="checkbox"]');
+  var out = document.getElementById('setup-progress');
+  function key(b) { return 'china2026:' + b.id; }
+  function refresh() {
+    var n = 0;
+    boxes.forEach(function (b) { b.closest('.task').classList.toggle('done', b.checked); if (b.checked) n++; });
+    if (out) out.textContent = n + ' of ' + boxes.length + ' done';
+  }
+  boxes.forEach(function (b) {
+    try { b.checked = localStorage.getItem(key(b)) === '1'; } catch (e) {}
+    b.addEventListener('change', function () {
+      try { localStorage.setItem(key(b), b.checked ? '1' : '0'); } catch (e) {}
+      refresh();
+    });
+  });
+  refresh();
+})();
+document.querySelectorAll('.copy').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var text = btn.parentElement.querySelector('.zh').textContent;
+    function done(label) { btn.textContent = label; setTimeout(function () { btn.textContent = 'Copy'; }, 1600); }
+    function fallback() {
+      var r = document.createRange(); r.selectNodeContents(btn.parentElement.querySelector('.zh'));
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); done('Selected');
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function () { done('Copied'); }, fallback);
+    } catch (e) { fallback(); }
+  });
+});
+</script>
+
+</body>
+</html>
