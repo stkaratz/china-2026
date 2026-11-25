@@ -7,59 +7,57 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="China 2026">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="apple-touch-icon.png">
 <style>
 :root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
-body { margin: 0; font: 14px/1.5 system-ui, -apple-system, sans-serif; }
+body { margin: 0; font: 16px/1.5 -apple-system, system-ui, sans-serif; }
 img { max-width: 100%; }
 [hidden] { display: none !important; }
 </style>
-<title>China 2026 Itinerary</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<title>China 2026</title>
 <style>
-/* Layout: one reading column — route strip on top, then the trip day by day, grouped by city, flights called out as tickets. */
+/* Layout: an iOS-style app — sticky top bar, one pane per bottom tab, inset grouped cards on a grey ground, system fonts only (no web fonts, they are blocked in China). */
 :root {
-  --bg: #f3f5f2;
+  --bg: #f2f2f7;
   --surface: #ffffff;
-  --ink: #18231f;
-  --muted: #5d6b65;
-  --line: #d9e0dc;
-  --jade: #24705f;
-  --jade-soft: #e1eee9;
-  --seal: #b3402c;
-  --seal-soft: #f6e5e1;
-  --f-display: "Sora", "Avenir Next", system-ui, sans-serif;
-  --f-body: "Inter", system-ui, -apple-system, sans-serif;
-  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ink: #1c1c1e;
+  --muted: #6c6c70;
+  --line: #e1e1e6;
+  --jade: #1f7a63;
+  --jade-soft: #e2f1ec;
+  --seal: #c2410c;
+  --seal-soft: #fdeee6;
+  --bar: rgba(249, 249, 251, 0.86);
+  --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, sans-serif;
+  --f-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif;
+  --f-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #111816; --surface: #18211e; --ink: #e5ece8; --muted: #93a39c; --line: #2a3632;
-    --jade: #5dbba3; --jade-soft: #1c302a; --seal: #e3826d; --seal-soft: #352220; color-scheme: dark;
+    --bg: #000000; --surface: #1c1c1e; --ink: #f2f2f7; --muted: #9a9aa0; --line: #38383a;
+    --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #111816; --surface: #18211e; --ink: #e5ece8; --muted: #93a39c; --line: #2a3632;
-  --jade: #5dbba3; --jade-soft: #1c302a; --seal: #e3826d; --seal-soft: #352220; color-scheme: dark;
+  --bg: #000000; --surface: #1c1c1e; --ink: #f2f2f7; --muted: #9a9aa0; --line: #38383a;
+  --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); color-scheme: dark;
 }
-body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55; }
-.wrap { max-width: 860px; margin: 0 auto; padding-block: 40px 72px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
-  display: flex; flex-direction: column; gap: 40px; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
 h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
-h1 { font-size: clamp(2rem, 6vw, 2.9rem); font-weight: 700; line-height: 1.1; }
-h2 { font-size: 1.35rem; font-weight: 600; }
+h1 { font-size: 2.1rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
+h2 { font-size: 1.3rem; font-weight: 700; }
 p { margin: 0; }
 .eyebrow { font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--jade); }
 .mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
 .muted { color: var(--muted); }
 
 /* Header */
-header { display: flex; flex-direction: column; gap: 12px; }
+.large .facts { margin-top: 2px; }
 .facts { display: flex; flex-wrap: wrap; gap: 8px 24px; color: var(--muted); font-size: 0.9rem; }
 .facts b { color: var(--ink); font-weight: 600; }
 
@@ -234,124 +232,103 @@ a:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
   .hotel .where { flex-direction: row; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
   .date .dow { display: inline; margin-left: 6px; }
 }
-/* Jump nav */
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
-.jump { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); border-bottom: 1px solid var(--line); }
-@supports (backdrop-filter: blur(8px)) { .jump { background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); } }
-.jump-in { max-width: 860px; margin: 0 auto; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-block: 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.jump-in::-webkit-scrollbar { display: none; }
-.jump a { flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 34px; padding: 0 13px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-family: var(--f-mono); font-size: 0.78rem; text-decoration: none; white-space: nowrap; }
-.jump a.on { background: var(--jade); border-color: var(--jade); color: var(--surface); }
-.jump .sep { flex: 0 0 1px; align-self: stretch; margin: 6px 2px; background: var(--line); }
-h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 66px); }
+/* ---------- App shell ---------- */
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 50; background: var(--bar); }
+.topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 40; background: var(--bar); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 0.5px solid var(--line); }
+.topbar-in { max-width: 860px; margin: 0 auto; height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.tb-title { font-weight: 600; font-size: 1.02rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tb-meta { display: flex; align-items: center; gap: 8px; font-size: 0.74rem; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.net { padding: 2px 8px; border-radius: 99px; background: var(--seal-soft); color: var(--seal); font-weight: 600; }
+.banner { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 48px); z-index: 39; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--jade); color: var(--surface); font-size: 0.9rem; font-weight: 600; padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.banner button { flex: 0 0 auto; min-height: 34px; padding: 0 16px; border: 0; border-radius: 99px; background: var(--surface); color: var(--jade); font: 700 0.85rem var(--f-body); cursor: pointer; }
+
+.app { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+.pane { display: flex; flex-direction: column; }
+.large { padding-block: 18px 4px; display: flex; flex-direction: column; gap: 6px; }
+.lead { color: var(--muted); font-size: 0.95rem; }
+.seg { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 48px); z-index: 30; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-inline: -16px; padding: 10px 16px; background: var(--bg); }
+.seg::-webkit-scrollbar { display: none; }
+.seg button { flex: 0 0 auto; min-height: 36px; padding: 0 15px; border: 0; border-radius: 99px; background: var(--surface); color: var(--ink); font: 600 0.86rem var(--f-body); cursor: pointer; box-shadow: inset 0 0 0 0.5px var(--line); }
+.seg button.on { background: var(--ink); color: var(--bg); }
+.seg button.hl { background: var(--jade); color: var(--surface); }
+.seg button:focus-visible, .tab:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
+.pane-body { display: flex; flex-direction: column; gap: 34px; padding-top: 10px; }
+h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 112px); }
+
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--bar); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-top: 0.5px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+.tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; height: 56px; color: var(--muted); text-decoration: none; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.01em; }
+.tab svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.tab.on { color: var(--jade); }
+.tab.on svg { stroke-width: 2.1; }
+
+/* iOS grouped look for existing blocks */
+.stop-head { border-bottom: 0; padding-bottom: 0; }
+.stop-head .nights, .stop-head .progress { font-family: var(--f-body); font-size: 0.8rem; }
+.days, .hotels, .risk { background: var(--surface); border-radius: 14px; padding-inline: 16px; }
+.book, .setup, .table-wrap, .ticket, .tcard, .lcard, .didi-col, .howto, .addr { border-radius: 14px; border-color: var(--line); }
+.ticket, .tcard, .lcard, .didi-col, .howto, .book, .setup, .table-wrap { border-width: 0.5px; }
+.notes ul { background: var(--surface); border-radius: 14px; padding: 14px 16px 14px 34px; }
+.route { border: 0; background: var(--surface); border-radius: 14px; padding: 16px; }
 .route li { padding-right: 12px; }
 .route a { color: inherit; text-decoration: none; display: flex; flex-direction: column; gap: 2px; }
-.route a .city { text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
-.totop { position: fixed; right: max(16px, calc(env(safe-area-inset-right, 0px) + 12px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); z-index: 20; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--bg); text-decoration: none; font-size: 1.2rem; box-shadow: 0 4px 14px rgb(0 0 0 / 0.18); }
-.totop:focus-visible { outline: 2px solid var(--jade); outline-offset: 3px; }
+.route a .city { color: var(--jade); }
+.eyebrow, .kind, .chip, .pick, .level { font-family: var(--f-body); font-weight: 600; letter-spacing: 0.02em; }
+.day.today { background: var(--jade-soft); margin-inline: -16px; padding-inline: 16px; }
+.badge { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; background: var(--jade); color: var(--surface); margin-left: 6px; vertical-align: 2px; }
+.badge.pre { margin: 0 6px 0 0; }
+.route .sub { white-space: nowrap; }
+.route ol { min-width: 780px; }
+@media (max-width: 600px) {
+  .table-wrap { overflow: visible; background: transparent; border: 0; }
+  .table-wrap table { min-width: 0; }
+  .table-wrap thead { display: none; }
+  .table-wrap table, .table-wrap tbody, .table-wrap tr { display: block; }
+  .table-wrap tr { background: var(--surface); border-radius: 14px; padding: 12px 14px; margin-bottom: 10px; }
+  .table-wrap tr.alt td { background: transparent; }
+  .table-wrap td { display: grid; grid-template-columns: 96px 1fr; gap: 10px; border: 0; padding: 4px 0; white-space: normal; }
+  .table-wrap td::before { content: attr(data-label); font-size: 0.72rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; padding-top: 2px; }
+  .table-wrap td.st { display: block; padding-bottom: 8px; }
+  .table-wrap td.st::before { content: none; }
+  .table-wrap td .zh { white-space: normal; }
+}
+.book-row.next { background: var(--jade-soft); }
+.book-row.past { opacity: 0.5; }
 
 @media (max-width: 520px) {
-  body { font-size: 15px; }
-  .wrap { padding-block: 20px 80px; gap: 32px; }
-  h1 { font-size: 2.1rem; }
-  h2 { font-size: 1.2rem; }
-  .stop-head .nights, .stop-head .progress { font-size: 0.72rem; }
-  .copy { padding: 7px 14px; font-size: 0.76rem; }
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.22rem; }
+  .copy { padding: 7px 14px; font-size: 0.78rem; }
   .task { padding: 12px 14px; gap: 10px; }
   .book-row, .risk-row { padding-inline: 14px; }
   .tcard, .lcard, .didi-col { padding: 12px 14px; }
-  .facts { font-size: 0.86rem; }
+  .facts { font-size: 0.88rem; }
 }
 </style>
 </head>
 <body>
 
 
-<nav class="jump" aria-label="Jump to section">
-  <div class="jump-in" id="jump">
-    <a href="#setup">Setup</a>
-    <a href="#booking">Booking dates</a>
-    <a href="#links">Book sights</a>
-    <a href="#trainguide">Trains</a>
-    <span class="sep" aria-hidden="true"></span>
-    <a href="#s-bj">Beijing</a>
-    <a href="#s-xa">Xi'an</a>
-    <a href="#s-cd">Chengdu</a>
-    <a href="#s-ys">Yangshuo</a>
-    <a href="#s-sz">Shenzhen</a>
-    <a href="#s-hk">Hong Kong</a>
-    <span class="sep" aria-hidden="true"></span>
-    <a href="#flights">Flights</a>
-    <a href="#hotels">Hotels</a>
-    <a href="#stations">Stations</a>
-    <a href="#traffic">Traffic</a>
-    <a href="#didi">DiDi</a>
-    <a href="#open">To decide</a>
+<header class="topbar">
+  <div class="topbar-in">
+    <span class="tb-title" id="tb-title">China 2026</span>
+    <span class="tb-meta"><span class="net" id="net" hidden>Offline · saved copy</span><span id="app-updated" data-version="202611251328">Updated 25 Nov 13:28</span></span>
   </div>
-</nav>
-<a href="#top" class="totop" id="totop" aria-label="Back to top" hidden>↑</a>
+</header>
+<div class="banner" id="update-banner" role="status" hidden><span>A newer version of the plan is available.</span><button type="button" id="reload-btn">Reload</button></div>
 
-<div class="wrap" id="top">
-
-  <header>
-    <span class="eyebrow">Final plan · kept up to date</span>
-    <h1>China 2026</h1>
-    <div class="facts">
-      <span><b>15 Dec 2026 → 1 Jan 2027</b></span>
-      <span><b>6</b> cities</span>
-      <span><b>15</b> nights on the ground, 2 on planes</span>
-      <span>All legs in China by <b>high-speed train</b></span>
-      <span>China &amp; Hong Kong are <b>UTC+8</b>, 7 h ahead of Copenhagen</span>
-    </div>
-  </header>
-
-  <nav class="route" aria-label="Route overview">
-    <ol>
-      <li class="air"><span class="city">Copenhagen</span><span class="sub">15 Dec</span></li>
-      <li><a href="#s-bj"><span class="city">Beijing</span><span class="sub">16–20 Dec · 4 nts</span></a></li>
-      <li><a href="#s-xa"><span class="city">Xi'an</span><span class="sub">20–22 Dec · 2 nts</span></a></li>
-      <li><a href="#s-cd"><span class="city">Chengdu</span><span class="sub">22–24 Dec · 2 nts</span></a></li>
-      <li><a href="#s-ys"><span class="city">Yangshuo</span><span class="sub">24–27 Dec · 3 nts</span></a></li>
-      <li><a href="#s-sz"><span class="city">Shenzhen</span><span class="sub">27–29 Dec · 2 nts</span></a></li>
-      <li><a href="#s-hk"><span class="city">Hong Kong</span><span class="sub">29–31 Dec · 2 nts</span></a></li>
-      <li class="air"><span class="city">Copenhagen</span><span class="sub">1 Jan · via IST</span></li>
-    </ol>
-  </nav>
-
-  <section class="stop" aria-labelledby="flights">
-    <div class="stop-head"><h2 id="flights">Flights</h2><span class="nights">times are local</span></div>
-    <div class="tickets">
-      <div class="ticket">
-        <span class="tag">Outbound · Tue 15 Dec</span>
-        <div class="leg">
-          <div><div class="code">CPH</div><div class="time">18:00 · 15 Dec</div></div>
-          <div class="dur">8h 55m</div>
-          <div><div class="code">BJS</div><div class="time">09:55 · 16 Dec</div></div>
-        </div>
-      </div>
-      <div class="ticket">
-        <span class="tag">Return leg 1 · Thu 31 Dec</span>
-        <div class="leg">
-          <div><div class="code">HKG</div><div class="time">23:15 · 31 Dec</div></div>
-          <div class="dur">11h 55m</div>
-          <div><div class="code">IST</div><div class="time">06:10 · 1 Jan</div></div>
-        </div>
-      </div>
-      <div class="ticket">
-        <span class="tag">Return leg 2 · Fri 1 Jan</span>
-        <div class="leg">
-          <div><div class="code">IST</div><div class="time">08:20 · 1 Jan</div></div>
-          <div class="dur">3h 20m</div>
-          <div><div class="code">CPH</div><div class="time">09:40 · 1 Jan</div></div>
-        </div>
-        <span class="time mono muted">2h 10m connection in Istanbul</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="stop" aria-labelledby="setup">
+<main class="app">
+  <section class="pane" id="book" data-title="Bookings" aria-label="Bookings">
+    <div class="large"><h1>Bookings</h1><p class="lead">Final plan · kept up to date</p></div>
+    <nav class="seg" aria-label="Bookings sections">
+      <button type="button" data-go="next" class="hl" hidden>Next up</button>
+      <button type="button" data-go="setup">Setup</button>
+      <button type="button" data-go="booking">Dates</button>
+      <button type="button" data-go="links">Sights</button>
+      <button type="button" data-go="trainguide">Trains</button>
+    </nav>
+    <div class="pane-body">
+<section class="stop" aria-labelledby="setup">
     <div class="stop-head"><h2 id="setup">Set up before the booking days</h2><span class="progress" id="setup-progress">tick as you go</span></div>
     <div class="setup">
       <div class="task">
@@ -412,8 +389,7 @@ h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 66px); }
       </div>
     </div>
   </section>
-
-  <section class="stop" aria-labelledby="booking">
+<section class="stop" aria-labelledby="booking">
     <div class="stop-head"><h2 id="booking">Booking timeline</h2><span class="nights">Beijing time · Copenhagen is 7 h behind</span></div>
     <div class="book">
       <div class="book-row now">
@@ -503,8 +479,7 @@ h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 66px); }
     </div>
     <p class="foot">Train sales open 15 days ahead, counting the travel day. Each station releases at its own hour: search the date in 12306 a few days before and the app shows the sale time. Book trains on 12306 yourself and not again on Trip.com: one passport cannot hold two overlapping tickets.</p>
   </section>
-
-  <section class="stop" aria-labelledby="links">
+<section class="stop" aria-labelledby="links">
     <div class="stop-head"><h2 id="links">Where to book the sights</h2><span class="nights">mini programs: paste the name into WeChat search</span></div>
     <div class="links">
       <article class="lcard">
@@ -566,8 +541,7 @@ h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 66px); }
     </div>
     <p class="foot">Step-by-step setup is in “Set up before the booking days” above.</p>
   </section>
-
-  <section class="stop" aria-labelledby="trainguide">
+<section class="stop" aria-labelledby="trainguide">
     <div class="stop-head"><h2 id="trainguide">Train booking guide</h2><span class="nights">what to type and tap on each booking day</span></div>
     <div class="howto">
       <ol>
@@ -646,8 +620,198 @@ h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 66px); }
     </div>
     <p class="foot">Times and prices from 12306 for the same weekday in late November (current timetable). The next timetable change is expected in January, so December should match, but check on the booking day. Prices now vary by train and demand and can be 5–20% lower on quiet trains.</p>
   </section>
+    </div>
+  </section>
 
-  <section class="stop" aria-labelledby="hotels">
+  <section class="pane" id="trip" data-title="Trip" aria-label="Trip" hidden>
+    <div class="large"><h1>China 2026</h1><div class="facts">
+      <span><b>15 Dec 2026 → 1 Jan 2027</b></span>
+      <span><b>6</b> cities</span>
+      <span><b>15</b> nights on the ground, 2 on planes</span>
+      <span>All legs in China by <b>high-speed train</b></span>
+      <span>China &amp; Hong Kong are <b>UTC+8</b>, 7 h ahead of Copenhagen</span>
+    </div></div>
+    <nav class="seg" aria-label="Trip sections">
+      <button type="button" data-go="today" class="hl" hidden>Today</button>
+      <button type="button" data-go="flights">Flights</button>
+      <button type="button" data-go="s-bj">Beijing</button>
+      <button type="button" data-go="s-xa">Xi'an</button>
+      <button type="button" data-go="s-cd">Chengdu</button>
+      <button type="button" data-go="s-ys">Yangshuo</button>
+      <button type="button" data-go="s-sz">Shenzhen</button>
+      <button type="button" data-go="s-hk">Hong Kong</button>
+      <button type="button" data-go="open">To decide</button>
+    </nav>
+    <div class="pane-body">
+<nav class="route" aria-label="Route overview">
+    <ol>
+      <li class="air"><span class="city">Copenhagen</span><span class="sub">15 Dec</span></li>
+      <li><a href="#s-bj"><span class="city">Beijing</span><span class="sub">16–20 Dec · 4 nts</span></a></li>
+      <li><a href="#s-xa"><span class="city">Xi'an</span><span class="sub">20–22 Dec · 2 nts</span></a></li>
+      <li><a href="#s-cd"><span class="city">Chengdu</span><span class="sub">22–24 Dec · 2 nts</span></a></li>
+      <li><a href="#s-ys"><span class="city">Yangshuo</span><span class="sub">24–27 Dec · 3 nts</span></a></li>
+      <li><a href="#s-sz"><span class="city">Shenzhen</span><span class="sub">27–29 Dec · 2 nts</span></a></li>
+      <li><a href="#s-hk"><span class="city">Hong Kong</span><span class="sub">29–31 Dec · 2 nts</span></a></li>
+      <li class="air"><span class="city">Copenhagen</span><span class="sub">1 Jan · via IST</span></li>
+    </ol>
+  </nav>
+<section class="stop" aria-labelledby="flights">
+    <div class="stop-head"><h2 id="flights">Flights</h2><span class="nights">times are local</span></div>
+    <div class="tickets">
+      <div class="ticket">
+        <span class="tag">Outbound · Tue 15 Dec</span>
+        <div class="leg">
+          <div><div class="code">CPH</div><div class="time">18:00 · 15 Dec</div></div>
+          <div class="dur">8h 55m</div>
+          <div><div class="code">BJS</div><div class="time">09:55 · 16 Dec</div></div>
+        </div>
+      </div>
+      <div class="ticket">
+        <span class="tag">Return leg 1 · Thu 31 Dec</span>
+        <div class="leg">
+          <div><div class="code">HKG</div><div class="time">23:15 · 31 Dec</div></div>
+          <div class="dur">11h 55m</div>
+          <div><div class="code">IST</div><div class="time">06:10 · 1 Jan</div></div>
+        </div>
+      </div>
+      <div class="ticket">
+        <span class="tag">Return leg 2 · Fri 1 Jan</span>
+        <div class="leg">
+          <div><div class="code">IST</div><div class="time">08:20 · 1 Jan</div></div>
+          <div class="dur">3h 20m</div>
+          <div><div class="code">CPH</div><div class="time">09:40 · 1 Jan</div></div>
+        </div>
+        <span class="time mono muted">2h 10m connection in Istanbul</span>
+      </div>
+    </div>
+  </section>
+<section class="stop" aria-labelledby="s-bj">
+    <div class="stop-head"><h2 id="s-bj">Beijing <span class="cn">北京</span></h2><span class="nights">16–20 Dec · 4 nights</span></div>
+    <div class="days">
+      <div class="day">
+        <div class="date">15 Dec<span class="dow">Tue</span></div>
+        <div class="body"><h3>Leave Copenhagen <span class="chip plane">18:00 flight</span></h3><p class="muted">Overnight flight to Beijing.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">16 Dec<span class="dow">Wed</span></div>
+        <div class="body"><h3>Arrive Beijing 09:55</h3><p class="muted">Check in, rest, easy first afternoon to beat the jet lag.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">17 Dec<span class="dow">Thu</span></div>
+        <div class="body"><h3>Free day</h3><p class="muted">Easy sights, nothing to book.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">18 Dec<span class="dow">Fri</span></div>
+        <div class="body"><h3>Great Wall <span class="chip move">booked</span></h3><p class="muted">Tour with tickets included. Check the agency has your passport details and the pick-up time.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">19 Dec<span class="dow">Sat</span></div>
+        <div class="body"><h3>Mao Mausoleum, Tiananmen Square &amp; Forbidden City</h3><p class="muted">Mausoleum first: it opens 08:00 and closes at 12:00, with no bags allowed inside. Then the square, then walk north through the Meridian Gate into the Forbidden City. All three need advance booking with your passport, and Saturday Forbidden City tickets go in minutes (see the booking timeline).</p></div>
+      </div>
+    </div>
+  </section>
+<section class="stop" aria-labelledby="s-xa">
+    <div class="stop-head"><h2 id="s-xa">Xi'an <span class="cn">西安</span></h2><span class="nights">20–22 Dec · 2 nights</span></div>
+    <div class="days">
+      <div class="day">
+        <div class="date">20 Dec<span class="dow">Sun</span></div>
+        <div class="body"><h3>Beijing → Xi'an <span class="chip move">travel day</span></h3><p class="muted"><b>G365</b> Beijing West 09:55 → Xi'an North 14:05 (backup G353, 12:55 → 17:08). Leave the hotel around 08:30.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">21 Dec<span class="dow">Mon</span></div>
+        <div class="body"><h3>Terracotta Warriors</h3><p class="muted">About 1 h east of the city centre. Plan most of the day for it. Tickets only online, booked from 14 Dec.</p></div>
+      </div>
+    </div>
+  </section>
+<section class="stop" aria-labelledby="s-cd">
+    <div class="stop-head"><h2 id="s-cd">Chengdu <span class="cn">成都</span></h2><span class="nights">22–24 Dec · 2 nights</span></div>
+    <div class="days">
+      <div class="day">
+        <div class="date">22 Dec<span class="dow">Tue</span></div>
+        <div class="body"><h3>Xi'an → Chengdu <span class="chip move">travel day</span></h3><p class="muted"><b>G321</b> Xi'an North 11:25 → Chengdu East 14:30 (backup G1839, 11:30 → 14:58). Leave the hotel around 10:00.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">23 Dec<span class="dow">Wed</span></div>
+        <div class="body"><h3>Giant pandas</h3><p class="muted">Chengdu Research Base of Giant Panda Breeding (成都大熊猫繁育研究基地), the big main base. Enter by the <b>West Gate (西门)</b>, which opens at <b>08:00</b> in winter (Nov–Feb). Be there for opening: the pandas are most active early and sleep by midday.</p></div>
+      </div>
+    </div>
+  </section>
+<section class="stop" aria-labelledby="s-ys">
+    <div class="stop-head"><h2 id="s-ys">Yangshuo <span class="cn">阳朔</span></h2><span class="nights">24–27 Dec · 3 nights</span></div>
+    <div class="days">
+      <div class="day">
+        <div class="date">24 Dec<span class="dow">Thu</span></div>
+        <div class="body"><h3>Chengdu → Yangshuo <span class="chip move">travel day</span></h3><p class="muted"><b>D1807</b> Chengdu East 10:05 → Yangshuo 16:35 (backup D1822, 07:41 → 15:16). Then about 55 min by car to the hotel. Leave the Chengdu hotel around 08:45.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">25 Dec<span class="dow">Fri</span></div>
+        <div class="body"><h3>Li River <span class="chip tbd">to choose</span></h3><p class="muted">Either the boat cruise from Guilin down to Yangshuo, or the shorter bamboo-raft stretch between Yangdi and Xingping (the scenery on the 20-yuan note).</p></div>
+      </div>
+      <div class="day">
+        <div class="date">26 Dec<span class="dow">Sat</span></div>
+        <div class="body">
+          <h3>Second Yangshuo day <span class="chip tbd">to choose</span></h3>
+          <div class="ideas">
+            <span><b>Yulong River</b> · slow bamboo raft through the karst countryside, often combined with cycling between villages.</span>
+            <span><b>Xianggong Hill</b> · the classic viewpoint over the Li River bends, best at sunrise.</span>
+            <span><b>Moon Hill</b> · short climb to a natural stone arch.</span>
+            <span><b>Longji Rice Terraces</b> · full-day trip, about 3 h each way. In December the terraces are bare, not green.</span>
+            <span><b>Impression Liu Sanjie</b> · evening light show on the river, staged by Zhang Yimou.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<section class="stop" aria-labelledby="s-sz">
+    <div class="stop-head"><h2 id="s-sz">Shenzhen <span class="cn">深圳</span></h2><span class="nights">27–29 Dec · 2 nights</span></div>
+    <div class="days">
+      <div class="day">
+        <div class="date">27 Dec<span class="dow">Sun</span></div>
+        <div class="body"><h3>Yangshuo → Shenzhen <span class="chip move">travel day</span></h3><p class="muted"><b>G2929</b> Yangshuo 11:25 → Shenzhen North 14:04 (backup G3741, 10:20 → 13:23). Leave the hotel around 09:45. From Shenzhen North: Metro Line 5 direct to Hubei (湖贝), exit F, 45 min in all, or DiDi about 42 min.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">28 Dec<span class="dow">Mon</span></div>
+        <div class="body"><h3>Shenzhen <span class="chip tbd">plan to add</span></h3></div>
+      </div>
+    </div>
+  </section>
+<section class="stop" aria-labelledby="s-hk">
+    <div class="stop-head"><h2 id="s-hk">Hong Kong <span class="cn">香港</span></h2><span class="nights">29–31 Dec · 2 nights</span></div>
+    <div class="days">
+      <div class="day">
+        <div class="date">29 Dec<span class="dow">Tue</span></div>
+        <div class="body"><h3>Shenzhen → Hong Kong <span class="chip move">travel day</span></h3><p class="muted">DiDi 16 min to Luohu Port (罗湖口岸(出境)) and cross the border on foot. Then take the MTR East Rail from Lo Wu to Hung Hom (about 40 min, Octopus or contactless card, First Class has more room for bags) and a short taxi to the hotel. About 1.5–2 h door to door, nothing to book.<br><span class="foot">Fallback: DiDi to Futian (20 min), high-speed train G5807 13:54 → West Kowloon 14:08, bought on the day.</span></p></div>
+      </div>
+      <div class="day">
+        <div class="date">30 Dec<span class="dow">Wed</span></div>
+        <div class="body"><h3>Hong Kong <span class="chip tbd">plan to add</span></h3></div>
+      </div>
+      <div class="day">
+        <div class="date">31 Dec<span class="dow">Thu</span></div>
+        <div class="body"><h3>Last day, fly out at 23:15 <span class="chip plane">night flight</span></h3><p class="muted">Be at the airport by about 20:45. Avoid taxis tonight: take the Airport Express from Kowloon Station and leave the hotel by about 20:00. The midnight harbour fireworks happen after take-off.</p></div>
+      </div>
+      <div class="day">
+        <div class="date">1 Jan<span class="dow">Fri</span></div>
+        <div class="body"><h3>Istanbul 06:10 → Copenhagen 09:40</h3><p class="muted">Home on New Year's morning.</p></div>
+      </div>
+    </div>
+  </section>
+<section class="notes" aria-labelledby="open">
+    <div class="stop-head"><h2 id="open">Still to decide</h2></div>
+    <ul>
+      <li>Train tickets and sight tickets: follow the booking timeline at the top.</li>
+      <li>Hong Kong check-out is 31 Dec but the flight is at 23:15, so arrange luggage storage at the hotel.</li>
+      <li>Plans for Shenzhen (28 Dec) and Hong Kong (30–31 Dec).</li>
+      <li>Which Li River option, and what to do on the second Yangshuo day.</li>
+    </ul>
+  </section>
+    </div>
+  </section>
+
+  <section class="pane" id="stay" data-title="Hotels" aria-label="Hotels" hidden>
+    <div class="large"><h1>Hotels</h1><p class="lead">Tap Copy and paste the address into DiDi</p></div>
+    <div class="pane-body">
+<section class="stop" aria-labelledby="hotels">
     <div class="stop-head"><h2 id="hotels">Hotels</h2><span class="nights">show the Chinese address to a taxi or paste it into DiDi</span></div>
     <div class="hotels">
       <div class="hotel">
@@ -700,16 +864,26 @@ h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 66px); }
       </div>
     </div>
   </section>
+    </div>
+  </section>
 
-  <section class="stop" aria-labelledby="stations">
+  <section class="pane" id="move" data-title="Getting around" aria-label="Getting around" hidden>
+    <div class="large"><h1>Getting around</h1><p class="lead">Stations, traffic and DiDi</p></div>
+    <nav class="seg" aria-label="Getting around sections">
+      <button type="button" data-go="stations">Stations</button>
+      <button type="button" data-go="traffic">Traffic</button>
+      <button type="button" data-go="didi">DiDi</button>
+    </nav>
+    <div class="pane-body">
+<section class="stop" aria-labelledby="stations">
     <div class="stop-head"><h2 id="stations">Train stations</h2><span class="nights">“12306” is the spelling on the ticket and in the 12306 app</span></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Station</th><th>12306</th><th>Chinese</th><th>DiDi from hotel</th><th>Metro from hotel</th><th>Notes</th></tr></thead>
         <tbody>
           <tr><td class="st"><b>Beijing West</b><span class="dir">Beijing · depart 20 Dec</span></td><td class="code">Beijingxi</td><td><span class="zh">北京西站</span></td><td class="num">12.2 km<br>32–62 min<br>≈ ¥40–55</td><td class="num"><b>48 min</b><br>Line 8 → Line 7<br>¥4</td><td>Almost all trains to Xi'an leave from here.</td></tr>
-          <tr><td class="st"><b>Xi'an North</b><span class="dir">Xi'an · arrive 20, depart 22 Dec</span></td><td class="code">Xi'anbei</td><td><span class="zh">西安北站</span></td><td class="num">15.8 km<br>34–55 min<br>≈ ¥35–45</td><td class="num"><b>43 min</b><br>Line 2 direct<br>¥4</td><td>Most high-speed trains to and from Beijing and Chengdu.</td></tr>
-          <tr class="alt"><td class="st"><b>Xi'an</b><span class="dir">Xi'an · some trains</span></td><td class="code">Xi'an</td><td><span class="zh">西安站</span></td><td class="num">7.1 km<br>~29 min<br>≈ ¥17–25</td><td class="num"><b>22 min</b><br>Line 6 → Line 4</td><td>Old central station, listed by Trip.com. A few G/D trains to Beijing and Chengdu use it. Prefer it when the times fit.</td></tr>
+          <tr><td class="st"><b>Xi'an North</b><span class="dir">Xi'an · arrive 20, depart 22 Dec</span></td><td class="code">Xianbei</td><td><span class="zh">西安北站</span></td><td class="num">15.8 km<br>34–55 min<br>≈ ¥35–45</td><td class="num"><b>43 min</b><br>Line 2 direct<br>¥4</td><td>Most high-speed trains to and from Beijing and Chengdu.</td></tr>
+          <tr class="alt"><td class="st"><b>Xi'an</b><span class="dir">Xi'an · some trains</span></td><td class="code">Xian</td><td><span class="zh">西安站</span></td><td class="num">7.1 km<br>~29 min<br>≈ ¥17–25</td><td class="num"><b>22 min</b><br>Line 6 → Line 4</td><td>Old central station, listed by Trip.com. A few G/D trains to Beijing and Chengdu use it. Prefer it when the times fit.</td></tr>
           <tr><td class="st"><b>Chengdu East</b><span class="dir">Chengdu · arrive 22, depart 24 Dec</span></td><td class="code">Chengdudong</td><td><span class="zh">成都东站</span></td><td class="num">8.9 km<br>~37 min<br>≈ ¥22–30</td><td class="num"><b>31 min</b><br>Line 2 direct<br>¥4</td><td>Main high-speed station.</td></tr>
           <tr class="alt"><td class="st"><b>Chengdu West</b><span class="dir">Chengdu · some trains</span></td><td class="code">Chengduxi</td><td><span class="zh">成都西站</span></td><td class="num">9.6 km<br>~36 min<br>≈ ¥23–30</td><td class="num">41–52 min<br>Line 4</td><td>About as far as Chengdu East. Fine if the ticket says this one.</td></tr>
           <tr><td class="st"><b>Yangshuo</b><span class="dir">Yangshuo · arrive 24, depart 27 Dec</span></td><td class="code">Yangshuo</td><td><span class="zh">阳朔站</span></td><td class="num">34 km<br>~55 min<br>≈ ¥100–115</td><td class="num">—</td><td><span class="warn">The station is in Xingping, outside town.</span> Shuttle bus ¥20 with a change, about 1 h. Local taxis often skip the meter, so use DiDi or agree the price first.</td></tr>
@@ -722,10 +896,8 @@ h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 66px); }
       </table>
     </div>
   </section>
-
-  <p class="foot">Distances and times from Amap (高德地图). DiDi times are the range Amap predicted for a weekday and a Sunday late morning; rush hour (07:30–09:30, 17:00–19:30) can be longer. Fares are estimates from local taxi rates: DiDi Express usually costs about the same or a little less, and the app shows the exact price before you book.</p>
-
-  <section class="stop" aria-labelledby="traffic">
+<p class="foot">Distances and times from Amap (高德地图). DiDi times are the range Amap predicted for a weekday and a Sunday late morning; rush hour (07:30–09:30, 17:00–19:30) can be longer. Fares are estimates from local taxi rates: DiDi Express usually costs about the same or a little less, and the app shows the exact price before you book.</p>
+<section class="stop" aria-labelledby="traffic">
     <div class="stop-head"><h2 id="traffic">Traffic risk on travel days</h2><span class="nights">getting to a train or plane on time</span></div>
     <div class="risk">
       <div class="risk-row">
@@ -761,135 +933,7 @@ h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 66px); }
     </div>
     <p class="foot">Arrival legs (from a station to the hotel) only cost time, so a DiDi is fine there. Plan to reach any station 30–45 min before departure for security and passport checks.</p>
   </section>
-
-  <section class="stop" aria-labelledby="s-bj">
-    <div class="stop-head"><h2 id="s-bj">Beijing <span class="cn">北京</span></h2><span class="nights">16–20 Dec · 4 nights</span></div>
-    <div class="days">
-      <div class="day">
-        <div class="date">15 Dec<span class="dow">Tue</span></div>
-        <div class="body"><h3>Leave Copenhagen <span class="chip plane">18:00 flight</span></h3><p class="muted">Overnight flight to Beijing.</p></div>
-      </div>
-      <div class="day">
-        <div class="date">16 Dec<span class="dow">Wed</span></div>
-        <div class="body"><h3>Arrive Beijing 09:55</h3><p class="muted">Check in, rest, easy first afternoon to beat the jet lag.</p></div>
-      </div>
-      <div class="day">
-        <div class="date">17 Dec<span class="dow">Thu</span></div>
-        <div class="body"><h3>Free day</h3><p class="muted">Easy sights, nothing to book.</p></div>
-      </div>
-      <div class="day">
-        <div class="date">18 Dec<span class="dow">Fri</span></div>
-        <div class="body"><h3>Great Wall <span class="chip move">booked</span></h3><p class="muted">Tour with tickets included. Check the agency has your passport details and the pick-up time.</p></div>
-      </div>
-      <div class="day">
-        <div class="date">19 Dec<span class="dow">Sat</span></div>
-        <div class="body"><h3>Mao Mausoleum, Tiananmen Square &amp; Forbidden City</h3><p class="muted">Mausoleum first: it opens 08:00 and closes at 12:00, with no bags allowed inside. Then the square, then walk north through the Meridian Gate into the Forbidden City. All three need advance booking with your passport, and Saturday Forbidden City tickets go in minutes (see the booking timeline).</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="stop" aria-labelledby="s-xa">
-    <div class="stop-head"><h2 id="s-xa">Xi'an <span class="cn">西安</span></h2><span class="nights">20–22 Dec · 2 nights</span></div>
-    <div class="days">
-      <div class="day">
-        <div class="date">20 Dec<span class="dow">Sun</span></div>
-        <div class="body"><h3>Beijing → Xi'an <span class="chip move">travel day</span></h3><p class="muted"><b>G365</b> Beijing West 09:55 → Xi'an North 14:05 (backup G353, 12:55 → 17:08). Leave the hotel around 08:30.</p></div>
-      </div>
-      <div class="day">
-        <div class="date">21 Dec<span class="dow">Mon</span></div>
-        <div class="body"><h3>Terracotta Warriors</h3><p class="muted">About 1 h east of the city centre. Plan most of the day for it. Tickets only online, booked from 14 Dec.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="stop" aria-labelledby="s-cd">
-    <div class="stop-head"><h2 id="s-cd">Chengdu <span class="cn">成都</span></h2><span class="nights">22–24 Dec · 2 nights</span></div>
-    <div class="days">
-      <div class="day">
-        <div class="date">22 Dec<span class="dow">Tue</span></div>
-        <div class="body"><h3>Xi'an → Chengdu <span class="chip move">travel day</span></h3><p class="muted"><b>G321</b> Xi'an North 11:25 → Chengdu East 14:30 (backup G1839, 11:30 → 14:58). Leave the hotel around 10:00.</p></div>
-      </div>
-      <div class="day">
-        <div class="date">23 Dec<span class="dow">Wed</span></div>
-        <div class="body"><h3>Giant pandas</h3><p class="muted">Chengdu Research Base of Giant Panda Breeding (成都大熊猫繁育研究基地), the big main base. Enter by the <b>West Gate (西门)</b>, which opens at <b>08:00</b> in winter (Nov–Feb). Be there for opening: the pandas are most active early and sleep by midday.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="stop" aria-labelledby="s-ys">
-    <div class="stop-head"><h2 id="s-ys">Yangshuo <span class="cn">阳朔</span></h2><span class="nights">24–27 Dec · 3 nights</span></div>
-    <div class="days">
-      <div class="day">
-        <div class="date">24 Dec<span class="dow">Thu</span></div>
-        <div class="body"><h3>Chengdu → Yangshuo <span class="chip move">travel day</span></h3><p class="muted"><b>D1807</b> Chengdu East 10:05 → Yangshuo 16:35 (backup D1822, 07:41 → 15:16). Then about 55 min by car to the hotel. Leave the Chengdu hotel around 08:45.</p></div>
-      </div>
-      <div class="day">
-        <div class="date">25 Dec<span class="dow">Fri</span></div>
-        <div class="body"><h3>Li River <span class="chip tbd">to choose</span></h3><p class="muted">Either the boat cruise from Guilin down to Yangshuo, or the shorter bamboo-raft stretch between Yangdi and Xingping (the scenery on the 20-yuan note).</p></div>
-      </div>
-      <div class="day">
-        <div class="date">26 Dec<span class="dow">Sat</span></div>
-        <div class="body">
-          <h3>Second Yangshuo day <span class="chip tbd">to choose</span></h3>
-          <div class="ideas">
-            <span><b>Yulong River</b> · slow bamboo raft through the karst countryside, often combined with cycling between villages.</span>
-            <span><b>Xianggong Hill</b> · the classic viewpoint over the Li River bends, best at sunrise.</span>
-            <span><b>Moon Hill</b> · short climb to a natural stone arch.</span>
-            <span><b>Longji Rice Terraces</b> · full-day trip, about 3 h each way. In December the terraces are bare, not green.</span>
-            <span><b>Impression Liu Sanjie</b> · evening light show on the river, staged by Zhang Yimou.</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="stop" aria-labelledby="s-sz">
-    <div class="stop-head"><h2 id="s-sz">Shenzhen <span class="cn">深圳</span></h2><span class="nights">27–29 Dec · 2 nights</span></div>
-    <div class="days">
-      <div class="day">
-        <div class="date">27 Dec<span class="dow">Sun</span></div>
-        <div class="body"><h3>Yangshuo → Shenzhen <span class="chip move">travel day</span></h3><p class="muted"><b>G2929</b> Yangshuo 11:25 → Shenzhen North 14:04 (backup G3741, 10:20 → 13:23). Leave the hotel around 09:45. From Shenzhen North: Metro Line 5 direct to Hubei (湖贝), exit F, 45 min in all, or DiDi about 42 min.</p></div>
-      </div>
-      <div class="day">
-        <div class="date">28 Dec<span class="dow">Mon</span></div>
-        <div class="body"><h3>Shenzhen <span class="chip tbd">plan to add</span></h3></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="stop" aria-labelledby="s-hk">
-    <div class="stop-head"><h2 id="s-hk">Hong Kong <span class="cn">香港</span></h2><span class="nights">29–31 Dec · 2 nights</span></div>
-    <div class="days">
-      <div class="day">
-        <div class="date">29 Dec<span class="dow">Tue</span></div>
-        <div class="body"><h3>Shenzhen → Hong Kong <span class="chip move">travel day</span></h3><p class="muted">DiDi 16 min to Luohu Port (罗湖口岸(出境)) and cross the border on foot. Then take the MTR East Rail from Lo Wu to Hung Hom (about 40 min, Octopus or contactless card, First Class has more room for bags) and a short taxi to the hotel. About 1.5–2 h door to door, nothing to book.<br><span class="foot">Fallback: DiDi to Futian (20 min), high-speed train G5807 13:54 → West Kowloon 14:08, bought on the day.</span></p></div>
-      </div>
-      <div class="day">
-        <div class="date">30 Dec<span class="dow">Wed</span></div>
-        <div class="body"><h3>Hong Kong <span class="chip tbd">plan to add</span></h3></div>
-      </div>
-      <div class="day">
-        <div class="date">31 Dec<span class="dow">Thu</span></div>
-        <div class="body"><h3>Last day, fly out at 23:15 <span class="chip plane">night flight</span></h3><p class="muted">Be at the airport by about 20:45. Avoid taxis tonight: take the Airport Express from Kowloon Station and leave the hotel by about 20:00. The midnight harbour fireworks happen after take-off.</p></div>
-      </div>
-      <div class="day">
-        <div class="date">1 Jan<span class="dow">Fri</span></div>
-        <div class="body"><h3>Istanbul 06:10 → Copenhagen 09:40</h3><p class="muted">Home on New Year's morning.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="notes" aria-labelledby="open">
-    <div class="stop-head"><h2 id="open">Still to decide</h2></div>
-    <ul>
-      <li>Train tickets and sight tickets: follow the booking timeline at the top.</li>
-      <li>Hong Kong check-out is 31 Dec but the flight is at 23:15, so arrange luggage storage at the hotel.</li>
-      <li>Plans for Shenzhen (28 Dec) and Hong Kong (30–31 Dec).</li>
-      <li>Which Li River option, and what to do on the second Yangshuo day.</li>
-    </ul>
-  </section>
-
-  <section class="stop" aria-labelledby="didi">
+<section class="stop" aria-labelledby="didi">
     <div class="stop-head"><h2 id="didi">DiDi with two big suitcases</h2><span class="nights">2 people · 2 × 20 kg</span></div>
     <div class="didi">
       <div class="didi-col yes">
@@ -913,41 +957,194 @@ h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 66px); }
     <div class="addr"><span class="zh">师傅您好，我们两个人，有两个大行李箱（每个20公斤），后备箱放得下吗？谢谢！</span><button class="copy" type="button" id="copy-didi">Copy</button><span class="en">Send this in the DiDi chat as soon as a driver accepts: “Hello, we are two people with two large suitcases (20 kg each). Will they fit in the boot? Thanks!” If the reply is 放不下 (won't fit), cancel straight away while it is still free.</span></div>
     <p class="foot">Yangshuo: book Premier or 6-Seater in advance, or ask the hotel to arrange a car. Hong Kong taxis take two suitcases without trouble.</p>
   </section>
+    </div>
+  </section>
+</main>
 
-</div>
+<nav class="tabbar" aria-label="Main">
+  <a href="#book" class="tab" data-tab="book"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3"/><path d="M8 9l1.6 1.6L12.5 7.7M8 15h8"/></svg><span>Bookings</span></a>
+  <a href="#trip" class="tab" data-tab="trip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 3.5 6.8v12.7L9 17.2l6 2.3 5.5-2.3V4.5L15 6.8 9 4.5zM9 4.5v12.7M15 6.8v12.7"/></svg><span>Trip</span></a>
+  <a href="#stay" class="tab" data-tab="stay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.5v-11M3.5 14h17v4.5M20.5 14v-2.5a3 3 0 0 0-3-3H11V14"/><circle cx="7.2" cy="10.8" r="1.8"/></svg><span>Hotels</span></a>
+  <a href="#move" class="tab" data-tab="move"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3.5" width="12" height="13" rx="3"/><path d="M6 11h12M9 20.5l1.5-4M15 20.5l-1.5-4"/><circle cx="9.3" cy="13.7" r=".6"/><circle cx="14.7" cy="13.7" r=".6"/></svg><span>Transit</span></a>
+</nav>
 
 <script>
+document.querySelectorAll('.table-wrap table').forEach(function (t) {
+  var heads = Array.prototype.map.call(t.querySelectorAll('thead th'), function (th) { return th.textContent.trim(); });
+  t.querySelectorAll('tbody tr').forEach(function (tr) {
+    Array.prototype.forEach.call(tr.children, function (td, i) { td.setAttribute('data-label', heads[i] || ''); });
+  });
+});
 (function () {
-  var bar = document.getElementById('jump');
-  var links = bar ? Array.prototype.slice.call(bar.querySelectorAll('a')) : [];
-  var byId = {};
-  links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
-  var heads = Object.keys(byId).map(function (id) { return document.getElementById(id); }).filter(Boolean);
-  var current = null;
-  function setOn(id) {
-    if (id === current || !byId[id]) return;
-    if (current && byId[current]) byId[current].classList.remove('on');
-    current = id;
-    var a = byId[id];
-    a.classList.add('on');
-    var left = a.offsetLeft - (bar.clientWidth - a.offsetWidth) / 2;
-    try { bar.scrollTo({ left: left, behavior: 'smooth' }); } catch (e) { bar.scrollLeft = left; }
+  var TABS = ['book', 'trip', 'stay', 'move'];
+  var panes = {};
+  TABS.forEach(function (t) { panes[t] = document.getElementById(t); });
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabbar .tab'));
+  var title = document.getElementById('tb-title');
+  var scrollMem = {};
+  var active = null;
+  function store(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function smooth() { return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'; }
+  function paneOf(el) { while (el && !(el.classList && el.classList.contains('pane'))) el = el.parentNode; return el; }
+
+  function show(tab, keepScroll) {
+    if (!panes[tab]) tab = 'book';
+    if (active && active !== tab) scrollMem[active] = window.scrollY;
+    TABS.forEach(function (t) { panes[t].hidden = t !== tab; });
+    tabs.forEach(function (a) {
+      var on = a.getAttribute('data-tab') === tab;
+      a.classList.toggle('on', on);
+      if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+    if (title) title.textContent = panes[tab].getAttribute('data-title');
+    var changed = active !== tab;
+    active = tab;
+    store('china2026:tab', tab);
+    if (changed && !keepScroll) window.scrollTo(0, scrollMem[tab] || 0);
+    updateSeg();
   }
-  function pick() {
-    var line = 90, best = null;
-    heads.forEach(function (h) { if (h.getBoundingClientRect().top - line <= 0) best = h; });
-    if (best) setOn(best.id);
-    else if (current && byId[current]) { byId[current].classList.remove('on'); current = null; }
-    var top = document.getElementById('totop');
-    if (top) top.hidden = window.scrollY < 600;
+
+  // Dates: highlight today during the trip and the next booking before it.
+  var now = new Date();
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  function parseDay(txt) {
+    var m = /(\d{1,2})\s+(Nov|Dec|Jan)/.exec(txt || '');
+    if (!m) return null;
+    var mo = { Nov: 10, Dec: 11, Jan: 0 }[m[2]];
+    return new Date(m[2] === 'Jan' ? 2027 : 2026, mo, +m[1]);
+  }
+  var inTrip = false;
+  document.querySelectorAll('.day').forEach(function (d) {
+    var dt = parseDay((d.querySelector('.date') || {}).textContent);
+    if (dt && dt.getTime() === today.getTime()) {
+      d.classList.add('today');
+      var h = d.querySelector('h3');
+      if (h) h.insertAdjacentHTML('beforeend', ' <span class="badge">Today</span>');
+      inTrip = true;
+    }
+  });
+  if (inTrip) { var tbtn = document.querySelector('.seg button[data-go="today"]'); if (tbtn) tbtn.hidden = false; }
+  var nextFound = false;
+  document.querySelectorAll('.book-row').forEach(function (r) {
+    var b = r.querySelector('.date b');
+    var dt = b ? parseDay(b.textContent) : null;
+    if (!dt) return;
+    if (dt < today) r.classList.add('past');
+    else if (!nextFound) {
+      nextFound = true;
+      r.classList.add('next');
+      var h = r.querySelector('h3');
+      if (h) h.insertAdjacentHTML('afterbegin', '<span class="badge pre">Next</span>');
+    }
+  });
+  if (nextFound) { var nbtn = document.querySelector('.seg button[data-go="next"]'); if (nbtn) nbtn.hidden = false; }
+
+  function defaultTab() {
+    if (today >= new Date(2026, 11, 15) && today <= new Date(2027, 0, 1)) return 'trip';
+    var saved = load('china2026:tab');
+    return panes[saved] ? saved : 'book';
+  }
+  function route() {
+    var h = location.hash.replace('#', '');
+    if (!h) { show(defaultTab()); return; }
+    if (panes[h]) { show(h); return; }
+    var el = document.getElementById(h);
+    var p = el ? paneOf(el) : null;
+    if (p) { show(p.id, true); setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 0); }
+    else show(defaultTab());
+  }
+
+  // Tapping the tab you are on scrolls back to the top, like iOS.
+  tabs.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      if (a.getAttribute('data-tab') === active && location.hash === '#' + active) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: smooth() });
+      }
+    });
+  });
+  window.addEventListener('hashchange', route);
+
+  // Section chips under the large title.
+  document.querySelectorAll('.seg button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var id = b.getAttribute('data-go');
+      var target = id === 'today' ? document.querySelector('.day.today')
+        : id === 'next' ? document.querySelector('.book-row.next')
+        : document.getElementById(id);
+      if (target) target.scrollIntoView({ block: (id === 'today' || id === 'next') ? 'center' : 'start', behavior: smooth() });
+    });
+  });
+  function updateSeg() {
+    if (!active || !panes[active]) return;
+    var seg = panes[active].querySelector('.seg');
+    if (!seg) return;
+    var best = null;
+    seg.querySelectorAll('button[data-go]').forEach(function (b) {
+      b.classList.remove('on');
+      var id = b.getAttribute('data-go');
+      if (id === 'today' || id === 'next') return;
+      var el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top < 140) best = b;
+    });
+    if (best) {
+      best.classList.add('on');
+      var left = best.offsetLeft - (seg.clientWidth - best.offsetWidth) / 2;
+      try { seg.scrollTo({ left: left, behavior: 'smooth' }); } catch (e) { seg.scrollLeft = left; }
+    }
   }
   var ticking = false;
   window.addEventListener('scroll', function () {
     if (ticking) return;
     ticking = true;
-    requestAnimationFrame(function () { ticking = false; pick(); });
+    requestAnimationFrame(function () { ticking = false; updateSeg(); });
   }, { passive: true });
-  pick();
+
+  route();
+  if (!location.hash && inTrip && active === 'trip') {
+    setTimeout(function () { var t = document.querySelector('.day.today'); if (t) t.scrollIntoView({ block: 'center' }); }, 60);
+  }
+})();
+(function () {
+  // Update check: only on the GitHub Pages copy. Any failure (no internet, blocked site, timeout) just keeps the saved copy.
+  var stamp = document.getElementById('app-updated');
+  var net = document.getElementById('net');
+  var banner = document.getElementById('update-banner');
+  var cur = stamp ? stamp.getAttribute('data-version') : '';
+  var hosted = /github\.io$/.test(location.hostname);
+  function offline(on) { if (net) net.hidden = !on; }
+  function check() {
+    if (!hosted) return;
+    if (navigator.onLine === false) { offline(true); return; }
+    var ctl = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 6000);
+    var opts = { cache: 'no-store' };
+    if (ctl) opts.signal = ctl.signal;
+    fetch('version.json?t=' + Date.now(), opts)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        clearTimeout(timer);
+        offline(false);
+        if (j && j.version && String(j.version) !== cur && banner) {
+          banner.setAttribute('data-v', j.version);
+          banner.hidden = false;
+        }
+      })
+      .catch(function () { clearTimeout(timer); offline(true); });
+  }
+  var btn = document.getElementById('reload-btn');
+  if (btn) btn.addEventListener('click', function () {
+    var v = (banner && banner.getAttribute('data-v')) || String(Date.now());
+    location.replace(location.pathname + '?v=' + encodeURIComponent(v) + location.hash);
+  });
+  window.addEventListener('online', function () { offline(false); check(); });
+  window.addEventListener('offline', function () { offline(true); });
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') check(); });
+  if (hosted && 'serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  }
+  check();
 })();
 (function () {
   var boxes = document.querySelectorAll('.setup input[type="checkbox"]');
