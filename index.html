@@ -248,7 +248,7 @@ body::before { content: none; }
 .pane { display: flex; flex-direction: column; }
 .large { padding-block: 22px 4px; display: flex; flex-direction: column; gap: 6px; }
 .lead { color: var(--muted); font-size: 0.95rem; }
-.seg { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-inline: -16px; padding: 22px 16px 10px; background: var(--bg); }
+.seg { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-inline: -16px; padding: 32px 16px 10px; background: var(--bg); }
 .seg::-webkit-scrollbar { display: none; }
 /* Once the bar is pinned it becomes a proper frosted iOS bar with a hairline, instead of chips floating over half-blurred content. */
 .seg { transition: background-color 0.2s, box-shadow 0.2s; }
@@ -259,7 +259,7 @@ body::before { content: none; }
 .seg button.hl { background: var(--jade); color: var(--surface); }
 .seg button:focus-visible, .tab:focus-visible, .amap:focus-visible, .btn:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 .pane-body { display: flex; flex-direction: column; gap: 34px; padding-top: 10px; }
-h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 84px); }
+h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 94px); }
 
 /* Floating, rounded tab bar (current iOS style) */
 .tabbar { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); width: min(calc(100% - 24px), 520px); display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 5px; border-radius: 34px; background: var(--glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border: 0.5px solid var(--glass-edge); box-shadow: 0 10px 30px rgb(0 0 0 / 0.14), 0 1px 3px rgb(0 0 0 / 0.08); }
@@ -996,7 +996,7 @@ td.st .maps { margin-top: 6px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611251418">25 Nov 2026, 14:18</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611251420">25 Nov 2026, 14:20</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
         </div>
