@@ -238,7 +238,9 @@ a:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 }
 /* ---------- App shell ---------- */
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
-body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 50; background: var(--bar); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
+body::before { content: none; }
+/* Solid band behind the status bar. iOS blurs the strip just under the clock, so everything that sits there is plain colour. */
+.sbar { position: fixed; top: 0; left: 0; right: 0; height: env(safe-area-inset-top, 0px); z-index: 50; background: var(--bg); pointer-events: none; }
 .toast { position: fixed; z-index: 45; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 88px); width: max-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 12px; padding: 7px 7px 7px 16px; border-radius: 99px; background: var(--ink); color: var(--bg); font-size: 0.88rem; font-weight: 600; box-shadow: 0 8px 24px rgb(0 0 0 / 0.22); }
 .toast button { flex: 0 0 auto; min-height: 34px; padding: 0 16px; border: 0; border-radius: 99px; background: var(--jade); color: var(--surface); font: 700 0.85rem var(--f-body); cursor: pointer; }
 
@@ -246,18 +248,18 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .pane { display: flex; flex-direction: column; }
 .large { padding-block: 22px 4px; display: flex; flex-direction: column; gap: 6px; }
 .lead { color: var(--muted); font-size: 0.95rem; }
-.seg { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-inline: -16px; padding: 10px 16px; background: var(--bg); }
+.seg { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-inline: -16px; padding: 22px 16px 10px; background: var(--bg); }
 .seg::-webkit-scrollbar { display: none; }
 /* Once the bar is pinned it becomes a proper frosted iOS bar with a hairline, instead of chips floating over half-blurred content. */
 .seg { transition: background-color 0.2s, box-shadow 0.2s; }
-.seg.stuck { background: var(--bar); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); box-shadow: 0 0.5px 0 var(--line); }
+.seg.stuck { background: var(--bg); box-shadow: 0 0.5px 0 var(--line); }
 .seg.stuck button { box-shadow: inset 0 0 0 0.5px var(--line); }
 .seg button { flex: 0 0 auto; min-height: 36px; padding: 0 15px; border: 0; border-radius: 99px; background: var(--surface); color: var(--ink); font: 600 0.86rem var(--f-body); cursor: pointer; box-shadow: inset 0 0 0 0.5px var(--line); }
 .seg button.on { background: var(--ink); color: var(--bg); }
 .seg button.hl { background: var(--jade); color: var(--surface); }
 .seg button:focus-visible, .tab:focus-visible, .amap:focus-visible, .btn:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 .pane-body { display: flex; flex-direction: column; gap: 34px; padding-top: 10px; }
-h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 68px); }
+h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 84px); }
 
 /* Floating, rounded tab bar (current iOS style) */
 .tabbar { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); width: min(calc(100% - 24px), 520px); display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 5px; border-radius: 34px; background: var(--glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border: 0.5px solid var(--glass-edge); box-shadow: 0 10px 30px rgb(0 0 0 / 0.14), 0 1px 3px rgb(0 0 0 / 0.08); }
@@ -335,6 +337,7 @@ td.st .maps { margin-top: 6px; }
 </head>
 <body>
 
+<div class="sbar" aria-hidden="true"></div>
 
 <div class="toast" id="update-banner" role="status" hidden><span>New version of the plan</span><button type="button" id="reload-btn">Reload</button></div>
 
@@ -993,7 +996,7 @@ td.st .maps { margin-top: 6px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611251408">25 Nov 2026, 14:08</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611251418">25 Nov 2026, 14:18</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
         </div>
