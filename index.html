@@ -33,8 +33,9 @@ img { max-width: 100%; }
   --seal: #c2410c;
   --seal-soft: #fdeee6;
   --bar: rgba(249, 249, 251, 0.86);
-  --glass: rgba(255, 255, 255, 0.74);
-  --glass-edge: rgba(0, 0, 0, 0.08);
+  --glass: rgba(255, 255, 255, 0.42);
+  --glass-edge: rgba(255, 255, 255, 0.65);
+  --glass-hi: rgba(255, 255, 255, 0.55);
   --tab-on: rgba(31, 122, 99, 0.13);
   --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, sans-serif;
   --f-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif;
@@ -43,12 +44,12 @@ img { max-width: 100%; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #000000; --surface: #1c1c1e; --ink: #f2f2f7; --muted: #9a9aa0; --line: #38383a;
-    --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(44, 44, 48, 0.72); --glass-edge: rgba(255, 255, 255, 0.12); --tab-on: rgba(79, 195, 161, 0.2); color-scheme: dark;
+    --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(38, 38, 42, 0.42); --glass-edge: rgba(255, 255, 255, 0.16); --glass-hi: rgba(255, 255, 255, 0.10); --tab-on: rgba(79, 195, 161, 0.2); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #000000; --surface: #1c1c1e; --ink: #f2f2f7; --muted: #9a9aa0; --line: #38383a;
-  --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(44, 44, 48, 0.72); --glass-edge: rgba(255, 255, 255, 0.12); --tab-on: rgba(79, 195, 161, 0.2); color-scheme: dark;
+  --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(38, 38, 42, 0.42); --glass-edge: rgba(255, 255, 255, 0.16); --glass-hi: rgba(255, 255, 255, 0.10); --tab-on: rgba(79, 195, 161, 0.2); color-scheme: dark;
 }
 body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
 h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
@@ -237,7 +238,7 @@ a:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 }
 /* ---------- App shell ---------- */
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
-body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 50; background: var(--bg); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 50; background: var(--bar); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
 .toast { position: fixed; z-index: 45; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 88px); width: max-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 12px; padding: 7px 7px 7px 16px; border-radius: 99px; background: var(--ink); color: var(--bg); font-size: 0.88rem; font-weight: 600; box-shadow: 0 8px 24px rgb(0 0 0 / 0.22); }
 .toast button { flex: 0 0 auto; min-height: 34px; padding: 0 16px; border: 0; border-radius: 99px; background: var(--jade); color: var(--surface); font: 700 0.85rem var(--f-body); cursor: pointer; }
 
@@ -247,6 +248,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .lead { color: var(--muted); font-size: 0.95rem; }
 .seg { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-inline: -16px; padding: 10px 16px; background: var(--bg); }
 .seg::-webkit-scrollbar { display: none; }
+/* Once the bar is pinned it becomes a proper frosted iOS bar with a hairline, instead of chips floating over half-blurred content. */
+.seg { transition: background-color 0.2s, box-shadow 0.2s; }
+.seg.stuck { background: var(--bar); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); box-shadow: 0 0.5px 0 var(--line); }
+.seg.stuck button { box-shadow: inset 0 0 0 0.5px var(--line); }
 .seg button { flex: 0 0 auto; min-height: 36px; padding: 0 15px; border: 0; border-radius: 99px; background: var(--surface); color: var(--ink); font: 600 0.86rem var(--f-body); cursor: pointer; box-shadow: inset 0 0 0 0.5px var(--line); }
 .seg button.on { background: var(--ink); color: var(--bg); }
 .seg button.hl { background: var(--jade); color: var(--surface); }
@@ -258,6 +263,10 @@ h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 68px); }
 .tabbar { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); width: min(calc(100% - 24px), 520px); display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 5px; border-radius: 34px; background: var(--glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border: 0.5px solid var(--glass-edge); box-shadow: 0 10px 30px rgb(0 0 0 / 0.14), 0 1px 3px rgb(0 0 0 / 0.08); }
 .tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; height: 54px; border-radius: 28px; color: var(--muted); text-decoration: none; font-size: 0.64rem; font-weight: 600; letter-spacing: 0.01em; transition: background-color 0.2s, color 0.2s; }
 .tab svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+/* Liquid-glass look: more see-through, stronger blur, a light top sheen and a bright rim. */
+.tabbar { background: var(--glass); backdrop-filter: saturate(200%) blur(30px); -webkit-backdrop-filter: saturate(200%) blur(30px); border: 0.5px solid var(--glass-edge); box-shadow: inset 0 1px 0 var(--glass-hi), 0 12px 32px rgb(0 0 0 / 0.16), 0 1px 3px rgb(0 0 0 / 0.08); }
+.tabbar::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(180deg, var(--glass-hi), transparent 55%); opacity: 0.6; pointer-events: none; }
+.tab { position: relative; z-index: 1; }
 .tab.on { color: var(--jade); background: var(--tab-on); }
 .tab.on svg { stroke-width: 2.1; }
 
@@ -276,6 +285,8 @@ h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 68px); }
 .amap svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .maps { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
 td.st .maps { margin-top: 6px; }
+.hotel-link { color: inherit; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.hotel-link span { color: var(--jade); font-weight: 600; }
 .addr + .maps { margin-top: 8px; }
 
 /* iOS grouped look for existing blocks */
@@ -716,7 +727,7 @@ td.st .maps { margin-top: 6px; }
       </div>
       <div class="day">
         <div class="date">19 Dec<span class="dow">Sat</span></div>
-        <div class="body"><h3>Mao Mausoleum, Tiananmen Square &amp; Forbidden City</h3><p class="muted">Mausoleum first: it opens 08:00 and closes at 12:00, with no bags allowed inside. Then the square, then walk north through the Meridian Gate into the Forbidden City. All three need advance booking with your passport, and Saturday Forbidden City tickets go in minutes (see the booking timeline).</p><div class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=毛主席纪念堂&amp;city=北京&amp;src=china2026&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Mausoleum</a><a class="amap" href="https://uri.amap.com/search?keyword=天安门广场&amp;city=北京&amp;src=china2026&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Tiananmen</a><a class="amap" href="https://uri.amap.com/search?keyword=故宫博物院午门&amp;city=北京&amp;src=china2026&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Forbidden City entrance</a></div></div>
+        <div class="body"><h3>Mao Mausoleum, Tiananmen Square &amp; Forbidden City</h3><p class="muted">Mausoleum first: it opens 08:00 and closes at 12:00, with no bags allowed inside. Then the square, then walk north through the Meridian Gate into the Forbidden City. All three need advance booking with your passport, and Saturday Forbidden City tickets go in minutes (see the booking timeline).</p><div class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=毛主席纪念堂&amp;city=北京&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=北京毛主席纪念堂&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Mausoleum</a><a class="amap" href="https://uri.amap.com/search?keyword=天安门广场&amp;city=北京&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=北京天安门广场&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Tiananmen</a><a class="amap" href="https://uri.amap.com/search?keyword=故宫博物院午门&amp;city=北京&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=北京故宫博物院午门&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Forbidden City entrance</a></div></div>
       </div>
     </div>
   </section>
@@ -729,7 +740,7 @@ td.st .maps { margin-top: 6px; }
       </div>
       <div class="day">
         <div class="date">21 Dec<span class="dow">Mon</span></div>
-        <div class="body"><h3>Terracotta Warriors</h3><p class="muted">About 1 h east of the city centre. Plan most of the day for it. Tickets only online, booked from 14 Dec.</p><div class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=秦始皇帝陵博物院&amp;city=西安&amp;src=china2026&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Terracotta Warriors</a></div></div>
+        <div class="body"><h3>Terracotta Warriors</h3><p class="muted">About 1 h east of the city centre. Plan most of the day for it. Tickets only online, booked from 14 Dec.</p><div class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=秦始皇帝陵博物院&amp;city=西安&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=西安秦始皇帝陵博物院&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Terracotta Warriors</a></div></div>
       </div>
     </div>
   </section>
@@ -742,7 +753,7 @@ td.st .maps { margin-top: 6px; }
       </div>
       <div class="day">
         <div class="date">23 Dec<span class="dow">Wed</span></div>
-        <div class="body"><h3>Giant pandas</h3><p class="muted">Chengdu Research Base of Giant Panda Breeding (成都大熊猫繁育研究基地), the big main base. Enter by the <b>West Gate (西门)</b>, which opens at <b>08:00</b> in winter (Nov–Feb). Be there for opening: the pandas are most active early and sleep by midday.</p><div class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=成都大熊猫繁育研究基地西门&amp;city=成都&amp;src=china2026&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Panda Base West Gate</a></div></div>
+        <div class="body"><h3>Giant pandas</h3><p class="muted">Chengdu Research Base of Giant Panda Breeding (成都大熊猫繁育研究基地), the big main base. Enter by the <b>West Gate (西门)</b>, which opens at <b>08:00</b> in winter (Nov–Feb). Be there for opening: the pandas are most active early and sleep by midday.</p><div class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=成都大熊猫繁育研究基地西门&amp;city=成都&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=成都成都大熊猫繁育研究基地西门&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Panda Base West Gate</a></div></div>
       </div>
     </div>
   </section>
@@ -819,7 +830,7 @@ td.st .maps { margin-top: 6px; }
   </section>
 
   <section class="pane" id="stay" data-title="Hotels" aria-label="Hotels" hidden>
-    <div class="large"><h1>Hotels</h1><p class="lead">Tap Copy and paste the address into DiDi</p></div>
+    <div class="large"><h1>Hotels</h1><p class="lead">Tap a name for the Trip.com booking, Copy for DiDi</p></div>
     <div class="pane-body">
 <section class="stop" aria-labelledby="hotels">
     <div class="stop-head"><h2 id="hotels">Hotels</h2><span class="nights">show the Chinese address to a taxi or paste it into DiDi</span></div>
@@ -827,55 +838,55 @@ td.st .maps { margin-top: 6px; }
       <div class="hotel">
         <div class="where"><b>Beijing</b><span>16–20 Dec · 4 nts</span></div>
         <div class="info">
-          <h3>Manxin Mansion Beijing Houhai and Drum Tower Courtyard</h3>
+          <h3><a class="hotel-link" href="https://www.trip.com/hotels/detail/?hotelId=68529781&amp;checkIn=2026-12-16&amp;checkOut=2026-12-20&amp;locale=en-XX" target="_blank" rel="noopener">Manxin Mansion Beijing Houhai and Drum Tower Courtyard<span aria-hidden="true"> ↗</span></a></h3>
           <span class="zh zh-name">北京后海鼓楼四合院漫心府</span>
           <div class="addr"><span class="zh">北京市西城区旧鼓楼大街西绦胡同2号</span><button class="copy" type="button" id="copy-bj">Copy</button><span class="en">No. 2 West Tao Hutong, Jiugulou Street, Xicheng District, Beijing</span></div>
-          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=116.3928909,39.9478264&amp;name=北京后海鼓楼四合院漫心府&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=116.3928909,39.9478264,北京后海鼓楼四合院漫心府&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
+          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=116.3928909,39.9478264&amp;name=北京后海鼓楼四合院漫心府&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=北京后海鼓楼四合院漫心府&amp;lat=39.9478264&amp;lon=116.3928909&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=116.3928909,39.9478264,北京后海鼓楼四合院漫心府&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=39.9478264&amp;dlon=116.3928909&amp;dname=北京后海鼓楼四合院漫心府&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
         </div>
       </div>
       <div class="hotel">
         <div class="where"><b>Xi'an</b><span>20–22 Dec · 2 nts</span></div>
         <div class="info">
-          <h3>Four Points by Sheraton Xi'an Bell Tower</h3>
+          <h3><a class="hotel-link" href="https://www.trip.com/hotels/detail/?hotelId=132499307&amp;checkIn=2026-12-20&amp;checkOut=2026-12-22&amp;locale=en-XX" target="_blank" rel="noopener">Four Points by Sheraton Xi'an Bell Tower<span aria-hidden="true"> ↗</span></a></h3>
           <span class="zh zh-name">西安钟楼福朋喜来登酒店（回民街店）</span>
           <div class="addr"><span class="zh">西安市莲湖区西大街79号</span><button class="copy" type="button" id="copy-xa">Copy</button><span class="en">No. 79 West Street, Lianhu District, Xi'an</span></div>
-          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=108.940698,34.260151&amp;name=西安钟楼福朋喜来登酒店(回民街店)&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=108.940698,34.260151,西安钟楼福朋喜来登酒店(回民街店)&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
+          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=108.940698,34.260151&amp;name=西安钟楼福朋喜来登酒店(回民街店)&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=西安钟楼福朋喜来登酒店(回民街店)&amp;lat=34.260151&amp;lon=108.940698&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=108.940698,34.260151,西安钟楼福朋喜来登酒店(回民街店)&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=34.260151&amp;dlon=108.940698&amp;dname=西安钟楼福朋喜来登酒店(回民街店)&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
         </div>
       </div>
       <div class="hotel">
         <div class="where"><b>Chengdu</b><span>22–24 Dec · 2 nts</span></div>
         <div class="info">
-          <h3>The Hidden House (Kuanzhai Alley · People's Park)</h3>
+          <h3><a class="hotel-link" href="https://www.trip.com/hotels/detail/?hotelId=119474237&amp;checkIn=2026-12-22&amp;checkOut=2026-12-24&amp;locale=en-XX" target="_blank" rel="noopener">The Hidden House (Kuanzhai Alley · People's Park)<span aria-hidden="true"> ↗</span></a></h3>
           <span class="zh zh-name">隐栖堂美学生活院子酒店（成都宽窄巷子人民公园地铁站店）</span>
           <div class="addr"><span class="zh">成都市青羊区将军街5号</span><button class="copy" type="button" id="copy-cd">Copy</button><span class="en">No. 5 Jiangjun Street, Qingyang District, Chengdu</span></div>
-          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=104.05995,30.65928&amp;name=隐栖堂美学生活院子酒店&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=104.05995,30.65928,隐栖堂美学生活院子酒店&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
+          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=104.05995,30.65928&amp;name=隐栖堂美学生活院子酒店&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=隐栖堂美学生活院子酒店&amp;lat=30.65928&amp;lon=104.05995&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=104.05995,30.65928,隐栖堂美学生活院子酒店&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=30.65928&amp;dlon=104.05995&amp;dname=隐栖堂美学生活院子酒店&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
         </div>
       </div>
       <div class="hotel">
         <div class="where"><b>Yangshuo</b><span>24–27 Dec · 3 nts</span></div>
         <div class="info">
-          <h3>BO·HUI Hotel (West Street &amp; Lijiang River)</h3>
+          <h3><a class="hotel-link" href="https://www.trip.com/hotels/detail/?hotelId=131705283&amp;checkIn=2026-12-24&amp;checkOut=2026-12-27&amp;locale=en-XX" target="_blank" rel="noopener">BO·HUI Hotel (West Street &amp; Lijiang River)<span aria-hidden="true"> ↗</span></a></h3>
           <span class="zh zh-name">BO·洄酒店（阳朔西街漓江店）</span>
           <div class="addr"><span class="zh">桂林市阳朔县阳朔镇滨江路11号</span><button class="copy" type="button" id="copy-ys">Copy</button><span class="en">No. 11 Binjiang Road, Yangshuo Town, Yangshuo, Guangxi</span></div>
-          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=110.497044,24.777584&amp;name=BO·洄酒店(阳朔西街漓江店)&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=110.497044,24.777584,BO·洄酒店(阳朔西街漓江店)&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
+          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=110.497044,24.777584&amp;name=BO·洄酒店(阳朔西街漓江店)&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=BO·洄酒店(阳朔西街漓江店)&amp;lat=24.777584&amp;lon=110.497044&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=110.497044,24.777584,BO·洄酒店(阳朔西街漓江店)&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=24.777584&amp;dlon=110.497044&amp;dname=BO·洄酒店(阳朔西街漓江店)&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
         </div>
       </div>
       <div class="hotel">
         <div class="where"><b>Shenzhen</b><span>27–29 Dec · 2 nts</span></div>
         <div class="info">
-          <h3>Crowne Plaza Hotel &amp; Suites Landmark Shenzhen</h3>
+          <h3><a class="hotel-link" href="https://www.trip.com/hotels/detail/?hotelId=346480&amp;checkIn=2026-12-27&amp;checkOut=2026-12-29&amp;locale=en-XX" target="_blank" rel="noopener">Crowne Plaza Hotel &amp; Suites Landmark Shenzhen<span aria-hidden="true"> ↗</span></a></h3>
           <span class="zh zh-name">深圳富苑皇冠假日套房酒店</span>
           <div class="addr"><span class="zh">深圳市罗湖区南湖路3018号</span><button class="copy" type="button" id="copy-sz">Copy</button><span class="en">No. 3018 Nanhu Road, Luohu District, Shenzhen · 310 m from Guomao metro (国贸, Line 1) · 1.7 km from the Luohu border crossing</span></div>
-          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.120910,22.542282&amp;name=深圳富苑皇冠假日套房酒店&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=114.120910,22.542282,深圳富苑皇冠假日套房酒店&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
+          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.120910,22.542282&amp;name=深圳富苑皇冠假日套房酒店&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=深圳富苑皇冠假日套房酒店&amp;lat=22.542282&amp;lon=114.120910&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=114.120910,22.542282,深圳富苑皇冠假日套房酒店&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=22.542282&amp;dlon=114.120910&amp;dname=深圳富苑皇冠假日套房酒店&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
         </div>
       </div>
       <div class="hotel">
         <div class="where"><b>Hong Kong</b><span>29–31 Dec · 2 nts</span></div>
         <div class="info">
-          <h3>Stanford Hillview Hotel</h3>
+          <h3><a class="hotel-link" href="https://www.trip.com/hotels/detail/?hotelId=354026&amp;checkIn=2026-12-29&amp;checkOut=2026-12-31&amp;locale=en-XX" target="_blank" rel="noopener">Stanford Hillview Hotel<span aria-hidden="true"> ↗</span></a></h3>
           <span class="zh zh-name">香港仕德福山景酒店</span>
           <div class="addr"><span class="zh">香港九龍尖沙咀天文台道13-17號</span><button class="copy" type="button" id="copy-hk">Copy</button><span class="en">13–17 Observatory Road, Tsim Sha Tsui, Kowloon, Hong Kong</span></div>
-          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.1744504,22.3014619&amp;name=香港仕德福山景酒店&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=114.1744504,22.3014619,香港仕德福山景酒店&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
+          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.1744504,22.3014619&amp;name=香港仕德福山景酒店&amp;src=china2026&amp;coordinate=wgs84&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=香港仕德福山景酒店&amp;lat=22.3014619&amp;lon=114.1744504&amp;dev=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=114.1744504,22.3014619,香港仕德福山景酒店&amp;mode=car&amp;src=china2026&amp;coordinate=wgs84&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=22.3014619&amp;dlon=114.1744504&amp;dname=香港仕德福山景酒店&amp;dev=1&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
         </div>
       </div>
     </div>
@@ -897,17 +908,17 @@ td.st .maps { margin-top: 6px; }
       <table>
         <thead><tr><th>Station</th><th>12306</th><th>Chinese</th><th>DiDi from hotel</th><th>Metro from hotel</th><th>Notes</th></tr></thead>
         <tbody>
-          <tr><td class="st"><b>Beijing West</b><span class="dir">Beijing · depart 20 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=116.322033,39.894912&amp;name=北京西站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Beijingxi</td><td><span class="zh">北京西站</span></td><td class="num">12.2 km<br>32–62 min<br>≈ ¥40–55</td><td class="num"><b>48 min</b><br>Line 8 → Line 7<br>¥4</td><td>Almost all trains to Xi'an leave from here.</td></tr>
-          <tr><td class="st"><b>Xi'an North</b><span class="dir">Xi'an · arrive 20, depart 22 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=108.938757,34.376660&amp;name=西安北站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Xianbei</td><td><span class="zh">西安北站</span></td><td class="num">15.8 km<br>34–55 min<br>≈ ¥35–45</td><td class="num"><b>43 min</b><br>Line 2 direct<br>¥4</td><td>Most high-speed trains to and from Beijing and Chengdu.</td></tr>
-          <tr class="alt"><td class="st"><b>Xi'an</b><span class="dir">Xi'an · some trains</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=108.962723,34.278498&amp;name=西安站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Xian</td><td><span class="zh">西安站</span></td><td class="num">7.1 km<br>~29 min<br>≈ ¥17–25</td><td class="num"><b>22 min</b><br>Line 6 → Line 4</td><td>Old central station, listed by Trip.com. A few G/D trains to Beijing and Chengdu use it. Prefer it when the times fit.</td></tr>
-          <tr><td class="st"><b>Chengdu East</b><span class="dir">Chengdu · arrive 22, depart 24 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=104.140947,30.628779&amp;name=成都东站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Chengdudong</td><td><span class="zh">成都东站</span></td><td class="num">8.9 km<br>~37 min<br>≈ ¥22–30</td><td class="num"><b>31 min</b><br>Line 2 direct<br>¥4</td><td>Main high-speed station.</td></tr>
-          <tr class="alt"><td class="st"><b>Chengdu West</b><span class="dir">Chengdu · some trains</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=103.979102,30.685329&amp;name=成都西站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Chengduxi</td><td><span class="zh">成都西站</span></td><td class="num">9.6 km<br>~36 min<br>≈ ¥23–30</td><td class="num">41–52 min<br>Line 4</td><td>About as far as Chengdu East. Fine if the ticket says this one.</td></tr>
-          <tr><td class="st"><b>Yangshuo</b><span class="dir">Yangshuo · arrive 24, depart 27 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=110.568081,24.960139&amp;name=阳朔站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Yangshuo</td><td><span class="zh">阳朔站</span></td><td class="num">34 km<br>~55 min<br>≈ ¥100–115</td><td class="num">—</td><td><span class="warn">The station is in Xingping, outside town.</span> Shuttle bus ¥20 with a change, about 1 h. Local taxis often skip the meter, so use DiDi or agree the price first.</td></tr>
-          <tr><td class="st"><b>Shenzhen North</b><span class="dir">Shenzhen · arrive 27 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.029506,22.609878&amp;name=深圳北站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Shenzhenbei</td><td><span class="zh">深圳北站</span></td><td class="num">16.8 km<br>~42 min<br>≈ ¥50–65</td><td class="num"><b>45 min</b><br>Line 5 direct<br>¥5</td><td>Trains from Yangshuo arrive here. Line 5 towards 大剧院 (Grand Theater), 14 stops to <b>Hubei 湖贝</b>, exit F, then 500 m on foot.</td></tr>
-          <tr><td class="st"><b>Luohu Port</b><span class="dir">Shenzhen · cross 29 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.118466,22.528730&amp;name=罗湖口岸(出境)&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">—</td><td><span class="zh">罗湖口岸</span></td><td class="num">2.7 km<br>~16 min<br>≈ ¥12–15</td><td class="num">walk 1.7 km<br>~23 min</td><td>Border crossing on foot. DiDi to <span class="zh">罗湖口岸(出境)</span>. On the Hong Kong side, MTR East Rail from Lo Wu to Hung Hom, about 40 min. No ticket to book.</td></tr>
-          <tr class="alt"><td class="st"><b>Futian</b><span class="dir">Shenzhen · fallback</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.057201,22.538136&amp;name=福田站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Futian</td><td><span class="zh">福田站</span></td><td class="num">8.6 km<br>~20 min<br>≈ ¥28–35</td><td class="num">36 min<br>Line 1, Guomao → Shopping Park<br>¥3</td><td>High-speed train to West Kowloon. The metro route has 1.1 km of walking, so take a DiDi with suitcases.</td></tr>
-          <tr><td class="st"><b>Hung Hom</b><span class="dir">Hong Kong · arrive 29 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=红磡站&amp;city=香港&amp;src=china2026&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">—</td><td><span class="zh">紅磡</span></td><td class="num">~1 km<br>short taxi</td><td class="num">—</td><td>End of the East Rail ride from Lo Wu, 890 m from the hotel.</td></tr>
-          <tr class="alt"><td class="st"><b>Hong Kong West Kowloon</b><span class="dir">Hong Kong · fallback</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.1649207,22.304227&amp;name=香港西九龙站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Xianggang Xijiulong</td><td><span class="zh">香港西九龙站</span></td><td class="num">1.9 km<br>~10 min<br>≈ HK$30–50 (taxi)</td><td class="num">—</td><td>Immigration for both sides is inside the station.</td></tr>
+          <tr><td class="st"><b>Beijing West</b><span class="dir">Beijing · depart 20 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=116.322033,39.894912&amp;name=北京西站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=北京西站&amp;lat=39.894912&amp;lon=116.322033&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Beijingxi</td><td><span class="zh">北京西站</span></td><td class="num">12.2 km<br>32–62 min<br>≈ ¥40–55</td><td class="num"><b>48 min</b><br>Line 8 → Line 7<br>¥4</td><td>Almost all trains to Xi'an leave from here.</td></tr>
+          <tr><td class="st"><b>Xi'an North</b><span class="dir">Xi'an · arrive 20, depart 22 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=108.938757,34.376660&amp;name=西安北站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=西安北站&amp;lat=34.376660&amp;lon=108.938757&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Xianbei</td><td><span class="zh">西安北站</span></td><td class="num">15.8 km<br>34–55 min<br>≈ ¥35–45</td><td class="num"><b>43 min</b><br>Line 2 direct<br>¥4</td><td>Most high-speed trains to and from Beijing and Chengdu.</td></tr>
+          <tr class="alt"><td class="st"><b>Xi'an</b><span class="dir">Xi'an · some trains</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=108.962723,34.278498&amp;name=西安站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=西安站&amp;lat=34.278498&amp;lon=108.962723&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Xian</td><td><span class="zh">西安站</span></td><td class="num">7.1 km<br>~29 min<br>≈ ¥17–25</td><td class="num"><b>22 min</b><br>Line 6 → Line 4</td><td>Old central station, listed by Trip.com. A few G/D trains to Beijing and Chengdu use it. Prefer it when the times fit.</td></tr>
+          <tr><td class="st"><b>Chengdu East</b><span class="dir">Chengdu · arrive 22, depart 24 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=104.140947,30.628779&amp;name=成都东站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=成都东站&amp;lat=30.628779&amp;lon=104.140947&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Chengdudong</td><td><span class="zh">成都东站</span></td><td class="num">8.9 km<br>~37 min<br>≈ ¥22–30</td><td class="num"><b>31 min</b><br>Line 2 direct<br>¥4</td><td>Main high-speed station.</td></tr>
+          <tr class="alt"><td class="st"><b>Chengdu West</b><span class="dir">Chengdu · some trains</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=103.979102,30.685329&amp;name=成都西站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=成都西站&amp;lat=30.685329&amp;lon=103.979102&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Chengduxi</td><td><span class="zh">成都西站</span></td><td class="num">9.6 km<br>~36 min<br>≈ ¥23–30</td><td class="num">41–52 min<br>Line 4</td><td>About as far as Chengdu East. Fine if the ticket says this one.</td></tr>
+          <tr><td class="st"><b>Yangshuo</b><span class="dir">Yangshuo · arrive 24, depart 27 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=110.568081,24.960139&amp;name=阳朔站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=阳朔站&amp;lat=24.960139&amp;lon=110.568081&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Yangshuo</td><td><span class="zh">阳朔站</span></td><td class="num">34 km<br>~55 min<br>≈ ¥100–115</td><td class="num">—</td><td><span class="warn">The station is in Xingping, outside town.</span> Shuttle bus ¥20 with a change, about 1 h. Local taxis often skip the meter, so use DiDi or agree the price first.</td></tr>
+          <tr><td class="st"><b>Shenzhen North</b><span class="dir">Shenzhen · arrive 27 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.029506,22.609878&amp;name=深圳北站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=深圳北站&amp;lat=22.609878&amp;lon=114.029506&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Shenzhenbei</td><td><span class="zh">深圳北站</span></td><td class="num">16.8 km<br>~42 min<br>≈ ¥50–65</td><td class="num"><b>45 min</b><br>Line 5 direct<br>¥5</td><td>Trains from Yangshuo arrive here. Line 5 towards 大剧院 (Grand Theater), 14 stops to <b>Hubei 湖贝</b>, exit F, then 500 m on foot.</td></tr>
+          <tr><td class="st"><b>Luohu Port</b><span class="dir">Shenzhen · cross 29 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.118466,22.528730&amp;name=罗湖口岸(出境)&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=罗湖口岸(出境)&amp;lat=22.528730&amp;lon=114.118466&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">—</td><td><span class="zh">罗湖口岸</span></td><td class="num">2.7 km<br>~16 min<br>≈ ¥12–15</td><td class="num">walk 1.7 km<br>~23 min</td><td>Border crossing on foot. DiDi to <span class="zh">罗湖口岸(出境)</span>. On the Hong Kong side, MTR East Rail from Lo Wu to Hung Hom, about 40 min. No ticket to book.</td></tr>
+          <tr class="alt"><td class="st"><b>Futian</b><span class="dir">Shenzhen · fallback</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.057201,22.538136&amp;name=福田站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=福田站&amp;lat=22.538136&amp;lon=114.057201&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Futian</td><td><span class="zh">福田站</span></td><td class="num">8.6 km<br>~20 min<br>≈ ¥28–35</td><td class="num">36 min<br>Line 1, Guomao → Shopping Park<br>¥3</td><td>High-speed train to West Kowloon. The metro route has 1.1 km of walking, so take a DiDi with suitcases.</td></tr>
+          <tr><td class="st"><b>Hung Hom</b><span class="dir">Hong Kong · arrive 29 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=红磡站&amp;city=香港&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=香港红磡站&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">—</td><td><span class="zh">紅磡</span></td><td class="num">~1 km<br>short taxi</td><td class="num">—</td><td>End of the East Rail ride from Lo Wu, 890 m from the hotel.</td></tr>
+          <tr class="alt"><td class="st"><b>Hong Kong West Kowloon</b><span class="dir">Hong Kong · fallback</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.1649207,22.304227&amp;name=香港西九龙站&amp;src=china2026&amp;coordinate=wgs84&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=香港西九龙站&amp;lat=22.304227&amp;lon=114.1649207&amp;dev=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Xianggang Xijiulong</td><td><span class="zh">香港西九龙站</span></td><td class="num">1.9 km<br>~10 min<br>≈ HK$30–50 (taxi)</td><td class="num">—</td><td>Immigration for both sides is inside the station.</td></tr>
         </tbody>
       </table>
     </div>
@@ -982,7 +993,7 @@ td.st .maps { margin-top: 6px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611251358">25 Nov 2026, 13:58</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611251408">25 Nov 2026, 14:08</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
         </div>
@@ -993,7 +1004,7 @@ td.st .maps { margin-top: 6px; }
         <div class="list">
           <a class="row link" href="https://stkaratz.github.io/china-2026/classic/" target="_blank" rel="noopener"><span>Classic layout (backup)</span><b>Open ↗</b></a>
           <div class="row"><span>Install</span><b>Safari → Share → Add to Home Screen</b></div>
-          <div class="row"><span>Maps</span><b>Map links open Amap (高德地图)</b></div>
+          <div class="row"><span>Maps</span><b>Map buttons open the Amap app (高德地图), or its website if the app is missing</b></div>
           <div class="row"><span>Sources</span><b>12306, Amap, official sites · Nov 2026</b></div>
         </div>
       </section>
@@ -1010,6 +1021,23 @@ td.st .maps { margin-top: 6px; }
 </nav>
 
 <script>
+(function () {
+  // On iPhone, Amap buttons open the Amap app (iosamap://). If the app doesn't open, fall back to Amap's website.
+  var ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (!ios || !/github\.io$/.test(location.hostname)) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a.amap[data-ios]') : null;
+    if (!a) return;
+    e.preventDefault();
+    var web = a.href, left = false, timer;
+    function gone() { left = true; clearTimeout(timer); }
+    window.addEventListener('blur', gone, { once: true });
+    window.addEventListener('pagehide', gone, { once: true });
+    document.addEventListener('visibilitychange', function () { if (document.hidden) gone(); }, { once: true });
+    timer = setTimeout(function () { if (!left && !document.hidden) window.open(web, '_blank'); }, 2500);
+    window.location.href = a.getAttribute('data-ios');
+  });
+})();
 document.querySelectorAll('.table-wrap table').forEach(function (t) {
   var heads = Array.prototype.map.call(t.querySelectorAll('thead th'), function (th) { return th.textContent.trim(); });
   t.querySelectorAll('tbody tr').forEach(function (tr) {
@@ -1121,6 +1149,8 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
     if (!active || !panes[active]) return;
     var seg = panes[active].querySelector('.seg');
     if (!seg) return;
+    var pin = parseFloat(getComputedStyle(seg).top) || 0;
+    seg.classList.toggle('stuck', seg.getBoundingClientRect().top <= pin + 0.5 && window.scrollY > 0);
     var best = null;
     seg.querySelectorAll('button[data-go]').forEach(function (b) {
       b.classList.remove('on');
