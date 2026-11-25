@@ -248,7 +248,7 @@ body::before { content: none; }
 .pane { display: flex; flex-direction: column; }
 .large { padding-block: 22px 4px; display: flex; flex-direction: column; gap: 6px; }
 .lead { color: var(--muted); font-size: 0.95rem; }
-.seg { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-inline: -16px; padding: 32px 16px 10px; background: var(--bg); }
+.seg { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-inline: -16px; padding: 27px 16px 10px; background: var(--bg); }
 .seg::-webkit-scrollbar { display: none; }
 /* Once the bar is pinned it becomes a proper frosted iOS bar with a hairline, instead of chips floating over half-blurred content. */
 .seg { transition: background-color 0.2s, box-shadow 0.2s; }
@@ -259,7 +259,7 @@ body::before { content: none; }
 .seg button.hl { background: var(--jade); color: var(--surface); }
 .seg button:focus-visible, .tab:focus-visible, .amap:focus-visible, .btn:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 .pane-body { display: flex; flex-direction: column; gap: 34px; padding-top: 10px; }
-h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 94px); }
+h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 89px); }
 
 /* Floating, rounded tab bar (current iOS style) */
 .tabbar { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); width: min(calc(100% - 24px), 520px); display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 5px; border-radius: 34px; background: var(--glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border: 0.5px solid var(--glass-edge); box-shadow: 0 10px 30px rgb(0 0 0 / 0.14), 0 1px 3px rgb(0 0 0 / 0.08); }
@@ -289,6 +289,27 @@ h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 94px); }
 td.st .maps { margin-top: 6px; }
 .hotel-link { color: inherit; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
 .hotel-link span { color: var(--jade); font-weight: 600; }
+
+/* Weather */
+.wx-today { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.wx-city { background: var(--surface); border-radius: 14px; padding: 12px 14px; display: grid; grid-template-columns: 1fr auto; grid-template-areas: "name icon" "now icon" "hl lab"; gap: 2px 8px; align-items: center; }
+.wx-city .wx-name { grid-area: name; font-weight: 600; font-size: 0.9rem; }
+.wx-city svg { grid-area: icon; width: 34px; height: 34px; color: var(--jade); }
+.wx-city b { grid-area: now; font-size: 1.6rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.wx-city .wx-hl { grid-area: hl; font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.wx-city .wx-lab { grid-area: lab; font-size: 0.72rem; color: var(--muted); text-align: right; }
+.wx-city.typ svg, .wx-day.typ svg { color: var(--muted); }
+.wx svg, .wx-city svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.wx-days { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.wx-days::-webkit-scrollbar { display: none; }
+.wx-day { flex: 0 0 auto; min-width: 66px; background: var(--surface); border-radius: 14px; padding: 10px 8px; display: flex; flex-direction: column; align-items: center; gap: 3px; font-variant-numeric: tabular-nums; }
+.wx-day > span:first-child { font-size: 0.74rem; font-weight: 600; color: var(--muted); }
+.wx-day svg { width: 26px; height: 26px; color: var(--jade); }
+.wx-day b { font-size: 1rem; font-weight: 700; }
+.wx-day .lo { font-size: 0.8rem; color: var(--muted); }
+.wx-day .rain { font-size: 0.68rem; color: var(--muted); }
+.wx-day.now { box-shadow: inset 0 0 0 1.5px var(--jade); }
+.wx-day.typ b, .wx-day.typ .lo { color: var(--muted); }
 .addr + .maps { margin-top: 8px; }
 
 /* iOS grouped look for existing blocks */
@@ -657,6 +678,7 @@ td.st .maps { margin-top: 6px; }
     </div></div>
     <nav class="seg" aria-label="Trip sections">
       <button type="button" data-go="today" class="hl" hidden>Today</button>
+      <button type="button" data-go="weather">Weather</button>
       <button type="button" data-go="flights">Flights</button>
       <button type="button" data-go="s-bj">Beijing</button>
       <button type="button" data-go="s-xa">Xi'an</button>
@@ -679,6 +701,67 @@ td.st .maps { margin-top: 6px; }
       <li class="air"><span class="city">Copenhagen</span><span class="sub">1 Jan · via IST</span></li>
     </ol>
   </nav>
+  <section class="stop" aria-labelledby="weather">
+    <div class="stop-head"><h2 id="weather">Weather</h2><span class="nights" id="wx-status">Typical December weather</span></div>
+    <div class="wx-today" id="wx-today" aria-live="polite"></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>City</th><th>Typical day</th><th>Typical night</th><th>What it's like</th></tr></thead>
+        <tbody>
+          <tr><td class="st"><b>Beijing</b><span class="dir">16–20 Dec</span></td><td class="num">3°C</td><td class="num">−7°C</td><td>Sunny, very dry, cold wind. Dark by about 17:00.</td></tr>
+          <tr><td class="st"><b>Xi'an</b><span class="dir">20–22 Dec</span></td><td class="num">6°C</td><td class="num">−3°C</td><td>Dry, often grey or hazy.</td></tr>
+          <tr><td class="st"><b>Chengdu</b><span class="dir">22–24 Dec</span></td><td class="num">10°C</td><td class="num">4°C</td><td>Overcast and damp, little sun. Feels colder than it reads.</td></tr>
+          <tr><td class="st"><b>Yangshuo</b><span class="dir">24–27 Dec</span></td><td class="num">14°C</td><td class="num">6°C</td><td>Mild, misty mornings on the river, some drizzle.</td></tr>
+          <tr><td class="st"><b>Shenzhen</b><span class="dir">27–29 Dec</span></td><td class="num">21°C</td><td class="num">13°C</td><td>Dry and mostly sunny.</td></tr>
+          <tr><td class="st"><b>Hong Kong</b><span class="dir">29–31 Dec</span></td><td class="num">20°C</td><td class="num">14°C</td><td>Dry and mild, cool evenings by the harbour.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="didi">
+      <div class="didi-col">
+        <h3>Beijing &amp; Xi'an · −10 to +5°C</h3>
+        <ul>
+          <li><b>Proper winter coat</b> (down or insulated), thermal base layers, hat, gloves and a scarf.</li>
+          <li><b>Warm, comfortable shoes</b> for long walks on stone. Thick socks.</li>
+          <li><b>The Great Wall is windier</b> and several degrees colder than the city.</li>
+          <li><b>Very dry air:</b> lip balm and moisturiser.</li>
+          <li>Indoors is well heated, so wear layers you can take off.</li>
+        </ul>
+      </div>
+      <div class="didi-col">
+        <h3>Chengdu · 4 to 10°C, damp</h3>
+        <ul>
+          <li>The damp cold feels sharper than the number, and many restaurants, temples and shops have little heating.</li>
+          <li><b>Keep a warm mid-layer on indoors</b> (fleece or light down) under your coat.</li>
+          <li>The Panda Base is outdoors in the morning: dress warmly for 2–3 hours.</li>
+        </ul>
+      </div>
+      <div class="didi-col">
+        <h3>Yangshuo · 6 to 14°C</h3>
+        <ul>
+          <li><b>Fleece plus a light rain jacket</b>, and a small umbrella.</li>
+          <li>On the Li River boat or a bamboo raft it's windy and cooler than on land.</li>
+          <li>Comfortable shoes for cycling and walking between villages.</li>
+        </ul>
+      </div>
+      <div class="didi-col">
+        <h3>Shenzhen &amp; Hong Kong · 13 to 22°C</h3>
+        <ul>
+          <li><b>T-shirt and light layers</b> by day, a sweater or light jacket for evenings and air-conditioning.</li>
+          <li>New Year's Eve outdoors in Hong Kong is pleasant, around 15°C.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="howto">
+      <ol>
+        <li><b>Pack layers, not bulk.</b> The trip runs from about −10°C to +22°C. You'll need the winter coat only for the first week, then carry it south.</li>
+        <li><b>Air quality:</b> still winter days in the north can be smoggy. Check the AQI (for example the IQAir app) and bring a few KN95/N95 masks.</li>
+        <li><b>Rain gear:</b> one small umbrella covers Chengdu and Yangshuo.</li>
+      </ol>
+    </div>
+    <p class="foot">Live forecast from Open-Meteo (free) for the next 16 days. Your trip dates fill in from about 1 Dec; until then each city shows typical December values, marked “typ.”. Typical values are long-term averages, rounded.</p>
+  </section>
+
 <section class="stop" aria-labelledby="flights">
     <div class="stop-head"><h2 id="flights">Flights</h2><span class="nights">times are local</span></div>
     <div class="tickets">
@@ -711,6 +794,7 @@ td.st .maps { margin-top: 6px; }
   </section>
 <section class="stop" aria-labelledby="s-bj">
     <div class="stop-head"><h2 id="s-bj">Beijing <span class="cn">北京</span></h2><span class="nights">16–20 Dec · 4 nights</span></div>
+    <div class="wx" data-city="bj" data-days="2026-12-16,2026-12-17,2026-12-18,2026-12-19,2026-12-20"></div>
     <div class="days">
       <div class="day">
         <div class="date">15 Dec<span class="dow">Tue</span></div>
@@ -736,6 +820,7 @@ td.st .maps { margin-top: 6px; }
   </section>
 <section class="stop" aria-labelledby="s-xa">
     <div class="stop-head"><h2 id="s-xa">Xi'an <span class="cn">西安</span></h2><span class="nights">20–22 Dec · 2 nights</span></div>
+    <div class="wx" data-city="xa" data-days="2026-12-20,2026-12-21,2026-12-22"></div>
     <div class="days">
       <div class="day">
         <div class="date">20 Dec<span class="dow">Sun</span></div>
@@ -749,6 +834,7 @@ td.st .maps { margin-top: 6px; }
   </section>
 <section class="stop" aria-labelledby="s-cd">
     <div class="stop-head"><h2 id="s-cd">Chengdu <span class="cn">成都</span></h2><span class="nights">22–24 Dec · 2 nights</span></div>
+    <div class="wx" data-city="cd" data-days="2026-12-22,2026-12-23,2026-12-24"></div>
     <div class="days">
       <div class="day">
         <div class="date">22 Dec<span class="dow">Tue</span></div>
@@ -762,6 +848,7 @@ td.st .maps { margin-top: 6px; }
   </section>
 <section class="stop" aria-labelledby="s-ys">
     <div class="stop-head"><h2 id="s-ys">Yangshuo <span class="cn">阳朔</span></h2><span class="nights">24–27 Dec · 3 nights</span></div>
+    <div class="wx" data-city="ys" data-days="2026-12-24,2026-12-25,2026-12-26,2026-12-27"></div>
     <div class="days">
       <div class="day">
         <div class="date">24 Dec<span class="dow">Thu</span></div>
@@ -788,6 +875,7 @@ td.st .maps { margin-top: 6px; }
   </section>
 <section class="stop" aria-labelledby="s-sz">
     <div class="stop-head"><h2 id="s-sz">Shenzhen <span class="cn">深圳</span></h2><span class="nights">27–29 Dec · 2 nights</span></div>
+    <div class="wx" data-city="sz" data-days="2026-12-27,2026-12-28,2026-12-29"></div>
     <div class="days">
       <div class="day">
         <div class="date">27 Dec<span class="dow">Sun</span></div>
@@ -801,6 +889,7 @@ td.st .maps { margin-top: 6px; }
   </section>
 <section class="stop" aria-labelledby="s-hk">
     <div class="stop-head"><h2 id="s-hk">Hong Kong <span class="cn">香港</span></h2><span class="nights">29–31 Dec · 2 nights</span></div>
+    <div class="wx" data-city="hk" data-days="2026-12-29,2026-12-30,2026-12-31"></div>
     <div class="days">
       <div class="day">
         <div class="date">29 Dec<span class="dow">Tue</span></div>
@@ -996,7 +1085,7 @@ td.st .maps { margin-top: 6px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611251420">25 Nov 2026, 14:20</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611251430">25 Nov 2026, 14:30</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
         </div>
@@ -1024,6 +1113,124 @@ td.st .maps { margin-top: 6px; }
 </nav>
 
 <script>
+(function () {
+  // Weather: free Open-Meteo forecast (16 days, no key). Falls back to the last saved forecast, then to typical December values.
+  var CITIES = [
+    { id: 'bj', name: 'Beijing',   lat: 39.94, lon: 116.39, typ: [3, -7] },
+    { id: 'xa', name: "Xi'an",     lat: 34.26, lon: 108.94, typ: [6, -3] },
+    { id: 'cd', name: 'Chengdu',   lat: 30.66, lon: 104.06, typ: [10, 4] },
+    { id: 'ys', name: 'Yangshuo',  lat: 24.78, lon: 110.49, typ: [14, 6] },
+    { id: 'sz', name: 'Shenzhen',  lat: 22.54, lon: 114.12, typ: [21, 13] },
+    { id: 'hk', name: 'Hong Kong', lat: 22.30, lon: 114.17, typ: [20, 14] }
+  ];
+  var KEY = 'china2026:wx';
+  var ICON = {
+    sun: '<circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/>',
+    part: '<path d="M8.5 5.2V3.5M3.6 9.8H2M4.9 6.2 3.8 5.1M13.1 6.2l1.1-1.1"/><path d="M5.6 11.6a3.4 3.4 0 1 1 6.2-2.6"/><path d="M8 19.5h9.5a3.5 3.5 0 0 0 .3-7 5 5 0 0 0-9.6 1.2A2.9 2.9 0 0 0 8 19.5z"/>',
+    cloud: '<path d="M7 18.5h10.5a4 4 0 0 0 .4-8A5.5 5.5 0 0 0 7.3 11.6 3.5 3.5 0 0 0 7 18.5z"/>',
+    rain: '<path d="M7 14.5h10.5a4 4 0 0 0 .4-8A5.5 5.5 0 0 0 7.3 7.6 3.5 3.5 0 0 0 7 14.5z"/><path d="M8.5 17.5l-1 2.5M12.5 17.5l-1 2.5M16.5 17.5l-1 2.5"/>',
+    snow: '<path d="M7 14.5h10.5a4 4 0 0 0 .4-8A5.5 5.5 0 0 0 7.3 7.6 3.5 3.5 0 0 0 7 14.5z"/><path d="M8 18.5h.01M12 18.5h.01M16 18.5h.01M10 21h.01M14 21h.01"/>',
+    fog: '<path d="M4 9h16M6 13h12M4 17h16"/>',
+    storm: '<path d="M7 14.5h10.5a4 4 0 0 0 .4-8A5.5 5.5 0 0 0 7.3 7.6 3.5 3.5 0 0 0 7 14.5z"/><path d="M12.5 15l-2 3.5h3l-2 3.5"/>'
+  };
+  function kind(c) {
+    if (c === 0) return ['sun', 'Clear'];
+    if (c === 1 || c === 2) return ['part', c === 1 ? 'Mostly clear' : 'Partly cloudy'];
+    if (c === 3) return ['cloud', 'Overcast'];
+    if (c === 45 || c === 48) return ['fog', 'Fog'];
+    if (c >= 51 && c <= 57) return ['rain', 'Drizzle'];
+    if ((c >= 61 && c <= 67) || (c >= 80 && c <= 82)) return ['rain', 'Rain'];
+    if ((c >= 71 && c <= 77) || c === 85 || c === 86) return ['snow', 'Snow'];
+    if (c >= 95) return ['storm', 'Thunderstorm'];
+    return ['cloud', 'Cloudy'];
+  }
+  function svg(k) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICON[k] + '</svg>'; }
+  function t(v) { return Math.round(v) + '°'; }
+  var DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  var now = new Date();
+  var todayIso = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+
+  function load() { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { return null; } }
+  function save(d) { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {} }
+
+  function render(d) {
+    var list = d && d.list;
+    // Today overview, all cities.
+    var box = document.getElementById('wx-today');
+    if (box) {
+      box.innerHTML = CITIES.map(function (c, i) {
+        var f = list && list[i];
+        var idx = f ? f.daily.time.indexOf(todayIso) : -1;
+        if (f && idx >= 0) {
+          var k = kind(f.current ? f.current.weather_code : f.daily.weather_code[idx]);
+          var nowT = f.current ? t(f.current.temperature_2m) : '';
+          return '<div class="wx-city"><span class="wx-name">' + c.name + '</span>' + svg(k[0]) +
+            '<b>' + nowT + '</b><span class="wx-hl">' + t(f.daily.temperature_2m_max[idx]) + ' / ' + t(f.daily.temperature_2m_min[idx]) + '</span><span class="wx-lab">' + k[1] + '</span></div>';
+        }
+        return '<div class="wx-city typ"><span class="wx-name">' + c.name + '</span>' + svg('cloud') +
+          '<b>—</b><span class="wx-hl">' + c.typ[0] + '° / ' + c.typ[1] + '°</span><span class="wx-lab">typical</span></div>';
+      }).join('');
+    }
+    // Per-city day chips for the dates you are there.
+    document.querySelectorAll('.wx').forEach(function (el) {
+      var ci = -1;
+      CITIES.forEach(function (c, i) { if (c.id === el.getAttribute('data-city')) ci = i; });
+      if (ci < 0) return;
+      var c = CITIES[ci], f = list && list[ci];
+      var html = el.getAttribute('data-days').split(',').map(function (iso) {
+        var p = iso.split('-'), dt = new Date(+p[0], +p[1] - 1, +p[2]);
+        var head = DOW[dt.getDay()] + ' ' + dt.getDate();
+        var idx = f ? f.daily.time.indexOf(iso) : -1;
+        if (idx >= 0) {
+          var k = kind(f.daily.weather_code[idx]);
+          var rain = f.daily.precipitation_probability_max ? f.daily.precipitation_probability_max[idx] : null;
+          return '<div class="wx-day' + (iso === todayIso ? ' now' : '') + '" title="' + k[1] + '"><span>' + head + '</span>' + svg(k[0]) +
+            '<b>' + t(f.daily.temperature_2m_max[idx]) + '</b><span class="lo">' + t(f.daily.temperature_2m_min[idx]) + '</span>' +
+            (rain != null ? '<span class="rain">' + rain + '%</span>' : '') + '</div>';
+        }
+        return '<div class="wx-day typ"><span>' + head + '</span>' + svg('cloud') + '<b>' + c.typ[0] + '°</b><span class="lo">' + c.typ[1] + '°</span><span class="rain">typ.</span></div>';
+      }).join('');
+      el.innerHTML = '<div class="wx-days">' + html + '</div>';
+    });
+    var st = document.getElementById('wx-status');
+    if (st) {
+      if (d && d.at) {
+        var a = new Date(d.at);
+        var old = Date.now() - d.at > 6 * 3600 * 1000;
+        st.textContent = (old ? 'Saved forecast · ' : 'Live forecast · ') + a.getDate() + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][a.getMonth()] + ' ' + pad(a.getHours()) + ':' + pad(a.getMinutes());
+      } else {
+        st.textContent = 'Typical December weather';
+      }
+    }
+  }
+
+  var saved = load();
+  render(saved);
+  function refresh() {
+    if (navigator.onLine === false) return;
+    if (saved && Date.now() - saved.at < 30 * 60 * 1000) return;
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + CITIES.map(function (c) { return c.lat; }).join(',') +
+      '&longitude=' + CITIES.map(function (c) { return c.lon; }).join(',') +
+      '&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max' +
+      '&timezone=Asia%2FShanghai&forecast_days=16';
+    var ctl = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+    var opts = ctl ? { signal: ctl.signal } : {};
+    fetch(url, opts)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        clearTimeout(timer);
+        if (!j || !j.length) return;
+        saved = { at: Date.now(), list: j.map(function (x) { return { current: x.current, daily: x.daily }; }) };
+        save(saved);
+        render(saved);
+      })
+      .catch(function () { clearTimeout(timer); });
+  }
+  refresh();
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') refresh(); });
+})();
 (function () {
   // On iPhone, Amap buttons open the Amap app (iosamap://). If the app doesn't open, fall back to Amap's website.
   var ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
