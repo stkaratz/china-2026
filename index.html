@@ -234,15 +234,69 @@ a:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
   .hotel .where { flex-direction: row; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
   .date .dow { display: inline; margin-left: 6px; }
 }
+/* Jump nav */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+.jump { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); border-bottom: 1px solid var(--line); }
+@supports (backdrop-filter: blur(8px)) { .jump { background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); } }
+.jump-in { max-width: 860px; margin: 0 auto; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-block: 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.jump-in::-webkit-scrollbar { display: none; }
+.jump a { flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 34px; padding: 0 13px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-family: var(--f-mono); font-size: 0.78rem; text-decoration: none; white-space: nowrap; }
+.jump a.on { background: var(--jade); border-color: var(--jade); color: var(--surface); }
+.jump .sep { flex: 0 0 1px; align-self: stretch; margin: 6px 2px; background: var(--line); }
+h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 66px); }
+.route li { padding-right: 12px; }
+.route a { color: inherit; text-decoration: none; display: flex; flex-direction: column; gap: 2px; }
+.route a .city { text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.totop { position: fixed; right: max(16px, calc(env(safe-area-inset-right, 0px) + 12px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); z-index: 20; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--bg); text-decoration: none; font-size: 1.2rem; box-shadow: 0 4px 14px rgb(0 0 0 / 0.18); }
+.totop:focus-visible { outline: 2px solid var(--jade); outline-offset: 3px; }
+
+@media (max-width: 520px) {
+  body { font-size: 15px; }
+  .wrap { padding-block: 20px 80px; gap: 32px; }
+  h1 { font-size: 2.1rem; }
+  h2 { font-size: 1.2rem; }
+  .stop-head .nights, .stop-head .progress { font-size: 0.72rem; }
+  .copy { padding: 7px 14px; font-size: 0.76rem; }
+  .task { padding: 12px 14px; gap: 10px; }
+  .book-row, .risk-row { padding-inline: 14px; }
+  .tcard, .lcard, .didi-col { padding: 12px 14px; }
+  .facts { font-size: 0.86rem; }
+}
 </style>
 </head>
 <body>
 
 
-<div class="wrap">
+<nav class="jump" aria-label="Jump to section">
+  <div class="jump-in" id="jump">
+    <a href="#setup">Setup</a>
+    <a href="#booking">Booking dates</a>
+    <a href="#links">Book sights</a>
+    <a href="#trainguide">Trains</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a href="#s-bj">Beijing</a>
+    <a href="#s-xa">Xi'an</a>
+    <a href="#s-cd">Chengdu</a>
+    <a href="#s-ys">Yangshuo</a>
+    <a href="#s-sz">Shenzhen</a>
+    <a href="#s-hk">Hong Kong</a>
+    <span class="sep" aria-hidden="true"></span>
+    <a href="#flights">Flights</a>
+    <a href="#hotels">Hotels</a>
+    <a href="#stations">Stations</a>
+    <a href="#traffic">Traffic</a>
+    <a href="#didi">DiDi</a>
+    <a href="#open">To decide</a>
+  </div>
+</nav>
+<a href="#top" class="totop" id="totop" aria-label="Back to top" hidden>↑</a>
+
+<div class="wrap" id="top">
 
   <header>
-    <span class="eyebrow">Trip plan · draft</span>
+    <span class="eyebrow">Final plan · kept up to date</span>
     <h1>China 2026</h1>
     <div class="facts">
       <span><b>15 Dec 2026 → 1 Jan 2027</b></span>
@@ -256,12 +310,12 @@ a:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
   <nav class="route" aria-label="Route overview">
     <ol>
       <li class="air"><span class="city">Copenhagen</span><span class="sub">15 Dec</span></li>
-      <li><span class="city">Beijing</span><span class="sub">16–20 Dec · 4 nts</span></li>
-      <li><span class="city">Xi'an</span><span class="sub">20–22 Dec · 2 nts</span></li>
-      <li><span class="city">Chengdu</span><span class="sub">22–24 Dec · 2 nts</span></li>
-      <li><span class="city">Yangshuo</span><span class="sub">24–27 Dec · 3 nts</span></li>
-      <li><span class="city">Shenzhen</span><span class="sub">27–29 Dec · 2 nts</span></li>
-      <li><span class="city">Hong Kong</span><span class="sub">29–31 Dec · 2 nts</span></li>
+      <li><a href="#s-bj"><span class="city">Beijing</span><span class="sub">16–20 Dec · 4 nts</span></a></li>
+      <li><a href="#s-xa"><span class="city">Xi'an</span><span class="sub">20–22 Dec · 2 nts</span></a></li>
+      <li><a href="#s-cd"><span class="city">Chengdu</span><span class="sub">22–24 Dec · 2 nts</span></a></li>
+      <li><a href="#s-ys"><span class="city">Yangshuo</span><span class="sub">24–27 Dec · 3 nts</span></a></li>
+      <li><a href="#s-sz"><span class="city">Shenzhen</span><span class="sub">27–29 Dec · 2 nts</span></a></li>
+      <li><a href="#s-hk"><span class="city">Hong Kong</span><span class="sub">29–31 Dec · 2 nts</span></a></li>
       <li class="air"><span class="city">Copenhagen</span><span class="sub">1 Jan · via IST</span></li>
     </ol>
   </nav>
@@ -335,16 +389,6 @@ a:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
             <li>Personal reservation (个人预约) → log in / register.</li>
             <li>If it takes your phone number: register, add both passports, stop. You book on 13 Dec.</li>
             <li>If it only takes Chinese (+86) numbers: try the WeChat mini program instead, otherwise skip the Mausoleum.</li>
-          </ol>
-        </div>
-      </div>
-      <div class="task">
-        <input type="checkbox" id="t-wechat">
-        <div><label for="t-wechat"><h3>Set up WeChat with a card</h3></label><span class="when">this week</span>
-          <ol>
-            <li>Install <b>WeChat</b> and register with your phone number. If it asks for a friend to scan a QR code, any WeChat user can do it.</li>
-            <li><b>Me → Settings → General → Language → English.</b></li>
-            <li><b>Me → Services (Pay) → Wallet → Cards → Add card</b>: your Visa or Mastercard, with passport verification if asked.</li>
           </ol>
         </div>
       </div>
@@ -873,6 +917,38 @@ a:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 </div>
 
 <script>
+(function () {
+  var bar = document.getElementById('jump');
+  var links = bar ? Array.prototype.slice.call(bar.querySelectorAll('a')) : [];
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+  var heads = Object.keys(byId).map(function (id) { return document.getElementById(id); }).filter(Boolean);
+  var current = null;
+  function setOn(id) {
+    if (id === current || !byId[id]) return;
+    if (current && byId[current]) byId[current].classList.remove('on');
+    current = id;
+    var a = byId[id];
+    a.classList.add('on');
+    var left = a.offsetLeft - (bar.clientWidth - a.offsetWidth) / 2;
+    try { bar.scrollTo({ left: left, behavior: 'smooth' }); } catch (e) { bar.scrollLeft = left; }
+  }
+  function pick() {
+    var line = 90, best = null;
+    heads.forEach(function (h) { if (h.getBoundingClientRect().top - line <= 0) best = h; });
+    if (best) setOn(best.id);
+    else if (current && byId[current]) { byId[current].classList.remove('on'); current = null; }
+    var top = document.getElementById('totop');
+    if (top) top.hidden = window.scrollY < 600;
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { ticking = false; pick(); });
+  }, { passive: true });
+  pick();
+})();
 (function () {
   var boxes = document.querySelectorAll('.setup input[type="checkbox"]');
   var out = document.getElementById('setup-progress');
