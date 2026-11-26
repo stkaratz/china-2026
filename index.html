@@ -1128,7 +1128,9 @@ html.phv-open, html.phv-open body { overflow: hidden; }
 .map-chips button { position: relative; z-index: 1; flex: 0 0 auto; min-height: 36px; padding: 0 14px; border: 0; border-radius: 99px; background: transparent; color: var(--ink); font: 600 0.84rem var(--f-body); cursor: pointer; }
 .map-chips button.on { background: var(--tab-on); color: var(--jade); }
 .map-legend { position: absolute; z-index: 1000; left: 12px; top: calc(env(safe-area-inset-top, 0px) + 68px); display: flex; gap: 10px; padding: 6px 12px; border-radius: 99px; font-size: 0.74rem; font-weight: 600; }
-.map-legend span { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 5px; }
+.map-legend span { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; transition: opacity 0.2s; }
+.map-legend span.off { opacity: 0.38; text-decoration: line-through; }
+.map-legend span.off i { background: transparent !important; box-shadow: inset 0 0 0 1.5px currentColor; }
 .map-legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
 .map-off { position: absolute; z-index: 1000; left: 16px; right: 16px; top: 45%; text-align: center; padding: 14px 16px; border-radius: 14px; background: var(--surface); color: var(--ink); font-size: 0.92rem; box-shadow: 0 6px 20px rgb(0 0 0 / 0.12); }
 /* Map tab: full screen under the floating tab bar */
@@ -2644,7 +2646,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261721">26 Nov 2026, 17:21</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261726">26 Nov 2026, 17:26</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -3570,6 +3572,33 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       group.addLayer(p._m);
     });
     map.addLayer(group);
+    // Legend = filter: tap a type to hide/show it, press and hold to show only that type.
+    (function () {
+      var lg = document.querySelector('.map-legend'); if (!lg) return;
+      lg.querySelectorAll('span').forEach(function (sp) {
+        var i = sp.querySelector('i'), k = i && (i.className.match(/c-(\w+)/) || [])[1]; if (!k) return;
+        sp.setAttribute('data-kind', k); sp.setAttribute('role', 'button'); sp.setAttribute('tabindex', '0');
+        var timer = null, held = false;
+        function solo() {
+          held = true;
+          var only = Object.keys(KINDS).every(function (x) { return x === k ? !hiddenKinds[x] : hiddenKinds[x]; });
+          Object.keys(KINDS).forEach(function (x) { if (only) delete hiddenKinds[x]; else if (x === k) delete hiddenKinds[x]; else hiddenKinds[x] = 1; });
+          applyKinds(); if (navigator.vibrate) try { navigator.vibrate(10); } catch (e) {}
+        }
+        sp.addEventListener('pointerdown', function () { held = false; clearTimeout(timer); timer = setTimeout(solo, 480); });
+        ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) { sp.addEventListener(ev, function () { clearTimeout(timer); }); });
+        sp.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+        sp.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (held) { held = false; return; }
+          if (hiddenKinds[k]) delete hiddenKinds[k]; else hiddenKinds[k] = 1;
+          if (Object.keys(KINDS).every(function (x) { return hiddenKinds[x]; })) hiddenKinds = {};
+          applyKinds();
+        });
+        sp.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sp.click(); } });
+      });
+      applyKinds();
+    })();
     CITIES.forEach(function (c) {
       L.marker(c.ll, { icon: L.divIcon({ className: 'city-label', html: c.name, iconSize: null }), interactive: false, keyboard: false }).addTo(map);
     });
@@ -3680,7 +3709,21 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     });
   });
   window.china2026Map = { show: show };
+  var KINDS = { hotel: 1, sight: 1, station: 1, idea: 1, food: 1 };
+  var hiddenKinds = {};
+  try { JSON.parse(localStorage.getItem('china2026:hide') || '[]').forEach(function (k) { hiddenKinds[k] = 1; }); } catch (e) {}
+  function applyKinds() {
+    try { localStorage.setItem('china2026:hide', JSON.stringify(Object.keys(hiddenKinds))); } catch (e) {}
+    document.querySelectorAll('.map-legend [data-kind]').forEach(function (sp) { var off = !!hiddenKinds[sp.getAttribute('data-kind')]; sp.classList.toggle('off', off); sp.setAttribute('aria-pressed', !off); });
+    if (!group) return;
+    var add = [], rem = [];
+    P.forEach(function (p) { if (!p._m) return; var on = !hiddenKinds[p.t], has = group.hasLayer(p._m); if (on && !has) add.push(p._m); if (!on && has) rem.push(p._m); });
+    if (rem.length) group.removeLayers(rem);
+    if (add.length) group.addLayers(add);
+    if (cardMarker && cardMarker.options && hiddenKinds[cardMarker.options.kind]) hideCard();
+  }
   function focusPin(p) {
+    if (p && hiddenKinds[p.t]) { delete hiddenKinds[p.t]; applyKinds(); }
     if (!map || !p || !p._m || !group) return;
     map.setView(p.ll, Math.max(map.getZoom(), 15), { animate: false });
     group.zoomToShowLayer(p._m, function () { showCard(p, p._m); });
