@@ -33,10 +33,13 @@ img { max-width: 100%; }
   --seal: #c2410c;
   --seal-soft: #fdeee6;
   --bar: rgba(249, 249, 251, 0.86);
-  --glass: rgba(255, 255, 255, 0.42);
+  --glass: rgba(255, 255, 255, 0.3);
   --glass-edge: rgba(255, 255, 255, 0.65);
-  --glass-hi: rgba(255, 255, 255, 0.55);
-  --tab-on: rgba(31, 122, 99, 0.13);
+  --glass-hi: rgba(255, 255, 255, 0.6);
+  --rim1: rgba(255, 255, 255, 0.95);
+  --rim2: rgba(255, 255, 255, 0.25);
+  --rim3: rgba(255, 255, 255, 0.1);
+  --tab-on: rgba(255, 255, 255, 0.7);
   --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, sans-serif;
   --f-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif;
   --f-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -44,12 +47,12 @@ img { max-width: 100%; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #000000; --surface: #1c1c1e; --ink: #f2f2f7; --muted: #9a9aa0; --line: #38383a;
-    --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(38, 38, 42, 0.42); --glass-edge: rgba(255, 255, 255, 0.16); --glass-hi: rgba(255, 255, 255, 0.10); --tab-on: rgba(79, 195, 161, 0.2); color-scheme: dark;
+    --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(30, 30, 34, 0.38); --glass-edge: rgba(255, 255, 255, 0.16); --glass-hi: rgba(255, 255, 255, 0.12); --rim1: rgba(255, 255, 255, 0.35); --rim2: rgba(255, 255, 255, 0.08); --rim3: rgba(255, 255, 255, 0.03); --tab-on: rgba(255, 255, 255, 0.14); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #000000; --surface: #1c1c1e; --ink: #f2f2f7; --muted: #9a9aa0; --line: #38383a;
-  --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(38, 38, 42, 0.42); --glass-edge: rgba(255, 255, 255, 0.16); --glass-hi: rgba(255, 255, 255, 0.10); --tab-on: rgba(79, 195, 161, 0.2); color-scheme: dark;
+  --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(30, 30, 34, 0.38); --glass-edge: rgba(255, 255, 255, 0.16); --glass-hi: rgba(255, 255, 255, 0.12); --rim1: rgba(255, 255, 255, 0.35); --rim2: rgba(255, 255, 255, 0.08); --rim3: rgba(255, 255, 255, 0.03); --tab-on: rgba(255, 255, 255, 0.14); color-scheme: dark;
 }
 body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
 h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
@@ -354,6 +357,718 @@ td.st .maps { margin-top: 6px; }
   .tcard, .lcard, .didi-col { padding: 12px 14px; }
   .facts { font-size: 0.88rem; }
 }
+/* Leaflet 1.9.4 (c) Vladimir Agafonkin, BSD-2 */
+/* required styles */
+
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-container,
+.leaflet-pane > svg,
+.leaflet-pane > canvas,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
+	position: absolute;
+	left: 0;
+	top: 0;
+	}
+.leaflet-container {
+	overflow: hidden;
+	}
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	        user-select: none;
+	  -webkit-user-drag: none;
+	}
+/* Prevents IE11 from highlighting tiles in blue */
+.leaflet-tile::selection {
+	background: transparent;
+}
+/* Safari renders non-retina tile on retina better with this, but Chrome is worse */
+.leaflet-safari .leaflet-tile {
+	image-rendering: -webkit-optimize-contrast;
+	}
+/* hack that prevents hw layers "stretching" when loading new tiles */
+.leaflet-safari .leaflet-tile-container {
+	width: 1600px;
+	height: 1600px;
+	-webkit-transform-origin: 0 0;
+	}
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	display: block;
+	}
+/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
+/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
+.leaflet-container .leaflet-overlay-pane svg {
+	max-width: none !important;
+	max-height: none !important;
+	}
+.leaflet-container .leaflet-marker-pane img,
+.leaflet-container .leaflet-shadow-pane img,
+.leaflet-container .leaflet-tile-pane img,
+.leaflet-container img.leaflet-image-layer,
+.leaflet-container .leaflet-tile {
+	max-width: none !important;
+	max-height: none !important;
+	width: auto;
+	padding: 0;
+	}
+
+.leaflet-container img.leaflet-tile {
+	/* See: https://bugs.chromium.org/p/chromium/issues/detail?id=600120 */
+	mix-blend-mode: plus-lighter;
+}
+
+.leaflet-container.leaflet-touch-zoom {
+	-ms-touch-action: pan-x pan-y;
+	touch-action: pan-x pan-y;
+	}
+.leaflet-container.leaflet-touch-drag {
+	-ms-touch-action: pinch-zoom;
+	/* Fallback for FF which doesn't support pinch-zoom */
+	touch-action: none;
+	touch-action: pinch-zoom;
+}
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+	-ms-touch-action: none;
+	touch-action: none;
+}
+.leaflet-container {
+	-webkit-tap-highlight-color: transparent;
+}
+.leaflet-container a {
+	-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
+}
+.leaflet-tile {
+	filter: inherit;
+	visibility: hidden;
+	}
+.leaflet-tile-loaded {
+	visibility: inherit;
+	}
+.leaflet-zoom-box {
+	width: 0;
+	height: 0;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	z-index: 800;
+	}
+/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
+.leaflet-overlay-pane svg {
+	-moz-user-select: none;
+	}
+
+.leaflet-pane         { z-index: 400; }
+
+.leaflet-tile-pane    { z-index: 200; }
+.leaflet-overlay-pane { z-index: 400; }
+.leaflet-shadow-pane  { z-index: 500; }
+.leaflet-marker-pane  { z-index: 600; }
+.leaflet-tooltip-pane   { z-index: 650; }
+.leaflet-popup-pane   { z-index: 700; }
+
+.leaflet-map-pane canvas { z-index: 100; }
+.leaflet-map-pane svg    { z-index: 200; }
+
+.leaflet-vml-shape {
+	width: 1px;
+	height: 1px;
+	}
+.lvml {
+	behavior: url(#default#VML);
+	display: inline-block;
+	position: absolute;
+	}
+
+
+/* control positioning */
+
+.leaflet-control {
+	position: relative;
+	z-index: 800;
+	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+	pointer-events: auto;
+	}
+.leaflet-top,
+.leaflet-bottom {
+	position: absolute;
+	z-index: 1000;
+	pointer-events: none;
+	}
+.leaflet-top {
+	top: 0;
+	}
+.leaflet-right {
+	right: 0;
+	}
+.leaflet-bottom {
+	bottom: 0;
+	}
+.leaflet-left {
+	left: 0;
+	}
+.leaflet-control {
+	float: left;
+	clear: both;
+	}
+.leaflet-right .leaflet-control {
+	float: right;
+	}
+.leaflet-top .leaflet-control {
+	margin-top: 10px;
+	}
+.leaflet-bottom .leaflet-control {
+	margin-bottom: 10px;
+	}
+.leaflet-left .leaflet-control {
+	margin-left: 10px;
+	}
+.leaflet-right .leaflet-control {
+	margin-right: 10px;
+	}
+
+
+/* zoom and fade animations */
+
+.leaflet-fade-anim .leaflet-popup {
+	opacity: 0;
+	-webkit-transition: opacity 0.2s linear;
+	   -moz-transition: opacity 0.2s linear;
+	        transition: opacity 0.2s linear;
+	}
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+	opacity: 1;
+	}
+.leaflet-zoom-animated {
+	-webkit-transform-origin: 0 0;
+	    -ms-transform-origin: 0 0;
+	        transform-origin: 0 0;
+	}
+svg.leaflet-zoom-animated {
+	will-change: transform;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
+	   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
+	        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);
+	}
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-pan-anim .leaflet-tile {
+	-webkit-transition: none;
+	   -moz-transition: none;
+	        transition: none;
+	}
+
+.leaflet-zoom-anim .leaflet-zoom-hide {
+	visibility: hidden;
+	}
+
+
+/* cursors */
+
+.leaflet-interactive {
+	cursor: pointer;
+	}
+.leaflet-grab {
+	cursor: -webkit-grab;
+	cursor:    -moz-grab;
+	cursor:         grab;
+	}
+.leaflet-crosshair,
+.leaflet-crosshair .leaflet-interactive {
+	cursor: crosshair;
+	}
+.leaflet-popup-pane,
+.leaflet-control {
+	cursor: auto;
+	}
+.leaflet-dragging .leaflet-grab,
+.leaflet-dragging .leaflet-grab .leaflet-interactive,
+.leaflet-dragging .leaflet-marker-draggable {
+	cursor: move;
+	cursor: -webkit-grabbing;
+	cursor:    -moz-grabbing;
+	cursor:         grabbing;
+	}
+
+/* marker & overlays interactivity */
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-image-layer,
+.leaflet-pane > svg path,
+.leaflet-tile-container {
+	pointer-events: none;
+	}
+
+.leaflet-marker-icon.leaflet-interactive,
+.leaflet-image-layer.leaflet-interactive,
+.leaflet-pane > svg path.leaflet-interactive,
+svg.leaflet-image-layer.leaflet-interactive path {
+	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+	pointer-events: auto;
+	}
+
+/* visual tweaks */
+
+.leaflet-container {
+	background: #ddd;
+	outline-offset: 1px;
+	}
+.leaflet-container a {
+	color: #0078A8;
+	}
+.leaflet-zoom-box {
+	border: 2px dotted #38f;
+	background: rgba(255,255,255,0.5);
+	}
+
+
+/* general typography */
+.leaflet-container {
+	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-size: 0.75rem;
+	line-height: 1.5;
+	}
+
+
+/* general toolbar styles */
+
+.leaflet-bar {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+	border-radius: 4px;
+	}
+.leaflet-bar a {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	width: 26px;
+	height: 26px;
+	line-height: 26px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	}
+.leaflet-bar a,
+.leaflet-control-layers-toggle {
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	display: block;
+	}
+.leaflet-bar a:hover,
+.leaflet-bar a:focus {
+	background-color: #f4f4f4;
+	}
+.leaflet-bar a:first-child {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	}
+.leaflet-bar a:last-child {
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom: none;
+	}
+.leaflet-bar a.leaflet-disabled {
+	cursor: default;
+	background-color: #f4f4f4;
+	color: #bbb;
+	}
+
+.leaflet-touch .leaflet-bar a {
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	}
+.leaflet-touch .leaflet-bar a:first-child {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	}
+.leaflet-touch .leaflet-bar a:last-child {
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	}
+
+/* zoom control */
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+	font: bold 18px 'Lucida Console', Monaco, monospace;
+	text-indent: 1px;
+	}
+
+.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {
+	font-size: 22px;
+	}
+
+
+/* layers control */
+
+.leaflet-control-layers {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+	background: #fff;
+	border-radius: 5px;
+	}
+.leaflet-control-layers-toggle {
+	background-image: url(images/layers.png);
+	width: 36px;
+	height: 36px;
+	}
+.leaflet-retina .leaflet-control-layers-toggle {
+	background-image: url(images/layers-2x.png);
+	background-size: 26px 26px;
+	}
+.leaflet-touch .leaflet-control-layers-toggle {
+	width: 44px;
+	height: 44px;
+	}
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+	display: none;
+	}
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
+	display: block;
+	position: relative;
+	}
+.leaflet-control-layers-expanded {
+	padding: 6px 10px 6px 6px;
+	color: #333;
+	background: #fff;
+	}
+.leaflet-control-layers-scrollbar {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding-right: 5px;
+	}
+.leaflet-control-layers-selector {
+	margin-top: 2px;
+	position: relative;
+	top: 1px;
+	}
+.leaflet-control-layers label {
+	display: block;
+	font-size: 13px;
+	font-size: 1.08333em;
+	}
+.leaflet-control-layers-separator {
+	height: 0;
+	border-top: 1px solid #ddd;
+	margin: 5px -10px 5px -6px;
+	}
+
+/* Default icon URLs */
+.leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
+	background-image: url(images/marker-icon.png);
+	}
+
+
+/* attribution and scale controls */
+
+.leaflet-container .leaflet-control-attribution {
+	background: #fff;
+	background: rgba(255, 255, 255, 0.8);
+	margin: 0;
+	}
+.leaflet-control-attribution,
+.leaflet-control-scale-line {
+	padding: 0 5px;
+	color: #333;
+	line-height: 1.4;
+	}
+.leaflet-control-attribution a {
+	text-decoration: none;
+	}
+.leaflet-control-attribution a:hover,
+.leaflet-control-attribution a:focus {
+	text-decoration: underline;
+	}
+.leaflet-attribution-flag {
+	display: inline !important;
+	vertical-align: baseline !important;
+	width: 1em;
+	height: 0.6669em;
+	}
+.leaflet-left .leaflet-control-scale {
+	margin-left: 5px;
+	}
+.leaflet-bottom .leaflet-control-scale {
+	margin-bottom: 5px;
+	}
+.leaflet-control-scale-line {
+	border: 2px solid #777;
+	border-top: none;
+	line-height: 1.1;
+	padding: 2px 5px 1px;
+	white-space: nowrap;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	background: rgba(255, 255, 255, 0.8);
+	text-shadow: 1px 1px #fff;
+	}
+.leaflet-control-scale-line:not(:first-child) {
+	border-top: 2px solid #777;
+	border-bottom: none;
+	margin-top: -2px;
+	}
+.leaflet-control-scale-line:not(:first-child):not(:last-child) {
+	border-bottom: 2px solid #777;
+	}
+
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	box-shadow: none;
+	}
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	border: 2px solid rgba(0,0,0,0.2);
+	background-clip: padding-box;
+	}
+
+
+/* popup */
+
+.leaflet-popup {
+	position: absolute;
+	text-align: center;
+	margin-bottom: 20px;
+	}
+.leaflet-popup-content-wrapper {
+	padding: 1px;
+	text-align: left;
+	border-radius: 12px;
+	}
+.leaflet-popup-content {
+	margin: 13px 24px 13px 20px;
+	line-height: 1.3;
+	font-size: 13px;
+	font-size: 1.08333em;
+	min-height: 1px;
+	}
+.leaflet-popup-content p {
+	margin: 17px 0;
+	margin: 1.3em 0;
+	}
+.leaflet-popup-tip-container {
+	width: 40px;
+	height: 20px;
+	position: absolute;
+	left: 50%;
+	margin-top: -1px;
+	margin-left: -20px;
+	overflow: hidden;
+	pointer-events: none;
+	}
+.leaflet-popup-tip {
+	width: 17px;
+	height: 17px;
+	padding: 1px;
+
+	margin: -10px auto 0;
+	pointer-events: auto;
+
+	-webkit-transform: rotate(45deg);
+	   -moz-transform: rotate(45deg);
+	    -ms-transform: rotate(45deg);
+	        transform: rotate(45deg);
+	}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+	background: white;
+	color: #333;
+	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+	}
+.leaflet-container a.leaflet-popup-close-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: none;
+	text-align: center;
+	width: 24px;
+	height: 24px;
+	font: 16px/24px Tahoma, Verdana, sans-serif;
+	color: #757575;
+	text-decoration: none;
+	background: transparent;
+	}
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a.leaflet-popup-close-button:focus {
+	color: #585858;
+	}
+.leaflet-popup-scrolled {
+	overflow: auto;
+	}
+
+.leaflet-oldie .leaflet-popup-content-wrapper {
+	-ms-zoom: 1;
+	}
+.leaflet-oldie .leaflet-popup-tip {
+	width: 24px;
+	margin: 0 auto;
+
+	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
+	}
+
+.leaflet-oldie .leaflet-control-zoom,
+.leaflet-oldie .leaflet-control-layers,
+.leaflet-oldie .leaflet-popup-content-wrapper,
+.leaflet-oldie .leaflet-popup-tip {
+	border: 1px solid #999;
+	}
+
+
+/* div icon */
+
+.leaflet-div-icon {
+	background: #fff;
+	border: 1px solid #666;
+	}
+
+
+/* Tooltip */
+/* Base styles for the element that has a tooltip */
+.leaflet-tooltip {
+	position: absolute;
+	padding: 6px;
+	background-color: #fff;
+	border: 1px solid #fff;
+	border-radius: 3px;
+	color: #222;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+	}
+.leaflet-tooltip.leaflet-interactive {
+	cursor: pointer;
+	pointer-events: auto;
+	}
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	position: absolute;
+	pointer-events: none;
+	border: 6px solid transparent;
+	background: transparent;
+	content: "";
+	}
+
+/* Directions */
+
+.leaflet-tooltip-bottom {
+	margin-top: 6px;
+}
+.leaflet-tooltip-top {
+	margin-top: -6px;
+}
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-top:before {
+	left: 50%;
+	margin-left: -6px;
+	}
+.leaflet-tooltip-top:before {
+	bottom: 0;
+	margin-bottom: -12px;
+	border-top-color: #fff;
+	}
+.leaflet-tooltip-bottom:before {
+	top: 0;
+	margin-top: -12px;
+	margin-left: -6px;
+	border-bottom-color: #fff;
+	}
+.leaflet-tooltip-left {
+	margin-left: -6px;
+}
+.leaflet-tooltip-right {
+	margin-left: 6px;
+}
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	top: 50%;
+	margin-top: -6px;
+	}
+.leaflet-tooltip-left:before {
+	right: 0;
+	margin-right: -12px;
+	border-left-color: #fff;
+	}
+.leaflet-tooltip-right:before {
+	left: 0;
+	margin-left: -12px;
+	border-right-color: #fff;
+	}
+
+/* Printing */
+
+@media print {
+	/* Prevent printers from removing background-images of controls. */
+	.leaflet-control {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+		}
+	}
+
+/* ---------- Liquid glass (tab bar, map button, map controls) ---------- */
+.tabbar, .glass { background: var(--glass); backdrop-filter: blur(14px) saturate(190%) brightness(1.06); -webkit-backdrop-filter: blur(14px) saturate(190%) brightness(1.06); border: 0; box-shadow: 0 10px 30px rgb(0 0 0 / 0.16), 0 2px 6px rgb(0 0 0 / 0.08), inset 0 1px 1px var(--glass-hi); }
+.tabbar::before, .glass::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(180deg, var(--glass-hi), transparent 55%); opacity: 0.5; pointer-events: none; }
+.tabbar::after, .glass::after { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(140deg, var(--rim1), var(--rim2) 38%, var(--rim3) 62%, var(--rim1)); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); pointer-events: none; }
+.glass { position: relative; }
+.tab.on { color: var(--jade); background: var(--tab-on); box-shadow: inset 0 0.5px 0 var(--glass-hi), 0 1px 6px rgb(0 0 0 / 0.08); }
+
+/* Tab bar hides while scrolling down, comes back on scroll up */
+.tabbar { transition: transform 0.38s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s; }
+.tabbar.hide { transform: translateX(-50%) translateY(calc(100% + 24px + env(safe-area-inset-bottom, 0px))); opacity: 0; }
+
+/* Floating map button */
+.fab { position: fixed; z-index: 41; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 84px); display: inline-flex; align-items: center; gap: 7px; min-height: 42px; padding: 0 18px; border-radius: 99px; color: var(--ink); font: 700 0.9rem var(--f-body); cursor: pointer; transition: bottom 0.38s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.fab svg { width: 19px; height: 19px; fill: none; stroke: var(--jade); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; position: relative; z-index: 1; }
+.fab span { position: relative; z-index: 1; }
+.fab.low { bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); }
+.fab:focus-visible, .sheet button:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
+
+/* Map sheet */
+html.sheet-open, html.sheet-open body { overflow: hidden; }
+.sheet { position: fixed; inset: 0; z-index: 60; background: var(--bg); display: flex; flex-direction: column; }
+.map { position: absolute; inset: 0; background: #e8eef0; }
+.sheet-bar { position: absolute; z-index: 1000; left: 12px; right: 12px; top: calc(env(safe-area-inset-top, 0px) + 10px); display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 6px 6px 16px; border-radius: 99px; }
+.sheet-bar h2 { font-size: 1.05rem; position: relative; z-index: 1; }
+.sheet-x { position: relative; z-index: 1; width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--surface); color: var(--ink); display: grid; place-items: center; cursor: pointer; }
+.sheet-x svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+.map-chips { position: absolute; z-index: 1000; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 6px; border-radius: 99px; }
+.map-chips::-webkit-scrollbar { display: none; }
+.map-chips button { position: relative; z-index: 1; flex: 0 0 auto; min-height: 36px; padding: 0 14px; border: 0; border-radius: 99px; background: transparent; color: var(--ink); font: 600 0.84rem var(--f-body); cursor: pointer; }
+.map-chips button.on { background: var(--tab-on); color: var(--jade); }
+.map-legend { position: absolute; z-index: 1000; left: 12px; top: calc(env(safe-area-inset-top, 0px) + 68px); display: flex; gap: 10px; padding: 6px 12px; border-radius: 99px; font-size: 0.74rem; font-weight: 600; }
+.map-legend span { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 5px; }
+.map-legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.map-off { position: absolute; z-index: 1000; left: 16px; right: 16px; top: 45%; text-align: center; padding: 14px 16px; border-radius: 14px; background: var(--surface); color: var(--ink); font-size: 0.92rem; box-shadow: 0 6px 20px rgb(0 0 0 / 0.12); }
+.c-hotel { background: var(--jade); } .c-sight { background: var(--seal); } .c-station { background: #6c6c70; }
+
+/* Pins and popups */
+.pin { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50% 50% 50% 4px; transform: rotate(-45deg); color: #fff; box-shadow: 0 3px 8px rgb(0 0 0 / 0.3); border: 2px solid #fff; }
+.pin svg { width: 15px; height: 15px; transform: rotate(45deg); fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.pin-hotel { background: #1f7a63; } .pin-sight { background: #c2410c; }
+.pin-station { width: 14px; height: 14px; border-radius: 50%; transform: none; background: #6c6c70; border-width: 2px; box-shadow: 0 1px 4px rgb(0 0 0 / 0.3); }
+.city-label { font: 700 12px var(--f-body); color: #1c1c1e; text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff; white-space: nowrap; }
+.leaflet-popup-content-wrapper { border-radius: 14px; }
+.leaflet-popup-content { margin: 12px 14px; font: 14px/1.4 var(--f-body); color: #1c1c1e; min-width: 190px; }
+.pop h4 { margin: 0 0 2px; font-size: 0.98rem; }
+.pop .zh { color: #6c6c70; font-size: 0.86rem; }
+.pop p { margin: 4px 0 8px; color: #6c6c70; font-size: 0.82rem; }
+.pop .maps { margin-top: 0; }
+.pop button.amap { border: 0; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -1089,7 +1804,7 @@ td.st .maps { margin-top: 6px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611251432">25 Nov 2026, 14:32</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260835">26 Nov 2026, 08:35</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
         </div>
@@ -1108,6 +1823,23 @@ td.st .maps { margin-top: 6px; }
   </section>
 </main>
 
+<button type="button" class="fab glass" id="map-btn" aria-label="Open the trip map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 3.5 6.8v12.7L9 17.2l6 2.3 5.5-2.3V4.5L15 6.8 9 4.5zM9 4.5v12.7M15 6.8v12.7"/></svg><span>Map</span></button>
+<div class="sheet" id="map-sheet" role="dialog" aria-modal="true" aria-labelledby="map-title" hidden>
+  <div id="map" class="map"></div>
+  <div class="sheet-bar glass"><h2 id="map-title">Trip map</h2><button type="button" class="sheet-x" id="map-close" aria-label="Close the map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <div class="map-legend glass"><span><i class="c-hotel"></i>Hotel</span><span><i class="c-sight"></i>Sight</span><span><i class="c-station"></i>Station</span></div>
+  <div class="map-chips glass" id="map-chips">
+    <button type="button" data-fly="all" class="on">All China</button>
+    <button type="button" data-fly="0">Beijing</button>
+    <button type="button" data-fly="1">Xi'an</button>
+    <button type="button" data-fly="2">Chengdu</button>
+    <button type="button" data-fly="3">Yangshuo</button>
+    <button type="button" data-fly="4">Shenzhen</button>
+    <button type="button" data-fly="5">Hong Kong</button>
+  </div>
+  <p class="map-off" id="map-off" hidden></p>
+</div>
+
 <nav class="tabbar" aria-label="Main">
   <a href="#trip" class="tab" data-tab="trip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 3.5 6.8v12.7L9 17.2l6 2.3 5.5-2.3V4.5L15 6.8 9 4.5zM9 4.5v12.7M15 6.8v12.7"/></svg><span>Trip</span></a>
   <a href="#book" class="tab" data-tab="book"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3"/><path d="M8 9l1.6 1.6L12.5 7.7M8 15h8"/></svg><span>Bookings</span></a>
@@ -1117,6 +1849,137 @@ td.st .maps { margin-top: 6px; }
 </nav>
 
 <script>
+(function () {
+  // Trip map: Leaflet + free Amap tiles (English labels, work inside China). Loaded only when opened.
+  var LEAFLET = 'vendor/leaflet.js';
+  var btn = document.getElementById('map-btn');
+  var sheet = document.getElementById('map-sheet');
+  var off = document.getElementById('map-off');
+  if (!btn || !sheet) return;
+  var map = null, cityView = [];
+  var G = {
+    hotel: '<svg viewBox="0 0 24 24"><path d="M3.5 18.5v-11M3.5 14h17v4.5M20.5 14v-2.5a3 3 0 0 0-3-3H11V14"/><circle cx="7.2" cy="10.8" r="1.8"/></svg>',
+    sight: '<svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>'
+  };
+  var CITIES = [
+    { name: 'Beijing', ll: [39.93, 116.36], z: 11 },
+    { name: "Xi'an", ll: [34.30, 109.05], z: 10 },
+    { name: 'Chengdu', ll: [30.68, 104.08], z: 11 },
+    { name: 'Yangshuo', ll: [24.86, 110.52], z: 11 },
+    { name: 'Shenzhen', ll: [22.56, 114.08], z: 12 },
+    { name: 'Hong Kong', ll: [22.31, 114.17], z: 13 }
+  ];
+  var P = [
+    { t: 'hotel', n: 'Manxin Mansion', zh: '北京后海鼓楼四合院漫心府', d: 'Beijing hotel · 16–20 Dec', ll: [39.9478264, 116.3928909], go: 'hotels' },
+    { t: 'hotel', n: 'Four Points by Sheraton', zh: '西安钟楼福朋喜来登酒店(回民街店)', d: "Xi'an hotel · 20–22 Dec", ll: [34.260151, 108.940698], go: 'hotels' },
+    { t: 'hotel', n: 'The Hidden House', zh: '隐栖堂美学生活院子酒店', d: 'Chengdu hotel · 22–24 Dec', ll: [30.65928, 104.05995], go: 'hotels' },
+    { t: 'hotel', n: 'BO·HUI Hotel', zh: 'BO·洄酒店(阳朔西街漓江店)', d: 'Yangshuo hotel · 24–27 Dec', ll: [24.777584, 110.497044], go: 'hotels' },
+    { t: 'hotel', n: 'Crowne Plaza Landmark', zh: '深圳富苑皇冠假日套房酒店', d: 'Shenzhen hotel · 27–29 Dec', ll: [22.542282, 114.120910], go: 'hotels' },
+    { t: 'hotel', n: 'Stanford Hillview Hotel', zh: '香港仕德福山景酒店', d: 'Hong Kong hotel · 29–31 Dec', ll: [22.3014619, 114.1744504], go: 'hotels', wgs: 1 },
+    { t: 'sight', n: 'Great Wall day trip', zh: '八达岭长城', d: 'Fri 18 Dec · pin at Badaling, check your tour for the section', ll: [40.3575, 116.0166], go: 's-bj', q: '北京八达岭长城' },
+    { t: 'sight', n: 'Forbidden City', zh: '故宫博物院', d: 'Sat 19 Dec · enter by the Meridian Gate', ll: [39.917723, 116.397029], go: 's-bj', q: '北京故宫博物院午门' },
+    { t: 'sight', n: 'Tiananmen Square', zh: '天安门广场', d: 'Sat 19 Dec', ll: [39.903179, 116.397755], go: 's-bj', q: '北京天安门广场' },
+    { t: 'sight', n: 'Mao Mausoleum', zh: '毛主席纪念堂', d: 'Sat 19 Dec · 08:00–12:00', ll: [39.899637, 116.397846], go: 's-bj', q: '北京毛主席纪念堂' },
+    { t: 'sight', n: 'Terracotta Warriors', zh: '秦始皇帝陵博物院', d: 'Mon 21 Dec', ll: [34.3841, 109.2785], go: 's-xa', q: '西安秦始皇帝陵博物院' },
+    { t: 'sight', n: 'Giant Panda Base', zh: '成都大熊猫繁育研究基地', d: 'Wed 23 Dec · West Gate, opens 08:00', ll: [30.7357, 104.1452], go: 's-cd', q: '成都大熊猫繁育研究基地西门' },
+    { t: 'sight', n: 'Li River at Xingping', zh: '兴坪漓江', d: '25–26 Dec · to choose', ll: [24.9214, 110.5236], go: 's-ys', q: '阳朔兴坪漓江' },
+    { t: 'station', n: 'Beijing West', zh: '北京西站', d: 'Train to Xi\'an · Sun 20 Dec', ll: [39.894912, 116.322033], go: 'stations' },
+    { t: 'station', n: "Xi'an North", zh: '西安北站', d: 'Arrive 20, depart 22 Dec', ll: [34.376660, 108.938757], go: 'stations' },
+    { t: 'station', n: 'Chengdu East', zh: '成都东站', d: 'Arrive 22, depart 24 Dec', ll: [30.628779, 104.140947], go: 'stations' },
+    { t: 'station', n: 'Yangshuo', zh: '阳朔站', d: 'Arrive 24, depart 27 Dec', ll: [24.960139, 110.568081], go: 'stations' },
+    { t: 'station', n: 'Shenzhen North', zh: '深圳北站', d: 'Arrive 27 Dec', ll: [22.609878, 114.029506], go: 'stations' },
+    { t: 'station', n: 'Luohu Port', zh: '罗湖口岸(出境)', d: 'Walk into Hong Kong · Tue 29 Dec', ll: [22.528730, 114.118466], go: 'stations' },
+    { t: 'station', n: 'Hung Hom', zh: '红磡站', d: 'East Rail arrival · Tue 29 Dec', ll: [22.3029, 114.1817], go: 'stations', wgs: 1 }
+  ];
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function amapLinks(p) {
+    var src = '&src=china2026&callnative=1';
+    var web, ios;
+    if (p.q) {
+      web = 'https://uri.amap.com/search?keyword=' + encodeURIComponent(p.q) + src;
+      ios = 'iosamap://poi?sourceApplication=china2026&name=' + encodeURIComponent(p.q) + '&dev=0';
+    } else {
+      var lon = p.ll[1], lat = p.ll[0], dev = p.wgs ? 1 : 0;
+      web = 'https://uri.amap.com/marker?position=' + lon + ',' + lat + '&name=' + encodeURIComponent(p.zh) + '&coordinate=' + (p.wgs ? 'wgs84' : 'gaode') + src;
+      ios = 'iosamap://viewMap?sourceApplication=china2026&poiname=' + encodeURIComponent(p.zh) + '&lat=' + lat + '&lon=' + lon + '&dev=' + dev;
+    }
+    return '<a class="amap" href="' + esc(web) + '" data-ios="' + esc(ios) + '" target="_blank" rel="noopener">Open in Amap</a>';
+  }
+  function popup(p) {
+    return '<div class="pop"><h4>' + esc(p.n) + '</h4><span class="zh">' + esc(p.zh) + '</span><p>' + esc(p.d) + '</p>' +
+      '<div class="maps">' + amapLinks(p) + '<button type="button" class="amap" data-goto="' + p.go + '">Details</button></div></div>';
+  }
+  function showOff(msg) { if (off) { off.textContent = msg; off.hidden = !msg; } }
+
+  function build() {
+    var L = window.L;
+    map = L.map('map', { zoomControl: false, attributionControl: true, worldCopyJump: false }).setView([31, 110], 5);
+    var tiles = L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=en&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+      subdomains: '234', maxZoom: 18, attribution: '&copy; AutoNavi 高德地图'
+    }).addTo(map);
+    var failed = 0, loaded = 0;
+    tiles.on('tileerror', function () {
+      failed++;
+      if (loaded || failed <= 6) return;
+      if (!/github\.io$/.test(location.hostname)) showOff('The map background loads in the phone app (stkaratz.github.io/china-2026). Pins still work here.');
+      else showOff(navigator.onLine === false ? 'No internet, so the map background can\'t load. Pins still work.' : 'Map tiles are not loading right now. Try again in a moment.');
+    });
+    tiles.on('tileload', function () { loaded++; showOff(''); });
+    var route = P.filter(function (p) { return p.t === 'hotel'; }).map(function (p) { return p.ll; });
+    L.polyline(route, { color: '#1f7a63', weight: 3, opacity: 0.75, dashArray: '6 8' }).addTo(map);
+    P.forEach(function (p) {
+      var icon = p.t === 'station'
+        ? L.divIcon({ className: '', html: '<div class="pin pin-station"></div>', iconSize: [14, 14], iconAnchor: [7, 7], popupAnchor: [0, -8] })
+        : L.divIcon({ className: '', html: '<div class="pin pin-' + p.t + '">' + G[p.t] + '</div>', iconSize: [30, 30], iconAnchor: [15, 30], popupAnchor: [0, -30] });
+      L.marker(p.ll, { icon: icon, zIndexOffset: p.t === 'station' ? 0 : 500 }).addTo(map).bindPopup(popup(p), { maxWidth: 260 });
+    });
+    CITIES.forEach(function (c) {
+      L.marker(c.ll, { icon: L.divIcon({ className: 'city-label', html: c.name, iconSize: null }), interactive: false, keyboard: false }).addTo(map);
+    });
+    fitAll();
+    map.on('popupopen', function (e) {
+      var b = e.popup.getElement().querySelector('[data-goto]');
+      if (b) b.addEventListener('click', function () { close(); location.hash = b.getAttribute('data-goto'); });
+    });
+  }
+  function fitAll() {
+    var b = window.L.latLngBounds(P.filter(function (p) { return p.t === 'hotel'; }).map(function (p) { return p.ll; }));
+    map.fitBounds(b, { paddingTopLeft: [30, 110], paddingBottomRight: [30, 90] });
+  }
+  function loadLeaflet(cb) {
+    if (window.L) return cb();
+    var s = document.createElement('script');
+    s.src = LEAFLET;
+    s.onload = cb;
+    s.onerror = function () { showOff('The map needs internet the first time you open it.'); };
+    document.head.appendChild(s);
+  }
+  function open() {
+    sheet.hidden = false;
+    document.documentElement.classList.add('sheet-open');
+    loadLeaflet(function () {
+      if (!map) build();
+      setTimeout(function () { map.invalidateSize(); }, 50);
+    });
+  }
+  function close() {
+    sheet.hidden = true;
+    document.documentElement.classList.remove('sheet-open');
+  }
+  btn.addEventListener('click', open);
+  document.getElementById('map-close').addEventListener('click', close);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !sheet.hidden) close(); });
+  document.querySelectorAll('#map-chips button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (!map) return;
+      document.querySelectorAll('#map-chips button').forEach(function (x) { x.classList.toggle('on', x === b); });
+      var v = b.getAttribute('data-fly');
+      if (v === 'all') fitAll();
+      else { var c = CITIES[+v]; map.flyTo(c.ll, c.z, { duration: 0.8 }); }
+    });
+  });
+  window.china2026Map = { open: open, close: close };
+})();
 (function () {
   // Weather: free Open-Meteo forecast (16 days, no key). Falls back to the last saved forecast, then to typical December values.
   var CITIES = [
@@ -1281,6 +2144,9 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
       if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
     if (title) title.textContent = panes[tab].getAttribute('data-title');
+    var mapBtn = document.getElementById('map-btn');
+    if (mapBtn) mapBtn.hidden = !(tab === 'trip' || tab === 'stay');
+    resetBar();
     var changed = active !== tab;
     active = tab;
     store('china2026:tab', tab);
@@ -1379,11 +2245,31 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
       try { seg.scrollTo({ left: left, behavior: 'smooth' }); } catch (e) { seg.scrollLeft = left; }
     }
   }
+  // Tab bar slides away while you scroll down and comes back as soon as you scroll up (or reach the top/bottom).
+  var bar = document.querySelector('.tabbar');
+  var fab = document.getElementById('map-btn');
+  var lastY = window.scrollY, hidden = false;
+  function resetBar() { hidden = true; setBar(false); }
+  function setBar(hide) {
+    if (hide === hidden) return;
+    hidden = hide;
+    if (bar) bar.classList.toggle('hide', hide);
+    if (fab) fab.classList.toggle('low', hide);
+  }
+  function onScroll() {
+    var y = window.scrollY, dy = y - lastY;
+    var atEnd = window.innerHeight + y >= document.documentElement.scrollHeight - 40;
+    if (y < 80 || atEnd) setBar(false);
+    else if (dy > 6) setBar(true);
+    else if (dy < -6) setBar(false);
+    if (Math.abs(dy) > 6 || y < 80) lastY = y;
+    updateSeg();
+  }
   var ticking = false;
   window.addEventListener('scroll', function () {
     if (ticking) return;
     ticking = true;
-    requestAnimationFrame(function () { ticking = false; updateSeg(); });
+    requestAnimationFrame(function () { ticking = false; onScroll(); });
   }, { passive: true });
 
   route();
