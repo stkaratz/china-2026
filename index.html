@@ -34,6 +34,7 @@ img { max-width: 100%; }
   --seal-soft: #fdeee6;
   --bar: rgba(249, 249, 251, 0.86);
   --glass: rgba(255, 255, 255, 0.3);
+  --glass-compact: rgba(255, 255, 255, 0.14);
   --glass-edge: rgba(255, 255, 255, 0.65);
   --glass-hi: rgba(255, 255, 255, 0.6);
   --rim1: rgba(255, 255, 255, 0.95);
@@ -47,12 +48,12 @@ img { max-width: 100%; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #000000; --surface: #1c1c1e; --ink: #f2f2f7; --muted: #9a9aa0; --line: #38383a;
-    --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(30, 30, 34, 0.38); --glass-edge: rgba(255, 255, 255, 0.16); --glass-hi: rgba(255, 255, 255, 0.12); --rim1: rgba(255, 255, 255, 0.35); --rim2: rgba(255, 255, 255, 0.08); --rim3: rgba(255, 255, 255, 0.03); --tab-on: rgba(255, 255, 255, 0.14); color-scheme: dark;
+    --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(30, 30, 34, 0.38); --glass-compact: rgba(30, 30, 34, 0.2); --glass-edge: rgba(255, 255, 255, 0.16); --glass-hi: rgba(255, 255, 255, 0.12); --rim1: rgba(255, 255, 255, 0.35); --rim2: rgba(255, 255, 255, 0.08); --rim3: rgba(255, 255, 255, 0.03); --tab-on: rgba(255, 255, 255, 0.14); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #000000; --surface: #1c1c1e; --ink: #f2f2f7; --muted: #9a9aa0; --line: #38383a;
-  --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(30, 30, 34, 0.38); --glass-edge: rgba(255, 255, 255, 0.16); --glass-hi: rgba(255, 255, 255, 0.12); --rim1: rgba(255, 255, 255, 0.35); --rim2: rgba(255, 255, 255, 0.08); --rim3: rgba(255, 255, 255, 0.03); --tab-on: rgba(255, 255, 255, 0.14); color-scheme: dark;
+  --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(30, 30, 34, 0.38); --glass-compact: rgba(30, 30, 34, 0.2); --glass-edge: rgba(255, 255, 255, 0.16); --glass-hi: rgba(255, 255, 255, 0.12); --rim1: rgba(255, 255, 255, 0.35); --rim2: rgba(255, 255, 255, 0.08); --rim3: rgba(255, 255, 255, 0.03); --tab-on: rgba(255, 255, 255, 0.14); color-scheme: dark;
 }
 body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
 h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
@@ -244,7 +245,7 @@ a:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 body::before { content: none; }
 /* Solid band behind the status bar. iOS blurs the strip just under the clock, so everything that sits there is plain colour. */
 .sbar { position: fixed; top: 0; left: 0; right: 0; height: env(safe-area-inset-top, 0px); z-index: 50; background: var(--bg); pointer-events: none; }
-.toast { position: fixed; z-index: 45; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 88px); width: max-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 12px; padding: 7px 7px 7px 16px; border-radius: 99px; background: var(--ink); color: var(--bg); font-size: 0.88rem; font-weight: 600; box-shadow: 0 8px 24px rgb(0 0 0 / 0.22); }
+.toast { position: fixed; z-index: 45; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 88px - var(--ios-gap, 0px)); width: max-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 12px; padding: 7px 7px 7px 16px; border-radius: 99px; background: var(--ink); color: var(--bg); font-size: 0.88rem; font-weight: 600; box-shadow: 0 8px 24px rgb(0 0 0 / 0.22); }
 .toast button { flex: 0 0 auto; min-height: 34px; padding: 0 16px; border: 0; border-radius: 99px; background: var(--jade); color: var(--surface); font: 700 0.85rem var(--f-body); cursor: pointer; }
 
 .app { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px)); }
@@ -265,7 +266,7 @@ body::before { content: none; }
 h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 89px); }
 
 /* Floating, rounded tab bar (current iOS style) */
-.tabbar { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); width: min(calc(100% - 24px), 520px); display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 5px; border-radius: 34px; background: var(--glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border: 0.5px solid var(--glass-edge); box-shadow: 0 10px 30px rgb(0 0 0 / 0.14), 0 1px 3px rgb(0 0 0 / 0.08); }
+.tabbar { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 10px - var(--ios-gap, 0px)); width: min(calc(100% - 24px), 520px); display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 5px; border-radius: 34px; background: var(--glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border: 0.5px solid var(--glass-edge); box-shadow: 0 10px 30px rgb(0 0 0 / 0.14), 0 1px 3px rgb(0 0 0 / 0.08); }
 .tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; height: 54px; border-radius: 28px; color: var(--muted); text-decoration: none; font-size: 0.64rem; font-weight: 600; letter-spacing: 0.01em; transition: background-color 0.2s, color 0.2s; }
 .tab svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 /* Liquid-glass look: more see-through, stronger blur, a light top sheen and a bright rim. */
@@ -1028,8 +1029,16 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .tab.on { color: var(--jade); background: var(--tab-on); box-shadow: inset 0 0.5px 0 var(--glass-hi), 0 1px 6px rgb(0 0 0 / 0.08); }
 
 /* Tab bar hides while scrolling down, comes back on scroll up */
-.tabbar { transition: transform 0.38s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s; }
-.tabbar.hide { transform: translateX(-50%) translateY(calc(100% + 24px + env(safe-area-inset-bottom, 0px))); opacity: 0; }
+/* While scrolling down the bar shrinks to a slimmer, clearer glass strip with icons only; it grows back on scroll up. */
+.tabbar { transition: width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), padding 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.35s; }
+.tab { transition: height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s, color 0.2s; }
+.tab span { transition: opacity 0.2s, max-height 0.3s; max-height: 20px; overflow: hidden; }
+.tab svg { transition: width 0.3s, height 0.3s; }
+.tabbar.compact { width: min(calc(100% - 110px), 290px); padding: 3px; background: var(--glass-compact); }
+.tabbar.compact .tab { height: 40px; gap: 0; }
+.tabbar.compact .tab span { opacity: 0; max-height: 0; }
+.tabbar.compact .tab svg { width: 20px; height: 20px; }
+ (prefers-reduced-motion: reduce) { .tabbar, .tab, .tab span, .tab svg { transition: none; } }
 
 /* Floating map button */
 .fab { position: fixed; z-index: 41; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 84px); display: inline-flex; align-items: center; gap: 7px; min-height: 42px; padding: 0 18px; border-radius: 99px; color: var(--ink); font: 700 0.9rem var(--f-body); cursor: pointer; transition: bottom 0.38s cubic-bezier(0.2, 0.8, 0.2, 1); }
@@ -1058,7 +1067,7 @@ html.sheet-open, html.sheet-open body { overflow: hidden; }
 html.map-mode, html.map-mode body { overflow: hidden; background: #f3f1ec; }
 html.map-mode .sbar { display: none; }
 /* Fill the whole screen, including the strip behind the home indicator (iOS leaves a gap with inset: 0 in home-screen apps). */
-.map-pane .map { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: 100vh; height: max(100lvh, calc(100% + env(safe-area-inset-bottom, 0px))); z-index: 5; }
+.map-pane .map { position: fixed; top: 0; left: 0; right: 0; bottom: calc(-1 * (var(--ios-gap, 0px) + 40px)); height: auto; z-index: 5; }
 .map-pane .map-legend { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 26px); left: 12px; }
 .locate { position: fixed; z-index: 1000; top: calc(env(safe-area-inset-top, 0px) + 18px); right: 12px; width: 46px; height: 46px; border: 0; border-radius: 50%; display: grid; place-items: center; color: var(--jade); cursor: pointer; }
 .locate svg { position: relative; z-index: 1; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
@@ -1069,9 +1078,9 @@ html.map-mode .sbar { display: none; }
 .me { width: 18px; height: 18px; border-radius: 50%; background: #0a84ff; border: 3px solid #fff; box-shadow: 0 0 0 0 rgb(10 132 255 / 0.5), 0 1px 4px rgb(0 0 0 / 0.3); animation: mepulse 2s ease-out infinite; }
 @keyframes mepulse { 70% { box-shadow: 0 0 0 14px rgb(10 132 255 / 0), 0 1px 4px rgb(0 0 0 / 0.3); } 100% { box-shadow: 0 0 0 0 rgb(10 132 255 / 0), 0 1px 4px rgb(0 0 0 / 0.3); } }
 @media (prefers-reduced-motion: reduce) { .me, .locate.busy svg { animation: none; } }
-.map-pane .map-chips { position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 84px); max-width: 520px; margin-inline: auto; }
+.map-pane .map-chips { position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 84px - var(--ios-gap, 0px)); max-width: 520px; margin-inline: auto; }
 .map-pane .map-off { position: fixed; }
-.map-pane .leaflet-bottom { bottom: calc(env(safe-area-inset-bottom, 0px) + 136px); }
+.map-pane .leaflet-bottom { bottom: calc(env(safe-area-inset-bottom, 0px) + 176px); }
 
 /* Title row with the About button; back link on About */
 .title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
@@ -1831,7 +1840,7 @@ html.map-mode .sbar { display: none; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260851">26 Nov 2026, 08:51</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260854">26 Nov 2026, 08:54</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
         </div>
@@ -1874,6 +1883,19 @@ html.map-mode .sbar { display: none; }
 </nav>
 
 <script>
+(function () {
+  // iOS home-screen apps sometimes report a viewport shorter than the screen, leaving an empty strip at the bottom.
+  // Measure it so the map and tab bar can reach the real bottom edge.
+  function gap() {
+    var standalone = window.navigator.standalone === true || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+    var g = standalone ? Math.round(screen.height - window.innerHeight) : 0;
+    if (g < 10 || g > 120) g = 0;
+    document.documentElement.style.setProperty('--ios-gap', g + 'px');
+  }
+  gap();
+  window.addEventListener('resize', gap);
+  window.addEventListener('orientationchange', function () { setTimeout(gap, 300); });
+})();
 (function () {
   // Trip map: Leaflet + free Amap tiles (English labels, work inside China). Loaded only when opened.
   var LEAFLET = 'vendor/leaflet.js';
@@ -1967,8 +1989,8 @@ html.map-mode .sbar { display: none; }
   function fitAll() {
     var L = window.L;
     var b = L.latLngBounds(P.filter(function (p) { return p.t === 'hotel'; }).map(function (p) { return p.ll; }));
-    var z = map.getBoundsZoom(b, false, L.point(60, 260));
-    map.setView(b.getCenter(), Math.max(z - 0.75, 3));
+    map.fitBounds(b, { paddingTopLeft: [30, 90], paddingBottomRight: [30, 190], animate: false });
+    map.setZoom(map.getZoom() - 0.25, { animate: false });
   }
 
   // "Go to my location": GPS gives WGS-84; Amap tiles in mainland China use GCJ-02, so shift the dot there.
@@ -2307,7 +2329,7 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
   function setBar(hide) {
     if (hide === hidden) return;
     hidden = hide;
-    if (bar) bar.classList.toggle('hide', hide);
+    if (bar) bar.classList.toggle('compact', hide);
     if (fab) fab.classList.toggle('low', hide);
   }
   function onScroll() {
