@@ -1320,6 +1320,10 @@ button.amap.didi { border: 0; cursor: pointer; background: #fff1e6; color: #ea58
 .toast2 { position: fixed; z-index: 4000; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) * 0.3 + 92px); max-width: min(92vw, 420px); padding: 11px 16px; border-radius: 16px; background: rgb(28 28 30 / 0.92); color: #fff; font-size: 0.86rem; line-height: 1.35; text-align: center; box-shadow: 0 10px 30px rgb(0 0 0 / 0.25); transform: translate(-50%, 20px); opacity: 0; pointer-events: none; transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.25, 1.1), opacity 0.2s; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 .toast2.in { transform: translate(-50%, 0); opacity: 1; }
 /* Trip hero */
+.hero-wx { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; align-self: flex-start; padding: 6px 12px 6px 8px; border-radius: 99px; background: rgb(255 255 255 / 0.14); color: #fff; font-size: 0.8rem; text-decoration: none; }
+.hero-wx svg { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.hero-wx span { opacity: 0.85; }
+.hero-wx i { font-style: normal; opacity: 0.75; }
 .hero { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; padding: 20px 18px 16px; border-radius: 24px; color: #fff; background: radial-gradient(120% 140% at 100% 0%, #2f9a7c 0%, transparent 55%), linear-gradient(135deg, #1f7a63, #173f6b); box-shadow: 0 10px 30px rgb(23 63 107 / 0.25); }
 .hero::after { content: ""; position: absolute; right: -60px; bottom: -80px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgb(255 255 255 / 0.12), transparent 70%); pointer-events: none; }
 .hero-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
@@ -1524,7 +1528,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
 @media (min-width: 700px) { .pc { left: 16px; right: auto; width: 400px; margin: 0; } }
 @media (prefers-reduced-motion: reduce) { .pc, .pin { transition: none; } }
 /* Copy buttons keep their size; when copied they fill with the accent colour and show a tick for 3 s. */
-.copy, .tk-copy, .tk-st, .hc-zh, .sc-zh, .dt-copy, .tk-code, .sc-code { position: relative; --tick: #fff; --fill: var(--jade); transition: background-color 0.18s, border-color 0.18s, color 0.18s; }
+.copy, .tk-copy, .tk-st, .hc-zh, .sc-zh, .dt-copy, .tk-code, .sc-code, .tip-cp, .didi-ic { position: relative; --tick: #fff; --fill: var(--jade); transition: background-color 0.18s, border-color 0.18s, color 0.18s; }
 .tk-copy { padding: 4px 10px; border-radius: 99px; }
 .copied { color: transparent !important; background: var(--fill) !important; border-color: var(--fill) !important; }
 .copied svg { visibility: hidden; }
@@ -2542,7 +2546,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261621">26 Nov 2026, 16:21</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261625">26 Nov 2026, 16:25</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -3641,6 +3645,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
           '<b>—</b><span class="wx-hl">' + c.typ[0] + '° / ' + c.typ[1] + '°</span><span class="wx-lab">typical</span></div>';
       }).join('');
     }
+    if (window.china2026Hero) setTimeout(window.china2026Hero, 0);
     // Per-city day chips for the dates you are there.
     document.querySelectorAll('.wx').forEach(function (el) {
       var ci = -1;
@@ -4198,20 +4203,29 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   function renderHero() {
     var el = document.getElementById('hero'); if (!el) return;
     var now = new Date(), html = '';
+    function wxChip(name) {
+      var cards = document.querySelectorAll('#wx-today .wx-city'), c = null;
+      for (var i = 0; i < cards.length; i++) { var n = cards[i].querySelector('.wx-name'); if (n && n.textContent === name) c = cards[i]; }
+      if (!c) return '';
+      var ic = c.querySelector('svg'), b = c.querySelector('b'), hl = c.querySelector('.wx-hl'), lab = c.querySelector('.wx-lab');
+      var typ = c.classList.contains('typ');
+      return '<a class="hero-wx" href="#weather">' + (ic ? ic.outerHTML : '') + '<span>' + esc(name) + (typ ? ' in December' : ' now') + '</span><b>' + (typ ? esc(hl ? hl.textContent : '') : esc(b ? b.textContent : '') + ' · ' + esc(lab ? lab.textContent : '')) + '</b>' + (typ ? '' : '<i>' + esc(hl ? hl.textContent : '') + '</i>') + '</a>';
+    }
     var clocks = '<div class="hero-clocks"><span><b>' + clock('Asia/Shanghai') + '</b> China</span><span><b>' + clock('Europe/Copenhagen') + '</b> Copenhagen</span></div>';
     if (now < START) {
       var days = Math.round((new Date(ymd(START, 'Europe/Copenhagen') + 'T12:00:00Z') - new Date(ymd(now, 'Europe/Copenhagen') + 'T12:00:00Z')) / 864e5), nx = nextTodo();
       html = '<div class="hero-top"><div class="hero-big">' + days + '<small>' + (days === 1 ? 'day' : 'days') + ' to go</small></div>' +
         '<div class="hero-route"><span>Copenhagen</span>' + I.arrow + '<span>Beijing</span><em>' + dayLabel(START) + ', 18:00</em></div></div>' +
-        (nx ? '<a class="hero-next" href="#todo"><span class="hero-lbl">Next up · ' + esc(dayLabel(nx.d)) + '</span><b>' + esc(nx.it.t) + '</b>' + I.arrow + '</a>' : '') + clocks;
+        wxChip('Beijing') + (nx ? '<a class="hero-next" href="#todo"><span class="hero-lbl">Next up · ' + esc(dayLabel(nx.d)) + '</span><b>' + esc(nx.it.t) + '</b>' + I.arrow + '</a>' : '') + clocks;
     } else if (now <= END) {
       var today = ymd(now, 'Asia/Shanghai'), c = null;
       CITIES.forEach(function (x) { if (today >= x.from && today < x.to) c = x; });
       var dayN = Math.floor((new Date(today + 'T12:00:00+08:00') - new Date('2026-12-15T12:00:00+08:00')) / 864e5) + 1;
       var todayEl = document.querySelector('.day.today h3');
       var plan = todayEl ? todayEl.textContent.replace(/\s*Today\s*$/, '') : '';
+      var wxc = c ? wxChip(c.n) : '';
       html = '<div class="hero-top"><div class="hero-big">Day ' + Math.max(1, dayN) + '<small>of 18' + (c ? ' · ' + esc(c.n) + ' <span class="hero-zh">' + c.zh + '</span>' : '') + '</small></div></div>' +
-        (plan ? '<button type="button" class="hero-next" data-gotoday><span class="hero-lbl">Today</span><b>' + esc(plan) + '</b>' + I.arrow + '</button>' : '') +
+        wxc + (plan ? '<button type="button" class="hero-next" data-gotoday><span class="hero-lbl">Today</span><b>' + esc(plan) + '</b>' + I.arrow + '</button>' : '') +
         (c ? '<button type="button" class="hero-next hero-hotel" data-hotel="' + esc(c.hotel) + '"><span class="hero-lbl">Tonight</span><b>' + I.bed + esc(c.hotel) + '</b>' + I.arrow + '</button>' : '') + clocks;
     } else {
       html = '<div class="hero-top"><div class="hero-big">Welcome home<small>China 2026 · 15 Dec – 1 Jan</small></div></div>' + clocks;
@@ -4477,7 +4491,11 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       ['Food', 'Peking duck at Siji Minfu', 'A whole duck feeds 2–3 with a few sides. Dip the crispy skin in sugar first, then wrap the rest in pancakes with cucumber, spring onion and sauce.'],
       ['Tip', 'Lama Temple', 'Free incense is handed out at the entrance, no need to buy any. Photos aren\'t allowed inside the halls.', '雍和宫', 'Lama Temple entrance'],
       ['Tip', 'Summer Palace', 'If December is cold enough, Kunming Lake freezes into a huge rink with ice bikes and sledges: a very Beijing experience.', '颐和园北宫门', 'North Palace Gate'],
-      ['Tip', 'Nanluoguxiang', 'The main lane is packed. Turn into the side hutongs (Mao\'er, Beibingmasi) for the quiet old Beijing, five minutes from your hotel.', '南锣鼓巷', 'Nanluoguxiang']
+      ['Tip', 'Nanluoguxiang', 'The main lane is packed. Turn into the side hutongs (Mao\'er, Beibingmasi) for the quiet old Beijing, five minutes from your hotel.', '南锣鼓巷', 'Nanluoguxiang'],
+      ['Tip', 'Forbidden City', 'Bring the passports you booked with: they are scanned at the gate instead of a ticket. The audio guide at the entrance is worth it.', '故宫博物院午门', 'Meridian Gate'],
+      ['Food', 'Qianmen & Dashilar', 'Breakfast like a local: jianbing (煎饼) pancakes from a street stall, and zhajiangmian (炸酱面) noodles for lunch.', '前门大街', 'Qianmen Street'],
+      ['Tip', '798 Art District', 'Most galleries close on Mondays. Go on a weekday afternoon and wander the side lanes for murals and small studios.', '798艺术区', '798 Art District'],
+      ['Evening', 'Olympic Park & Bird\'s Nest', 'The Bird\'s Nest and Water Cube are lit up from dusk: it\'s free to walk around the Olympic Green.', '国家体育场', 'Bird\'s Nest']
     ],
     xa: [
       ['08:30', 'Terracotta Warriors', 'Be at the gate for the 08:30 opening and see Pit 1 first, before the tour buses arrive around 10:00. An official guide at the entrance brings the pits to life.', '秦始皇帝陵博物院', 'Museum entrance'],
@@ -4486,7 +4504,10 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       ['Book ahead', 'Shaanxi History Museum', 'Free timed tickets go online days ahead and vanish fast. It\'s closed on Mondays, so your chance is Sun 20 Dec afternoon.', '陕西历史博物馆', 'Museum entrance'],
       ['Evening', 'Muslim Quarter', 'Stalls are busiest 18:00–21:00. See the Great Mosque, a mosque built like a Chinese temple, in the quiet late afternoon.', '西安化觉巷清真大寺', 'Great Mosque'],
       ['Food', 'Muslim Quarter', 'Try roujiamo (肉夹馍), biangbiang noodles and yangrou paomo (羊肉泡馍): tear the bread into tiny pieces yourself before they pour in the soup.'],
-      ['Tip', 'Bell & Drum Towers', 'One combined ticket covers both. Climb the Drum Tower first, then come back at night when the Bell Tower is lit up, two minutes from your hotel.', '西安钟楼', 'Bell Tower']
+      ['Tip', 'Bell & Drum Towers', 'One combined ticket covers both. Climb the Drum Tower first, then come back at night when the Bell Tower is lit up, two minutes from your hotel.', '西安钟楼', 'Bell Tower'],
+      ['Food', 'Yongxingfang food street', 'Try "smash the bowl" rice wine (摔碗酒): drink it, then smash the clay bowl on the pile for good luck.', '永兴坊', 'Yongxingfang'],
+      ['Tip', 'Huaqing Palace', 'It\'s 10 minutes from the Terracotta Army, so combine them on 21 Dec: a DiDi between the two is cheap.', '华清宫', 'Huaqing Palace'],
+      ['Tip', 'Big Wild Goose Pagoda', 'Pair it with Datang Everbright City: the pagoda square at dusk, then walk south down the boulevard as the lights come on.', '大雁塔', 'Big Wild Goose Pagoda']
     ],
     cd: [
       ['07:30', 'Giant Panda Base', 'Be at the West Gate by 07:30, first in line for the 08:00 opening. Head straight up to the adult enclosures and the nursery: pandas eat and play until about 10:00, then sleep. Done by 11:00.', '成都大熊猫繁育研究基地西门', 'Panda Base West Gate'],
@@ -4495,7 +4516,10 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       ['20:00', 'Sichuan Opera & face-changing', 'Book a seat in the front rows: the face-changing finale is best seen up close.', '蜀风雅韵', 'Shufeng Yayun theatre'],
       ['Food', 'Kuanzhai Alley', 'For hotpot, ask for a yuanyang pot (鸳鸯锅: half spicy, half mild) and 微辣. Sichuan "mild" is still hot.'],
       ['Tip', 'People\'s Park teahouse', 'Try ear cleaning (采耳) at the teahouse, about ¥30–50: a strange but very Chengdu experience.'],
-      ['Tip', 'IFS climbing panda', 'Ride the escalators to the 7th-floor rooftop garden to see the giant panda up close, then walk over to Taikoo Li.', '成都国际金融中心', 'IFS mall']
+      ['Tip', 'IFS climbing panda', 'Ride the escalators to the 7th-floor rooftop garden to see the giant panda up close, then walk over to Taikoo Li.', '成都国际金融中心', 'IFS mall'],
+      ['Food', 'Jinli Ancient Street', 'Try dan dan noodles (担担面), Zhong dumplings in chilli oil (钟水饺) and, if you\'re brave, spicy rabbit head (兔头).'],
+      ['Morning', 'Wenshu Monastery', 'Calm early in the day, with incense and chanting. The vegetarian restaurant inside makes a great lunch.', '文殊院', 'Wenshu Monastery'],
+      ['Day trip', 'Leshan Giant Buddha', 'Take an early fast train: the queue for the cliff stairway beside the Buddha grows fast after 10:00. A river boat shows the whole statue in 30 minutes.', '乐山大佛', 'Leshan Giant Buddha']
     ],
     ys: [
       ['06:15', 'Xianggong Hill', 'Sunrise is about 07:25 in late December. Leave town by 06:15; mist over the river bends is most likely on calm, cold mornings.', '相公山', 'Xianggong Hill'],
@@ -4503,13 +4527,19 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       ['Morning', 'Yulong River rafting', 'Start near Dragon Bridge in the morning: quieter, with soft light on the peaks. Agree the price and the stretch before you board.', '遇龙桥', 'Dragon Bridge'],
       ['Evening', 'West Street', 'Wander West Street after dinner when it lights up; it\'s two minutes from your hotel.', '阳朔西街', 'West Street'],
       ['Tip', 'Ten-Mile Gallery', 'Rent an e-bike for the day: check the brakes and battery, and photograph any scratches before you ride off.', '阳朔十里画廊', 'Ten-Mile Gallery'],
-      ['Food', 'West Street', 'Try beer fish (啤酒鱼), Yangshuo\'s signature dish, and Guilin rice noodles (桂林米粉) for breakfast.']
+      ['Food', 'West Street', 'Try beer fish (啤酒鱼), Yangshuo\'s signature dish, and Guilin rice noodles (桂林米粉) for breakfast.'],
+      ['Sunset', 'Moon Hill', 'Climb in the late afternoon: about 800 steps (30 minutes) to the arch, with sunset over the karst peaks.', '月亮山', 'Moon Hill'],
+      ['Rainy day', 'Silver Cave', 'The perfect plan B for a wet or cold day: warm, dry and lit in colour.', '银子岩', 'Silver Cave'],
+      ['Evening', 'Impression Liu Sanjie', 'It\'s outdoors by the river: dress warmly and book the day before. The first show sells out first.', '阳朔印象刘三姐', 'Impression Liu Sanjie']
     ],
     sz: [
       ['17:00', 'Free Sky at Ping An Finance Centre', 'Check the visibility first, then go about 45 minutes before sunset (around 17:50): day and night views for one ticket.', '平安金融中心', 'Ping An Finance Centre'],
       ['Sunset', 'Lianhuashan Park', 'Climb at sunset for the Futian skyline lighting up below you.', '莲花山公园', 'Lianhuashan Park'],
       ['Morning', 'Luohu Port', 'Cross on 29 Dec in the morning, before the late-morning queues. Keep the small landing slip Hong Kong immigration gives you.', '罗湖口岸', 'Luohu Port'],
-      ['Tip', 'Huaqiangbei', 'Prices at the stalls are negotiable. Test anything before paying and keep the receipt.', '华强北', 'Huaqiangbei']
+      ['Tip', 'Huaqiangbei', 'Prices at the stalls are negotiable. Test anything before paying and keep the receipt.', '华强北', 'Huaqiangbei'],
+      ['Food', 'Dongmen Pedestrian Street', 'Have a Cantonese breakfast: dim sum, rice rolls (肠粉) and congee (粥).', '东门步行街', 'Dongmen'],
+      ['Tip', 'OCT Loft', 'Make a day of it: OCT Loft, then Window of the World two metro stops away, ending at Shenzhen Bay Park for sunset.', '华侨城创意文化园', 'OCT Loft'],
+      ['Evening', 'Sea World, Shekou', 'Waterfront restaurants around the old Minghua cruise ship, with a fountain show in the evening.', '蛇口海上世界', 'Sea World']
     ],
     hk: [
       ['Before 10:00', 'Victoria Peak', 'Skip the Peak Tram queue: go before 10:00 or after 20:00, or take bus 15 from Central. The free Lugard Road loop has better views than the paid terrace.', '山顶缆车花园道总站', 'Peak Tram, Garden Road'],
@@ -4518,7 +4548,10 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       ['Opening', 'Big Buddha, Ngong Ping', 'Book the cable car online and be there at opening: later queues can take an hour.', '昂坪360东涌缆车站', 'Ngong Ping 360, Tung Chung'],
       ['After 19:00', 'Temple Street Night Market', 'It gets going after 19:00. Eat at the open-air dai pai dong stalls.', '庙街夜市', 'Temple Street'],
       ['31 Dec', 'Stanford Hillview Hotel', 'Check out in the morning and leave your bags at the hotel; the flight is at 23:15. Collect them by 20:00 and take the Airport Express from Kowloon Station.', '香港仕德福山景酒店', 'Hotel'],
-      ['Food', 'Temple Street Night Market', 'Try egg waffles (鸡蛋仔), Hong Kong milk tea and a pineapple bun (菠萝包) at any cha chaan teng.']
+      ['Food', 'Temple Street Night Market', 'Try egg waffles (鸡蛋仔), Hong Kong milk tea and a pineapple bun (菠萝包) at any cha chaan teng.'],
+      ['Tip', 'Mid-Levels escalator & SoHo', 'The escalator runs uphill from 10:00: ride it up, then walk back down through SoHo\'s lanes and street art.', '中环至半山自动扶梯', 'Escalator, Central'],
+      ['Tip', 'Tai O fishing village', 'Pair it with the Big Buddha: bus 21 from Ngong Ping to Tai O, then bus 11 back to Tung Chung MTR.', '大澳', 'Tai O'],
+      ['Money', 'Star Ferry', 'Just tap your contactless Visa or Mastercard on the MTR, buses, trams and ferries. No need to buy an Octopus card for two days.']
     ]
   };
   var TIP_BY_NAME = {};
@@ -4529,7 +4562,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     var e = encodeURIComponent(q);
     return { web: 'https://uri.amap.com/search?keyword=' + e + '&src=china2026&callnative=1', ios: 'iosamap://poi?sourceApplication=china2026&name=' + e + '&dev=0' };
   }
-  function badgeClass(b) { return /^(Food)$/.test(b) ? ' food' : /^(Tip|Must)$/.test(b) ? ' tip-t' : /^(Book ahead|31 Dec)$/.test(b) ? ' bk' : ''; }
+  function badgeClass(b) { return /^(Food)$/.test(b) ? ' food' : /^(Tip|Must|Money)$/.test(b) ? ' tip-t' : /^(Book ahead|31 Dec|Day trip|Rainy day)$/.test(b) ? ' bk' : ''; }
   function renderTips() {
     var box = document.getElementById('tips-box'); if (!box) return;
     var today = ymd(new Date(), 'Asia/Shanghai'), cur = 'bj';
@@ -4599,8 +4632,10 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     if (tl && window.MutationObserver) new MutationObserver(function () { addDidiEverywhere(tl); }).observe(tl, { childList: true, subtree: true });
     document.querySelectorAll('.tk').forEach(function (t) {
       var st = t.querySelector('.tk-st'), row = t.querySelector('.tk-maps'); if (!st || !row || row.querySelector('[data-didi]')) return;
-      var name = st.getAttribute('data-copy'), first = row.querySelector('a.amap');
-      row.insertAdjacentHTML('beforeend', didiBtn(/站$/.test(name) ? name : name + '站', null, first ? first.textContent.trim() : ''));
+      var name = st.getAttribute('data-copy'), first = row.querySelector('a.amap'), dest = /站$/.test(name) ? name : name + '站';
+      var lbl = first ? first.textContent.trim() : dest;
+      var btn = '<button type="button" class="amap didi didi-ic" data-didi="' + esc(dest) + '" aria-label="DiDi to ' + esc(lbl) + '" title="DiDi to ' + esc(lbl) + '">' + I.car + '</button>';
+      if (first) first.insertAdjacentHTML('afterend', btn); else row.insertAdjacentHTML('beforeend', btn);
     });
     document.querySelectorAll('.hc').forEach(function (h) {
       var zh = h.querySelector('.hc-zh'), row = h.querySelector('.hc-actions'); if (!zh || !row || row.querySelector('[data-didi]')) return;
@@ -4621,6 +4656,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     el.innerHTML = '<div class="prog-bar"><i style="width:' + pct + '%"></i></div><span><b>' + done + ' of ' + items.length + '</b> bookings done' + (done === items.length && items.length ? ' 🎉' : '') + '</span>';
   }
   document.addEventListener('change', function (e) { if (e.target.closest && e.target.closest('#book')) setTimeout(renderProgress, 300); });
+  window.china2026Hero = renderHero;
   function start() {
     renderHero(); renderPlaces(); moneyTile(); renderProgress(); addShowButtons(); renderTips(); addDidiButtons();
     setInterval(renderHero, 30000);
