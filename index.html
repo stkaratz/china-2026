@@ -1373,7 +1373,9 @@ button.amap.didi { border: 0; cursor: pointer; }
 .spice-b b { font-size: 1.1rem; }
 .spice-b span { font-size: 0.72rem; opacity: 0.85; }
 .spice p { margin: 0; font-size: 0.78rem; opacity: 0.88; }
-.fd-cities { margin-top: -10px; margin-bottom: -16px; }
+.fd-wrap { display: flex; flex-direction: column; gap: 12px; }
+.fd-cities { margin-bottom: 0; padding-top: 2px; padding-bottom: 2px; }
+.tips-cities button { scroll-snap-align: center; }
 .fds { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); gap: 14px; }
 .fd { display: flex; flex-direction: column; gap: 10px; padding: 0 0 14px; background: var(--surface); border-radius: 22px; overflow: hidden; box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.05); }
 .fd-top { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: linear-gradient(135deg, #fff1f2, #ffe4e6); color: #be123c; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
@@ -2646,7 +2648,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261726">26 Nov 2026, 17:26</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261728">26 Nov 2026, 17:28</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -4688,6 +4690,13 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     }, true);
   }
   document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('#search-btn')) openSearch(); });
+  function selectChip(row, attr, val, smooth) {
+    var on = null;
+    row.querySelectorAll('[' + attr + ']').forEach(function (b) { var is = b.getAttribute(attr) === val; b.classList.toggle('on', is); b.setAttribute('aria-pressed', is); if (is) on = b; });
+    if (!on) return;
+    var left = on.offsetLeft - (row.clientWidth - on.offsetWidth) / 2;
+    try { row.scrollTo({ left: Math.max(0, left), behavior: smooth ? 'smooth' : 'auto' }); } catch (e) { row.scrollLeft = left; }
+  }
   // ---------- Tips: timing, tricks and things not to miss ----------
   // [badge, place (opens its details), text, Chinese place/address for Amap + copy (optional), label for that spot]
   var TIPS = {
@@ -4770,9 +4779,11 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     var today = ymd(new Date(), 'Asia/Shanghai'), cur = 'bj';
     CITIES.forEach(function (c) { if (today >= c.from && today < c.to) cur = c.id; });
     var sel = ls('china2026:tips-city') || cur;
-    function draw() {
-      box.innerHTML = '<div class="tips-cities">' + CITIES.map(function (c) { return '<button type="button" data-tc="' + c.id + '"' + (c.id === sel ? ' class="on"' : '') + '>' + esc(c.n) + '</button>'; }).join('') + '</div>' +
-        '<div class="tips-list">' + (TIPS[sel] || []).map(function (t) {
+    box.innerHTML = '<div class="tips-cities">' + CITIES.map(function (c) { return '<button type="button" data-tc="' + c.id + '">' + esc(c.n) + '</button>'; }).join('') + '</div><div class="tips-out"></div>';
+    var tRow = box.querySelector('.tips-cities'), tOut = box.querySelector('.tips-out');
+    function draw(smooth) {
+      selectChip(tRow, 'data-tc', sel, smooth);
+      tOut.innerHTML = '<div class="tips-list">' + (TIPS[sel] || []).map(function (t) {
           var go = '';
           if (t[3]) {
             var a = amapSearch(t[3]);
@@ -4785,9 +4796,9 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     }
     box.addEventListener('click', function (e) {
       var b = e.target.closest('[data-tc]'); if (!b) return;
-      sel = b.getAttribute('data-tc'); ls('china2026:tips-city', sel); draw();
+      sel = b.getAttribute('data-tc'); ls('china2026:tips-city', sel); draw(true);
     });
-    draw();
+    draw(false);
   }
 
   // ---------- DiDi: copy the destination, then open the DiDi app to paste it ----------
@@ -4980,20 +4991,24 @@ document.querySelectorAll('.copy').forEach(function (btn) {
         '<button type="button" class="amap didi didi-ic" data-didi="' + esc(p.q || p.zh) + '" aria-label="DiDi to ' + esc(p.n) + '">' + I.car + '</button>' +
         '<button type="button" class="amap fd-more" data-place="' + esc(p.n) + '">Details</button></div></article>';
     }
-    function draw() {
+    box.innerHTML = spice + mustHtml() + '<div class="fd-wrap"><div class="tips-cities fd-cities">' + CITIES.map(function (c) { return '<button type="button" data-fc="' + c.id + '">' + esc(c.n) + '</button>'; }).join('') + '</div><div class="fd-list"></div></div>';
+    var chipRow = box.querySelector('.fd-cities'), list = box.querySelector('.fd-list');
+    function draw(smooth) {
       var items = pl.P.filter(function (p) { return p.t === 'food' && p.go === 's-' + sel; });
       items.sort(function (a, b) { return a.f.s - b.f.s; });
-      box.innerHTML = spice + mustHtml() + '<div class="tips-cities fd-cities">' + CITIES.map(function (c) { return '<button type="button" data-fc="' + c.id + '"' + (c.id === sel ? ' class="on"' : '') + '>' + esc(c.n) + '</button>'; }).join('') + '</div>' +
-        '<div class="fds">' + items.map(card).join('') + '</div>' +
+      selectChip(chipRow, 'data-fc', sel, smooth);
+      list.innerHTML = '<div class="fds">' + items.map(card).join('') + '</div>' +
         '<section class="also"><h2>Also try in ' + esc((CITIES.filter(function (c) { return c.id === sel; })[0] || {}).n || '') + '</h2><div class="also-row">' + (DISHES[sel] || []).map(function (d) {
           return '<button type="button" class="also-d" data-show="' + esc(d[1]) + '" data-en="' + esc(d[0]) + '"><b>' + esc(d[1]) + '</b><span>' + esc(d[0]) + '</span>' + chilis(d[2]) + '</button>';
         }).join('') + '</div></section>';
     }
     box.addEventListener('click', function (e) {
       var b = e.target.closest('[data-fc]'); if (!b) return;
-      sel = b.getAttribute('data-fc'); ls('china2026:food-city', sel); draw();
+      sel = b.getAttribute('data-fc'); ls('china2026:food-city', sel); draw(true);
     });
-    draw();
+    draw(false);
+    // the tab may be hidden on first draw (no layout yet): centre the chip when it's shown
+    window.addEventListener('hashchange', function () { if (location.hash === '#eat') setTimeout(function () { selectChip(chipRow, 'data-fc', sel, false); }, 0); });
   }
   // ---------- To do progress ----------
   function renderProgress() {
