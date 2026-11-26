@@ -1136,11 +1136,11 @@ html.map-mode, html.map-mode body { background: #f3f1ec; overscroll-behavior: no
 /* On iPhone home-screen apps, a page that can't scroll is laid out in the shorter 797pt root box and everything below it is cut off.
    The other tabs scroll, so they get the full screen. Give the map tab a page taller than the screen too (everything on it is fixed, so nothing moves). */
 .map-pane { min-height: calc(var(--screen-h, 100vh) + 240px); }
-html.map-mode .sbar { display: none; }
+html.map-mode .sbar { z-index: 1002; }
 /* Fill the whole screen, including the strip behind the home indicator (iOS leaves a gap with inset: 0 in home-screen apps). */
 .map-pane .map { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: 100vh; height: calc(var(--screen-h, 100vh) + 160px); z-index: 5; }
-.map-pane .map-legend { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 26px); left: 12px; }
-.locate { position: fixed; z-index: 1000; top: calc(env(safe-area-inset-top, 0px) + 18px); right: 12px; width: 46px; height: 46px; border: 0; border-radius: 50%; display: grid; place-items: center; color: var(--jade); cursor: pointer; }
+.map-pane .map-legend { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 12px); left: 12px; }
+.locate { position: fixed; z-index: 1000; top: calc(env(safe-area-inset-top, 0px) + 4px); right: 12px; width: 46px; height: 46px; border: 0; border-radius: 50%; display: grid; place-items: center; color: var(--jade); cursor: pointer; }
 .locate svg { position: relative; z-index: 1; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
 .locate.on svg { fill: currentColor; }
 .locate.busy svg { animation: locpulse 1s ease-in-out infinite; }
@@ -2333,7 +2333,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261449">26 Nov 2026, 14:49</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261454">26 Nov 2026, 14:54</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -2810,7 +2810,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
   };
   function tile(icon, label) { return '<span class="pa-ic">' + ICON[icon] + '</span><span class="pa-l">' + label + '</span>'; }
   function popup(p) {
-    var tag = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea · not in the plan yet' }[p.t] || '';
+    var tag = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea' }[p.t] || '';
     var acts = [amapLinks(p, tile('nav', 'Amap')),
       '<button type="button" class="pa" data-goto="' + p.go + '">' + tile('info', 'Details') + '</button>'];
     if (PH[p.n]) acts.push('<button type="button" class="pa" data-ph="' + esc(p.n) + '">' + tile('photo', 'Photos') + '</button>');
@@ -2878,13 +2878,13 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     var c = cardEl(), ph = PH[p.n];
     var tag = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea' }[p.t] || '';
     var text = (p.t !== 'idea' && ABOUT[p.n]) || p.d;
-    var meta = p.t !== 'idea' ? p.d : 'Not in the plan yet';
+    var meta = p.t !== 'idea' ? p.d : '';
     var thumb = ph ? '<button type="button" class="pc-thumb" data-ph="' + esc(p.n) + '" aria-label="Photos of ' + esc(p.n) + '"><img src="' + esc(ph.ph[0]) + '" alt="" referrerpolicy="no-referrer" onerror="this.remove()"><span class="pc-n">' + IC.photo + ph.ph.length + '</span></button>'
       : '<span class="pc-thumb none">' + (G[p.t] || '') + '</span>';
     c.className = 'pc pc-' + p.t;
     c.setAttribute('aria-label', p.n);
     c.innerHTML = '<span class="pc-grab" aria-hidden="true"></span>' +
-      '<div class="pc-top">' + thumb + '<div class="pc-head"><span class="pc-tag">' + tag + '</span><h4>' + esc(p.n) + '</h4><span class="zh">' + esc(p.zh) + '</span><span class="pc-meta">' + esc(meta) + '</span></div>' +
+      '<div class="pc-top">' + thumb + '<div class="pc-head"><span class="pc-tag">' + tag + '</span><h4>' + esc(p.n) + '</h4><span class="zh">' + esc(p.zh) + '</span>' + (meta ? '<span class="pc-meta">' + esc(meta) + '</span>' : '') + '</div>' +
       '<button type="button" class="pc-x" aria-label="Close">' + IC.x + '</button></div>' +
       '<p class="pc-d">' + esc(text) + '</p>' +
       '<div class="pc-acts">' + amapLinks(p, IC.nav).replace('class="amap pa"', 'class="amap pc-btn go" aria-label="Directions in Amap" title="Directions in Amap"') +
@@ -2999,7 +2999,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     if (!p) return;
     var d = dtEl(), ph = PH[p.n], D = DET[p.n] || {};
     d._p = p;
-    var tag = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea · not in the plan yet' }[p.t] || '';
+    var tag = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea' }[p.t] || '';
     var meta = p.t !== 'idea' ? p.d : '';
     var slides = ph ? ph.ph.map(function (u, i) {
       return '<figure class="dt-slide" data-i="' + i + '"><img src="' + esc(u) + '" alt="" referrerpolicy="no-referrer"' + (i > 1 ? ' loading="lazy"' : '') + ' onerror="this.parentNode.classList.add(\'bad\')"></figure>';
@@ -3123,7 +3123,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       });
     });
     var srcName = /trip\.com/.test(info.src) ? 'Trip.com' : (/wikipedia\.org/.test(info.src) ? 'Wikipedia' : 'Wikimedia Commons');
-    var kind = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea · not in the plan yet' }[p ? p.t : ''] || '';
+    var kind = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea' }[p ? p.t : ''] || '';
     var text = (p && p.t !== 'idea' && ABOUT[name]) || (p ? p.d : '');
     var when = p && p.t !== 'idea' ? p.d : '';
     viewer.querySelector('.phv-info').innerHTML =
