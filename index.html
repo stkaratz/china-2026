@@ -1249,6 +1249,33 @@ html.map-mode .sbar { display: none; }
 .prog b { color: var(--ink); }
 .prog-bar { flex: 1; max-width: 220px; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
 .prog-bar i { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg, #2f9a7c, #1f7a63); transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+/* Discreet copy for the 12306 (English) station names */
+button.tk-code, button.sc-code { display: inline-flex; align-items: center; gap: 4px; align-self: flex-start; margin: 1px 0 0 -4px; padding: 1px 4px; border: 0; border-radius: 6px; background: none; color: inherit; cursor: pointer; }
+.tk-end.r button.tk-code { align-self: flex-end; margin: 1px -4px 0 0; }
+button.tk-code svg, button.sc-code svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2.2; opacity: 0.7; }
+button.tk-code { --fill: #fff; --tick: #175f75; }
+button.sc-code { margin-left: 0; }
+/* Show-big buttons */
+.addr { grid-template-columns: minmax(0, 1fr) auto auto; }
+.addr .en { grid-column: 1 / -1; }
+.show-btn { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; background: var(--bg); color: var(--jade); cursor: pointer; }
+.show-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+.sc-names .show-btn { width: 30px; height: 30px; }
+.hc-addr .show-btn { background: var(--surface); }
+/* Map search button */
+.map-search { top: calc(env(safe-area-inset-top, 0px) + 84px); }
+.srch-in { position: sticky; top: 0; z-index: 1; padding-bottom: 8px; background: var(--bg); }
+.srch-in input { width: 100%; box-sizing: border-box; padding: 12px 14px 12px 40px; border: 0; border-radius: 14px; background: var(--surface) no-repeat 12px center / 18px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a9aa0' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='m16 16 4.5 4.5'/%3E%3C/svg%3E"); color: var(--ink); font: 500 1rem var(--f-body); }
+.srch-list { background: var(--surface); border-radius: 18px; overflow: hidden; }
+.srch-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 14px; border: 0; background: none; color: var(--ink); text-align: left; font: inherit; cursor: pointer; }
+.srch-row + .srch-row { border-top: 0.5px solid var(--line); }
+.srch-row:active { background: var(--bg); }
+.srch-dot { flex: none; width: 34px; height: 34px; border-radius: 10px; background: var(--bg) center / cover no-repeat; position: relative; overflow: hidden; }
+.srch-dot::after { content: ""; position: absolute; right: 3px; bottom: 3px; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid #fff; background: var(--dc, #1f7a63); }
+.srch-t { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.srch-t b { font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.srch-t span { font-size: 0.76rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.srch-empty { padding: 18px; text-align: center; color: var(--muted); font-size: 0.88rem; }
 /* Trip hero */
 .hero { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; padding: 20px 18px 16px; border-radius: 24px; color: #fff; background: radial-gradient(120% 140% at 100% 0%, #2f9a7c 0%, transparent 55%), linear-gradient(135deg, #1f7a63, #173f6b); box-shadow: 0 10px 30px rgb(23 63 107 / 0.25); }
 .hero::after { content: ""; position: absolute; right: -60px; bottom: -80px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgb(255 255 255 / 0.12), transparent 70%); pointer-events: none; }
@@ -1449,7 +1476,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
 @media (min-width: 700px) { .pc { left: 16px; right: auto; width: 400px; margin: 0; } }
 @media (prefers-reduced-motion: reduce) { .pc, .pin { transition: none; } }
 /* Copy buttons keep their size; when copied they fill with the accent colour and show a tick for 3 s. */
-.copy, .tk-copy, .tk-st, .hc-zh, .sc-zh, .dt-copy { position: relative; --tick: #fff; --fill: var(--jade); transition: background-color 0.18s, border-color 0.18s, color 0.18s; }
+.copy, .tk-copy, .tk-st, .hc-zh, .sc-zh, .dt-copy, .tk-code, .sc-code { position: relative; --tick: #fff; --fill: var(--jade); transition: background-color 0.18s, border-color 0.18s, color 0.18s; }
 .tk-copy { padding: 4px 10px; border-radius: 99px; }
 .copied { color: transparent !important; background: var(--fill) !important; border-color: var(--fill) !important; }
 .copied svg { visibility: hidden; }
@@ -2196,9 +2223,9 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     <div class="tks">
     <article class="tk" id="tk-bj">
       <div class="tk-top">
-        <div class="tk-end"><b>Beijing</b><button type="button" class="tk-st zh" data-copy="北京西" aria-label="Copy 北京西">北京西<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Beijingxi</span></div>
+        <div class="tk-end"><b>Beijing</b><button type="button" class="tk-st zh" data-copy="北京西" aria-label="Copy 北京西">北京西<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="tk-code" data-copy="Beijingxi" aria-label="Copy Beijingxi">Beijingxi<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button></div>
         <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Sun 20 Dec</span></div>
-        <div class="tk-end r"><b>Xi'an</b><button type="button" class="tk-st zh" data-copy="西安北" aria-label="Copy 西安北">西安北<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Xianbei</span></div>
+        <div class="tk-end r"><b>Xi'an</b><button type="button" class="tk-st zh" data-copy="西安北" aria-label="Copy 西安北">西安北<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="tk-code" data-copy="Xianbei" aria-label="Copy Xianbei">Xianbei<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button></div>
       </div>
       <div class="tk-sale"><span>Sale opens <b>Sun 6 Dec</b></span><span class="tk-count" data-open="2026-12-06"></span></div>
       <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G365</b><span class="tk-t">09:55</span><span class="tk-line"><i>4h 10m</i></span><span class="tk-t">14:05</span></div>
@@ -2212,9 +2239,9 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     </article>
     <article class="tk" id="tk-xa">
       <div class="tk-top">
-        <div class="tk-end"><b>Xi'an</b><button type="button" class="tk-st zh" data-copy="西安北" aria-label="Copy 西安北">西安北<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Xianbei</span></div>
+        <div class="tk-end"><b>Xi'an</b><button type="button" class="tk-st zh" data-copy="西安北" aria-label="Copy 西安北">西安北<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="tk-code" data-copy="Xianbei" aria-label="Copy Xianbei">Xianbei<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button></div>
         <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Tue 22 Dec</span></div>
-        <div class="tk-end r"><b>Chengdu</b><button type="button" class="tk-st zh" data-copy="成都东" aria-label="Copy 成都东">成都东<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Chengdudong</span></div>
+        <div class="tk-end r"><b>Chengdu</b><button type="button" class="tk-st zh" data-copy="成都东" aria-label="Copy 成都东">成都东<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="tk-code" data-copy="Chengdudong" aria-label="Copy Chengdudong">Chengdudong<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button></div>
       </div>
       <div class="tk-sale"><span>Sale opens <b>Tue 8 Dec</b></span><span class="tk-count" data-open="2026-12-08"></span></div>
       <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G321</b><span class="tk-t">11:25</span><span class="tk-line"><i>3h 05m</i></span><span class="tk-t">14:30</span></div>
@@ -2228,9 +2255,9 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     </article>
     <article class="tk" id="tk-cd">
       <div class="tk-top">
-        <div class="tk-end"><b>Chengdu</b><button type="button" class="tk-st zh" data-copy="成都东" aria-label="Copy 成都东">成都东<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Chengdudong</span></div>
+        <div class="tk-end"><b>Chengdu</b><button type="button" class="tk-st zh" data-copy="成都东" aria-label="Copy 成都东">成都东<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="tk-code" data-copy="Chengdudong" aria-label="Copy Chengdudong">Chengdudong<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button></div>
         <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Thu 24 Dec</span></div>
-        <div class="tk-end r"><b>Yangshuo</b><button type="button" class="tk-st zh" data-copy="阳朔" aria-label="Copy 阳朔">阳朔<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Yangshuo</span></div>
+        <div class="tk-end r"><b>Yangshuo</b><button type="button" class="tk-st zh" data-copy="阳朔" aria-label="Copy 阳朔">阳朔<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="tk-code" data-copy="Yangshuo" aria-label="Copy Yangshuo">Yangshuo<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button></div>
       </div>
       <div class="tk-sale"><span>Sale opens <b>Thu 10 Dec</b></span><span class="tk-count" data-open="2026-12-10"></span><span class="tk-flag">Only 2 direct trains</span></div>
       <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">D1807</b><span class="tk-t">10:05</span><span class="tk-line"><i>6h 30m</i></span><span class="tk-t">16:35</span></div>
@@ -2244,9 +2271,9 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     </article>
     <article class="tk" id="tk-ys">
       <div class="tk-top">
-        <div class="tk-end"><b>Yangshuo</b><button type="button" class="tk-st zh" data-copy="阳朔" aria-label="Copy 阳朔">阳朔<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Yangshuo</span></div>
+        <div class="tk-end"><b>Yangshuo</b><button type="button" class="tk-st zh" data-copy="阳朔" aria-label="Copy 阳朔">阳朔<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="tk-code" data-copy="Yangshuo" aria-label="Copy Yangshuo">Yangshuo<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button></div>
         <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Sun 27 Dec</span></div>
-        <div class="tk-end r"><b>Shenzhen</b><button type="button" class="tk-st zh" data-copy="深圳北" aria-label="Copy 深圳北">深圳北<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Shenzhenbei</span></div>
+        <div class="tk-end r"><b>Shenzhen</b><button type="button" class="tk-st zh" data-copy="深圳北" aria-label="Copy 深圳北">深圳北<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="tk-code" data-copy="Shenzhenbei" aria-label="Copy Shenzhenbei">Shenzhenbei<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button></div>
       </div>
       <div class="tk-sale"><span>Sale opens <b>Sun 13 Dec</b></span><span class="tk-count" data-open="2026-12-13"></span><span class="tk-flag">3 trains a day</span></div>
       <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G2929</b><span class="tk-t">11:25</span><span class="tk-line"><i>2h 39m</i></span><span class="tk-t">14:04</span></div>
@@ -2260,7 +2287,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     </article>
     <article class="tk tk-fallback" id="tk-hk">
       <div class="tk-top">
-        <div class="tk-end"><b>Shenzhen</b><button type="button" class="tk-st zh" data-copy="福田" aria-label="Copy 福田">福田<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Futian</span></div>
+        <div class="tk-end"><b>Shenzhen</b><button type="button" class="tk-st zh" data-copy="福田" aria-label="Copy 福田">福田<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="tk-code" data-copy="Futian" aria-label="Copy Futian">Futian<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button></div>
         <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Tue 29 Dec</span></div>
         <div class="tk-end r"><b>Hong Kong</b><button type="button" class="tk-st zh" data-copy="香港西九龙" aria-label="Copy 香港西九龙">香港西九龙<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Chinese mode</span></div>
       </div>
@@ -2285,7 +2312,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
           <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
           <div class="sc-id"><span class="sc-city">Beijing</span><b>Beijing West</b></div>
         </div>
-        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="北京西站" aria-label="Copy 北京西站">北京西站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Beijingxi</span><span class="sc-role">Depart 20 Dec</span></div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="北京西站" aria-label="Copy 北京西站">北京西站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="sc-code" data-copy="Beijingxi" aria-label="Copy Beijingxi">Beijingxi<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-role">Depart 20 Dec</span></div>
         <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>32–62 min</b><small>12.2 km · ≈ ¥40–55</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>48 min</b><small>Line 8 → Line 7 · ¥4</small></div></div>
         <p class="sc-note">Almost all trains to Xi'an leave from here.</p>
         <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=116.322033,39.894912&amp;name=北京西站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=北京西站&amp;lat=39.894912&amp;lon=116.322033&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
@@ -2295,7 +2322,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
           <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
           <div class="sc-id"><span class="sc-city">Xi'an</span><b>Xi'an North</b></div>
         </div>
-        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="西安北站" aria-label="Copy 西安北站">西安北站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Xianbei</span><span class="sc-role">Arrive 20, depart 22 Dec</span></div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="西安北站" aria-label="Copy 西安北站">西安北站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="sc-code" data-copy="Xianbei" aria-label="Copy Xianbei">Xianbei<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-role">Arrive 20, depart 22 Dec</span></div>
         <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>34–55 min</b><small>15.8 km · ≈ ¥35–45</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>43 min</b><small>Line 2 direct · ¥4</small></div></div>
         <p class="sc-note">Most high-speed trains to and from Beijing and Chengdu.</p>
         <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=108.938757,34.376660&amp;name=西安北站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=西安北站&amp;lat=34.376660&amp;lon=108.938757&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
@@ -2305,7 +2332,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
           <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
           <div class="sc-id"><span class="sc-city">Xi'an</span><b>Xi'an</b></div>
         </div>
-        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="西安站" aria-label="Copy 西安站">西安站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Xian</span><span class="sc-role">Some trains</span></div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="西安站" aria-label="Copy 西安站">西安站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="sc-code" data-copy="Xian" aria-label="Copy Xian">Xian<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-role">Some trains</span></div>
         <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~29 min</b><small>7.1 km · ≈ ¥17–25</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>22 min</b><small>Line 6 → Line 4</small></div></div>
         <p class="sc-note">Old central station, listed by Trip.com. A few G/D trains to Beijing and Chengdu use it. Prefer it when the times fit.</p>
         <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=108.962723,34.278498&amp;name=西安站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=西安站&amp;lat=34.278498&amp;lon=108.962723&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
@@ -2315,7 +2342,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
           <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
           <div class="sc-id"><span class="sc-city">Chengdu</span><b>Chengdu East</b></div>
         </div>
-        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="成都东站" aria-label="Copy 成都东站">成都东站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Chengdudong</span><span class="sc-role">Arrive 22, depart 24 Dec</span></div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="成都东站" aria-label="Copy 成都东站">成都东站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="sc-code" data-copy="Chengdudong" aria-label="Copy Chengdudong">Chengdudong<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-role">Arrive 22, depart 24 Dec</span></div>
         <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~37 min</b><small>8.9 km · ≈ ¥22–30</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>31 min</b><small>Line 2 direct · ¥4</small></div></div>
         <p class="sc-note">Main high-speed station.</p>
         <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=104.140947,30.628779&amp;name=成都东站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=成都东站&amp;lat=30.628779&amp;lon=104.140947&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
@@ -2325,7 +2352,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
           <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
           <div class="sc-id"><span class="sc-city">Chengdu</span><b>Chengdu West</b></div>
         </div>
-        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="成都西站" aria-label="Copy 成都西站">成都西站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Chengduxi</span><span class="sc-role">Some trains</span></div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="成都西站" aria-label="Copy 成都西站">成都西站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="sc-code" data-copy="Chengduxi" aria-label="Copy Chengduxi">Chengduxi<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-role">Some trains</span></div>
         <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~36 min</b><small>9.6 km · ≈ ¥23–30</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>41–52 min</b><small>Line 4</small></div></div>
         <p class="sc-note">About as far as Chengdu East. Fine if the ticket says this one.</p>
         <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=103.979102,30.685329&amp;name=成都西站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=成都西站&amp;lat=30.685329&amp;lon=103.979102&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
@@ -2335,7 +2362,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
           <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
           <div class="sc-id"><span class="sc-city">Yangshuo</span><b>Yangshuo</b></div>
         </div>
-        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="阳朔站" aria-label="Copy 阳朔站">阳朔站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Yangshuo</span><span class="sc-role">Arrive 24, depart 27 Dec</span></div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="阳朔站" aria-label="Copy 阳朔站">阳朔站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="sc-code" data-copy="Yangshuo" aria-label="Copy Yangshuo">Yangshuo<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-role">Arrive 24, depart 27 Dec</span></div>
         <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~55 min</b><small>34 km · ≈ ¥100–115</small></div><div class="sc-tile metro none"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>—</b><small>no direct option</small></div></div>
         <p class="sc-note"><span class="warn">The station is in Xingping, outside town.</span> Shuttle bus ¥20 with a change, about 1 h. Local taxis often skip the meter, so use DiDi or agree the price first.</p>
         <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=110.568081,24.960139&amp;name=阳朔站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=阳朔站&amp;lat=24.960139&amp;lon=110.568081&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
@@ -2345,7 +2372,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
           <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
           <div class="sc-id"><span class="sc-city">Shenzhen</span><b>Shenzhen North</b></div>
         </div>
-        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="深圳北站" aria-label="Copy 深圳北站">深圳北站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Shenzhenbei</span><span class="sc-role">Arrive 27 Dec</span></div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="深圳北站" aria-label="Copy 深圳北站">深圳北站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="sc-code" data-copy="Shenzhenbei" aria-label="Copy Shenzhenbei">Shenzhenbei<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-role">Arrive 27 Dec</span></div>
         <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~42 min</b><small>16.8 km · ≈ ¥50–65</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>45 min</b><small>Line 5 direct · ¥5</small></div></div>
         <p class="sc-note">Trains from Yangshuo arrive here. Line 5 towards 大剧院 (Grand Theater), 14 stops to <b>Hubei 湖贝</b>, exit F, then 500 m on foot.</p>
         <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=114.029506,22.609878&amp;name=深圳北站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=深圳北站&amp;lat=22.609878&amp;lon=114.029506&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
@@ -2365,7 +2392,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
           <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
           <div class="sc-id"><span class="sc-city">Shenzhen</span><b>Futian</b></div>
         </div>
-        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="福田站" aria-label="Copy 福田站">福田站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Futian</span><span class="sc-role">Fallback</span></div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="福田站" aria-label="Copy 福田站">福田站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="sc-code" data-copy="Futian" aria-label="Copy Futian">Futian<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-role">Fallback</span></div>
         <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~20 min</b><small>8.6 km · ≈ ¥28–35</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>36 min</b><small>Line 1, Guomao → Shopping Park · ¥3</small></div></div>
         <p class="sc-note">High-speed train to West Kowloon. The metro route has 1.1 km of walking, so take a DiDi with suitcases.</p>
         <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=114.057201,22.538136&amp;name=福田站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=福田站&amp;lat=22.538136&amp;lon=114.057201&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
@@ -2385,7 +2412,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
           <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
           <div class="sc-id"><span class="sc-city">Hong Kong</span><b>Hong Kong West Kowloon</b></div>
         </div>
-        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="香港西九龙站" aria-label="Copy 香港西九龙站">香港西九龙站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Xianggang Xijiulong</span><span class="sc-role">Fallback</span></div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="香港西九龙站" aria-label="Copy 香港西九龙站">香港西九龙站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><button type="button" class="sc-code" data-copy="Xianggang Xijiulong" aria-label="Copy Xianggang Xijiulong">Xianggang Xijiulong<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-role">Fallback</span></div>
         <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~10 min</b><small>1.9 km · ≈ HK$30–50 (taxi)</small></div><div class="sc-tile metro none"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>—</b><small>no direct option</small></div></div>
         <p class="sc-note">Immigration for both sides is inside the station.</p>
         <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=114.1649207,22.304227&amp;name=香港西九龙站&amp;src=china2026&amp;coordinate=wgs84&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=香港西九龙站&amp;lat=22.304227&amp;lon=114.1649207&amp;dev=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
@@ -2462,7 +2489,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261537">26 Nov 2026, 15:37</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261541">26 Nov 2026, 15:41</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -2482,6 +2509,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
   </section>
   <section class="pane map-pane" id="map" data-title="Map" aria-label="Trip map" hidden>
     <div id="leafmap" class="map"></div>
+    <button type="button" class="locate glass map-search" id="search-btn" aria-label="Search places"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5" stroke-linecap="round"/></svg></button>
     <button type="button" class="locate glass" id="locate-btn" aria-label="Show my location"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4 3.5 11.2l7 1.9 1.9 7z"/></svg></button>
     <div class="map-legend glass"><span><i class="c-hotel"></i>Hotel</span><span><i class="c-sight"></i>Sight</span><span><i class="c-station"></i>Station</span><span><i class="c-idea"></i>Idea</span></div>
     <div class="map-chips glass collapsed" id="map-chips">
@@ -2714,7 +2742,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
   var CLUSTER = 'vendor/leaflet.markercluster.js';
   var off = document.getElementById('map-off');
   if (!document.getElementById('leafmap')) return;
-  var map = null, cityView = [];
+  var map = null, cityView = [], group = null;
   var G = {
     hotel: '<svg viewBox="0 0 24 24"><path d="M3.5 18.5v-11M3.5 14h17v4.5M20.5 14v-2.5a3 3 0 0 0-3-3H11V14"/><circle cx="7.2" cy="10.8" r="1.8"/></svg>',
     idea: '<svg viewBox="0 0 24 24"><path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>',
@@ -3354,7 +3382,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     var route = P.filter(function (p) { return p.t === 'hotel'; }).map(function (p) { return p.ll; });
     L.polyline(route, { color: '#1f7a63', weight: 3, opacity: 0.75, dashArray: '6 8' }).addTo(map);
     // Pins group into numbered bubbles when zoomed out; tapping a bubble zooms into its area.
-    var group = L.markerClusterGroup({
+    group = L.markerClusterGroup({
       maxClusterRadius: 48,
       showCoverageOnHover: false,
       spiderfyOnMaxZoom: true,
@@ -3370,7 +3398,8 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     });
     P.forEach(function (p) {
       var icon = L.divIcon({ className: '', html: '<div class="pin pin-' + p.t + '">' + G[p.t] + '</div>', iconSize: [30, 30], iconAnchor: [15, 30], popupAnchor: [0, -30] });
-      group.addLayer(L.marker(p.ll, { icon: icon, kind: p.t, zIndexOffset: p.t === 'station' ? 0 : (p.t === 'idea' ? 200 : 500) }).on('click', function (e) { L.DomEvent.stopPropagation(e); showCard(p, this); }));
+      p._m = L.marker(p.ll, { icon: icon, kind: p.t, zIndexOffset: p.t === 'station' ? 0 : (p.t === 'idea' ? 200 : 500) }).on('click', function (e) { L.DomEvent.stopPropagation(e); showCard(p, this); });
+      group.addLayer(p._m);
     });
     map.addLayer(group);
     CITIES.forEach(function (c) {
@@ -3483,7 +3512,12 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     });
   });
   window.china2026Map = { show: show };
-  window.china2026Places = { P: P, PH: PH, open: openDetails };
+  function focusPin(p) {
+    if (!map || !p || !p._m || !group) return;
+    map.setView(p.ll, Math.max(map.getZoom(), 15), { animate: false });
+    group.zoomToShowLayer(p._m, function () { showCard(p, p._m); });
+  }
+  window.china2026Places = { P: P, PH: PH, open: openDetails, focus: focusPin };
 })();
 (function () {
   // Weather: free Open-Meteo forecast (16 days, no key). Falls back to the last saved forecast, then to typical December values.
@@ -4285,6 +4319,63 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     if (k === 'phrases') openPhrases(); else if (k === 'money') openMoney(); else if (k === 'sos') openEmergency();
   });
 
+  // ---------- Show-big buttons next to Chinese addresses and station names ----------
+  function addShowButtons() {
+    document.querySelectorAll('.addr').forEach(function (a) {
+      var zh = a.querySelector('.zh'), cp = a.querySelector('.copy'); if (!zh || !cp || a.querySelector('.show-btn')) return;
+      var en = a.querySelector('.en');
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'show-btn'; b.setAttribute('aria-label', 'Show in big text');
+      b.setAttribute('data-show', zh.textContent); b.setAttribute('data-py', '请带我去这里 · Please take me here'); if (en) b.setAttribute('data-en', en.textContent.split(' · ')[0]);
+      b.innerHTML = I.expand;
+      cp.insertAdjacentElement('beforebegin', b);
+    });
+    document.querySelectorAll('.sc-names').forEach(function (r) {
+      var zh = r.querySelector('.sc-zh'); if (!zh || r.querySelector('.show-btn')) return;
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'show-btn'; b.setAttribute('aria-label', 'Show in big text');
+      b.setAttribute('data-show', zh.getAttribute('data-copy') + '站'); b.setAttribute('data-py', '请带我去这里 · Please take me here');
+      b.innerHTML = I.expand;
+      zh.insertAdjacentElement('afterend', b);
+    });
+  }
+
+  // ---------- Map: search places ----------
+  var CITY_BY_GO = { 's-bj': 'Beijing', 's-xa': "Xi'an", 's-cd': 'Chengdu', 's-ys': 'Yangshuo', 's-sz': 'Shenzhen', 's-hk': 'Hong Kong' };
+  var DOT = { hotel: '#1f7a63', sight: '#c2410c', station: '#6c6c70', idea: '#5b5bd6' };
+  function cityOf(p, pl) {
+    if (CITY_BY_GO[p.go]) return CITY_BY_GO[p.go];
+    var best = null, bd = 1e9;
+    CITIES.forEach(function (c) { var h = hotelPin(c.hotel); if (!h) return; var d = Math.abs(h.ll[0] - p.ll[0]) + Math.abs(h.ll[1] - p.ll[1]); if (d < bd) { bd = d; best = c.n; } });
+    return best || '';
+  }
+  function openSearch() {
+    var pl = window.china2026Places; if (!pl) return;
+    var kind = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea' };
+    var rows = pl.P.map(function (p, i) {
+      var ph = pl.PH[p.n], img = ph ? thumb(ph.ph[0]).replace(/\/500px-/, '/120px-') : '';
+      var city = cityOf(p, pl);
+      return { p: p, key: (p.n + ' ' + p.zh + ' ' + city + ' ' + kind[p.t] + ' ' + (p.d || '')).toLowerCase(),
+        html: '<button type="button" class="srch-row" data-i="' + i + '"><span class="srch-dot" style="--dc:' + DOT[p.t] + (img ? ';background-image:url(&quot;' + esc(img) + '&quot;)' : '') + '"></span><span class="srch-t"><b>' + esc(p.n) + '</b><span>' + esc(kind[p.t] + ' · ' + city + ' · ' + p.zh) + '</span></span></button>' };
+    });
+    openSheet('Search places', '<div class="srch-in"><input type="search" placeholder="Panda, duck, temple, Hong Kong…" aria-label="Search places" autocomplete="off"></div><div class="srch-list"></div>', function (body) {
+      var inp = body.querySelector('input'), list = body.querySelector('.srch-list');
+      function draw() {
+        var q = inp.value.trim().toLowerCase(), hits = rows.filter(function (r) { return !q || q.split(/\s+/).every(function (w) { return r.key.indexOf(w) >= 0; }); });
+        list.innerHTML = hits.length ? hits.map(function (r) { return r.html; }).join('') : '<div class="srch-empty">Nothing found</div>';
+      }
+      inp.addEventListener('input', draw); draw();
+      list.addEventListener('click', function (e) {
+        var r = e.target.closest('.srch-row'); if (!r) return;
+        var p = pl.P[+r.getAttribute('data-i')];
+        closeSheet();
+        if (location.hash !== '#map') location.hash = '#map';
+        setTimeout(function () { pl.focus(p); }, 350);
+      });
+      setTimeout(function () { try { inp.focus({ preventScroll: true }); } catch (err) {} }, 350);
+    });
+  }
+  document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('#search-btn')) openSearch(); });
   // ---------- To do progress ----------
   function renderProgress() {
     var td = window.china2026Todo, head = document.querySelector('#book .large'); if (!td || !head) return;
@@ -4296,7 +4387,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   }
   document.addEventListener('change', function (e) { if (e.target.closest && e.target.closest('#book')) setTimeout(renderProgress, 300); });
   function start() {
-    renderHero(); renderPlaces(); moneyTile(); renderProgress();
+    renderHero(); renderPlaces(); moneyTile(); renderProgress(); addShowButtons();
     setInterval(renderHero, 30000);
     document.addEventListener('visibilitychange', function () { if (!document.hidden) renderHero(); });
   }
