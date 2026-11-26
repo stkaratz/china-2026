@@ -1086,7 +1086,8 @@ html.map-mode .sbar { display: none; }
 .pin { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50% 50% 50% 4px; transform: rotate(-45deg); color: #fff; box-shadow: 0 3px 8px rgb(0 0 0 / 0.3); border: 2px solid #fff; }
 .pin svg { width: 15px; height: 15px; transform: rotate(45deg); fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 .pin-hotel { background: #1f7a63; } .pin-sight { background: #c2410c; }
-.pin-station { width: 14px; height: 14px; border-radius: 50%; transform: none; background: #6c6c70; border-width: 2px; box-shadow: 0 1px 4px rgb(0 0 0 / 0.3); }
+.pin-station { background: #6c6c70; }
+.pin-station svg { width: 13px; height: 13px; }
 .city-label { font: 700 12px var(--f-body); color: #1c1c1e; text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff; white-space: nowrap; }
 .leaflet-popup-content-wrapper { border-radius: 14px; }
 .leaflet-popup-content { margin: 12px 14px; font: 14px/1.4 var(--f-body); color: #1c1c1e; min-width: 190px; }
@@ -1830,7 +1831,7 @@ html.map-mode .sbar { display: none; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260848">26 Nov 2026, 08:48</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260851">26 Nov 2026, 08:51</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
         </div>
@@ -1881,7 +1882,8 @@ html.map-mode .sbar { display: none; }
   var map = null, cityView = [];
   var G = {
     hotel: '<svg viewBox="0 0 24 24"><path d="M3.5 18.5v-11M3.5 14h17v4.5M20.5 14v-2.5a3 3 0 0 0-3-3H11V14"/><circle cx="7.2" cy="10.8" r="1.8"/></svg>',
-    sight: '<svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>'
+    sight: '<svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>',
+    station: '<svg viewBox="0 0 24 24"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg>'
   };
   var CITIES = [
     { name: 'Beijing', ll: [39.93, 116.36], z: 11 },
@@ -1935,7 +1937,7 @@ html.map-mode .sbar { display: none; }
 
   function build() {
     var L = window.L;
-    map = L.map('leafmap', { zoomControl: false, attributionControl: true, worldCopyJump: false }).setView([31, 110], 5);
+    map = L.map('leafmap', { zoomSnap: 0.25, zoomDelta: 0.5, zoomControl: false, attributionControl: true, worldCopyJump: false }).setView([31, 110], 5);
     var tiles = L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=en&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
       subdomains: '234', maxZoom: 18, attribution: '&copy; AutoNavi 高德地图'
     }).addTo(map);
@@ -1950,9 +1952,7 @@ html.map-mode .sbar { display: none; }
     var route = P.filter(function (p) { return p.t === 'hotel'; }).map(function (p) { return p.ll; });
     L.polyline(route, { color: '#1f7a63', weight: 3, opacity: 0.75, dashArray: '6 8' }).addTo(map);
     P.forEach(function (p) {
-      var icon = p.t === 'station'
-        ? L.divIcon({ className: '', html: '<div class="pin pin-station"></div>', iconSize: [14, 14], iconAnchor: [7, 7], popupAnchor: [0, -8] })
-        : L.divIcon({ className: '', html: '<div class="pin pin-' + p.t + '">' + G[p.t] + '</div>', iconSize: [30, 30], iconAnchor: [15, 30], popupAnchor: [0, -30] });
+      var icon = L.divIcon({ className: '', html: '<div class="pin pin-' + p.t + '">' + G[p.t] + '</div>', iconSize: [30, 30], iconAnchor: [15, 30], popupAnchor: [0, -30] });
       L.marker(p.ll, { icon: icon, zIndexOffset: p.t === 'station' ? 0 : 500 }).addTo(map).bindPopup(popup(p), { maxWidth: 260 });
     });
     CITIES.forEach(function (c) {
@@ -1968,7 +1968,7 @@ html.map-mode .sbar { display: none; }
     var L = window.L;
     var b = L.latLngBounds(P.filter(function (p) { return p.t === 'hotel'; }).map(function (p) { return p.ll; }));
     var z = map.getBoundsZoom(b, false, L.point(60, 260));
-    map.setView(b.getCenter(), Math.max(z - 1, 3));
+    map.setView(b.getCenter(), Math.max(z - 0.75, 3));
   }
 
   // "Go to my location": GPS gives WGS-84; Amap tiles in mainland China use GCJ-02, so shift the dot there.
