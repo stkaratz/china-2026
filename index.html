@@ -245,7 +245,7 @@ a:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 body::before { content: none; }
 /* Solid band behind the status bar. iOS blurs the strip just under the clock, so everything that sits there is plain colour. */
 .sbar { position: fixed; top: 0; left: 0; right: 0; height: env(safe-area-inset-top, 0px); z-index: 50; background: var(--bg); pointer-events: none; }
-.toast { position: fixed; z-index: 45; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) * 0.3 + 84px); width: max-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 12px; padding: 7px 7px 7px 16px; border-radius: 99px; background: var(--ink); color: var(--bg); font-size: 0.88rem; font-weight: 600; box-shadow: 0 8px 24px rgb(0 0 0 / 0.22); }
+.toast { position: fixed; z-index: 45; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) * 0.75 + 84px); width: max-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 12px; padding: 7px 7px 7px 16px; border-radius: 99px; background: var(--ink); color: var(--bg); font-size: 0.88rem; font-weight: 600; box-shadow: 0 8px 24px rgb(0 0 0 / 0.22); }
 .toast button { flex: 0 0 auto; min-height: 34px; padding: 0 16px; border: 0; border-radius: 99px; background: var(--jade); color: var(--surface); font: 700 0.85rem var(--f-body); cursor: pointer; }
 
 .app { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px)); }
@@ -268,7 +268,7 @@ html.swiping .pane { will-change: transform; }
 h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 89px); }
 
 /* Floating, rounded tab bar (current iOS style) */
-.tabbar { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) * 0.3 + 6px); width: min(calc(100% - 24px), 520px); display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; padding: 5px; border-radius: 34px; background: var(--glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border: 0.5px solid var(--glass-edge); box-shadow: 0 10px 30px rgb(0 0 0 / 0.14), 0 1px 3px rgb(0 0 0 / 0.08); }
+.tabbar { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) * 0.75 + 6px); width: min(calc(100% - 24px), 520px); display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; padding: 5px; border-radius: 34px; background: var(--glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border: 0.5px solid var(--glass-edge); box-shadow: 0 10px 30px rgb(0 0 0 / 0.14), 0 1px 3px rgb(0 0 0 / 0.08); }
 .tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; height: 54px; border-radius: 28px; color: var(--muted); text-decoration: none; font-size: 0.64rem; font-weight: 600; letter-spacing: 0.01em; transition: background-color 0.2s, color 0.2s; }
 .tab svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 /* Liquid-glass look: more see-through, stronger blur, a light top sheen and a bright rim. */
@@ -1109,7 +1109,7 @@ html.phv-open, html.phv-open body { overflow: hidden; }
  (prefers-reduced-motion: reduce) { .tabbar, .tab, .tab span, .tab svg { transition: none; } }
 
 /* Floating map button */
-.fab { position: fixed; z-index: 41; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) * 0.3 + 84px); display: inline-flex; align-items: center; gap: 7px; min-height: 42px; padding: 0 18px; border-radius: 99px; color: var(--ink); font: 700 0.9rem var(--f-body); cursor: pointer; transition: bottom 0.38s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.fab { position: fixed; z-index: 41; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) * 0.75 + 84px); display: inline-flex; align-items: center; gap: 7px; min-height: 42px; padding: 0 18px; border-radius: 99px; color: var(--ink); font: 700 0.9rem var(--f-body); cursor: pointer; transition: bottom 0.38s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .fab svg { width: 19px; height: 19px; fill: none; stroke: var(--jade); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; position: relative; z-index: 1; }
 .fab span { position: relative; z-index: 1; }
 .fab.low { bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); }
@@ -1155,7 +1155,7 @@ html.map-mode .sbar { display: none; }
 .me { width: 18px; height: 18px; border-radius: 50%; background: #0a84ff; border: 3px solid #fff; box-shadow: 0 0 0 0 rgb(10 132 255 / 0.5), 0 1px 4px rgb(0 0 0 / 0.3); animation: mepulse 2s ease-out infinite; }
 @keyframes mepulse { 70% { box-shadow: 0 0 0 14px rgb(10 132 255 / 0), 0 1px 4px rgb(0 0 0 / 0.3); } 100% { box-shadow: 0 0 0 0 rgb(10 132 255 / 0), 0 1px 4px rgb(0 0 0 / 0.3); } }
 @media (prefers-reduced-motion: reduce) { .me, .locate.busy svg { animation: none; } }
-.map-pane .map-chips { position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) * 0.3 + 84px); max-width: 520px; margin-inline: auto; }
+.map-pane .map-chips { position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) * 0.75 + 84px); max-width: 520px; margin-inline: auto; }
 .map-pane .map-off { position: fixed; }
 /* City switcher: a small pill showing the current view; tap to open the full row, tap elsewhere to close. */
 .chips-toggle { position: relative; z-index: 1; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 12px 0 10px; border: 0; border-radius: 99px; background: transparent; color: var(--ink); font: 700 0.86rem var(--f-body); cursor: pointer; }
@@ -1319,7 +1319,7 @@ button.amap.didi-ic svg { width: 15px; height: 15px; }
 .didi-link svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 button.amap.didi { border: 0; cursor: pointer; }
 .tk-maps button.amap.didi, .hc-actions button.amap.didi, .sc-maps button.amap.didi { font: 600 0.78rem var(--f-body); }
-.toast2 { position: fixed; z-index: 4000; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) * 0.3 + 92px); max-width: min(92vw, 420px); padding: 11px 16px; border-radius: 16px; background: rgb(28 28 30 / 0.92); color: #fff; font-size: 0.86rem; line-height: 1.35; text-align: center; box-shadow: 0 10px 30px rgb(0 0 0 / 0.25); transform: translate(-50%, 20px); opacity: 0; pointer-events: none; transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.25, 1.1), opacity 0.2s; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.toast2 { position: fixed; z-index: 4000; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) * 0.75 + 92px); max-width: min(92vw, 420px); padding: 11px 16px; border-radius: 16px; background: rgb(28 28 30 / 0.92); color: #fff; font-size: 0.86rem; line-height: 1.35; text-align: center; box-shadow: 0 10px 30px rgb(0 0 0 / 0.25); transform: translate(-50%, 20px); opacity: 0; pointer-events: none; transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.25, 1.1), opacity 0.2s; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 .toast2.in { transform: translate(-50%, 0); opacity: 1; }
 /* Must-try list */
 .must-h { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; }
@@ -1581,7 +1581,7 @@ html.dt-open, html.dt-open body { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) { .dt, .dt-sheet { transition: none; } }
 .pc-head, .pc-d { cursor: pointer; }
 /* Place card */
-.pc { position: fixed; z-index: 1001; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) * 0.3 + 84px); max-width: 440px; margin-inline: auto; padding: 14px 14px 14px; border-radius: 26px; background: color-mix(in srgb, var(--surface) 94%, transparent); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); color: var(--ink); box-shadow: 0 18px 50px rgb(0 0 0 / 0.22), 0 2px 8px rgb(0 0 0 / 0.08), inset 0 0.5px 0 rgb(255 255 255 / 0.6); transform: translate3d(0, calc(100% + 120px), 0); opacity: 0; transition: transform 0.42s cubic-bezier(0.2, 0.9, 0.25, 1.08), opacity 0.2s; touch-action: pan-x; --pc: #1f7a63; }
+.pc { position: fixed; z-index: 1001; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) * 0.75 + 84px); max-width: 440px; margin-inline: auto; padding: 14px 14px 14px; border-radius: 26px; background: color-mix(in srgb, var(--surface) 94%, transparent); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); color: var(--ink); box-shadow: 0 18px 50px rgb(0 0 0 / 0.22), 0 2px 8px rgb(0 0 0 / 0.08), inset 0 0.5px 0 rgb(255 255 255 / 0.6); transform: translate3d(0, calc(100% + 120px), 0); opacity: 0; transition: transform 0.42s cubic-bezier(0.2, 0.9, 0.25, 1.08), opacity 0.2s; touch-action: pan-x; --pc: #1f7a63; }
 .pc.in { transform: none; opacity: 1; }
 .pc-hotel { --pc: #1f7a63; } .pc-sight { --pc: #c2410c; } .pc-station { --pc: #1f7a63; } .pc-station .pc-tag { color: #6c6c70; } .pc-idea { --pc: #5b5bd6; }
 .pc-grab { position: absolute; left: 50%; top: 0; width: 60px; height: 18px; margin-left: -30px; cursor: grab; }
@@ -2648,7 +2648,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261730">26 Nov 2026, 17:30</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261931">26 Nov 2026, 19:31</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -2696,6 +2696,21 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
 </nav>
 
 <script>
+// In-app navigation never adds browser history: swiping back from the screen edge then has nothing to go back to.
+window.goHash = function (h) {
+  if (!h) return;
+  if (h.charAt(0) !== '#') h = '#' + h;
+  if (location.hash !== h) { try { history.replaceState(history.state, '', h); } catch (e) { location.replace(h); return; } }
+  window.dispatchEvent(new HashChangeEvent('hashchange'));
+};
+document.addEventListener('click', function (e) {
+  if (e.defaultPrevented || e.button) return;
+  var a = e.target.closest && e.target.closest('a[href^="#"]');
+  if (!a || a.target === '_blank') return;
+  var h = a.getAttribute('href'); if (!h || h.length < 2) return;
+  e.preventDefault();
+  goHash(h);
+});
 (function () {
   // ---------- Up next: everything with a date, grouped by urgency ----------
   // at: ISO time with zone (timed) or YYYY-MM-DD (all day). kind: 'book' (a task you must do) or 'day' (trip agenda; disappears once past).
@@ -3174,7 +3189,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       if (!t) return;
       if (t.classList.contains('pc-x')) hideCard();
       else if (t.hasAttribute('data-ph')) openPhotos(t.getAttribute('data-ph'));
-      else location.hash = t.getAttribute('data-goto');
+      else goHash(t.getAttribute('data-goto'));
     });
     // Drag down to dismiss.
     var drag = null;
@@ -3608,7 +3623,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     map.on('click', function () { chipsOpen(false); hideCard(); });
     map.on('popupopen', function (e) {
       var b = e.popup.getElement().querySelector('[data-goto]');
-      if (b) b.addEventListener('click', function () { location.hash = b.getAttribute('data-goto'); });
+      if (b) b.addEventListener('click', function () { goHash(b.getAttribute('data-goto')); });
       var ph = e.popup.getElement().querySelector('[data-ph]');
       if (ph) ph.addEventListener('click', function () { openPhotos(ph.getAttribute('data-ph')); });
     });
@@ -4683,7 +4698,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
         var p = pl.P[+r.getAttribute('data-i')];
         var rc = recent().filter(function (n) { return n !== p.n; }); rc.unshift(p.n); ls('china2026:recent', JSON.stringify(rc.slice(0, 6)));
         closeSheet();
-        if (location.hash !== '#map') location.hash = '#map';
+        if (location.hash !== '#map') goHash('#map');
         setTimeout(function () { pl.focus(p); }, 350);
       });
       setTimeout(function () { try { inp.focus({ preventScroll: true }); } catch (err) {} }, 350);
@@ -4945,7 +4960,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     if (fo) {
       var pl = window.china2026Places, name = fo.getAttribute('data-focus'), p = null;
       pl.P.forEach(function (x) { if (x.n === name) p = x; });
-      closeSheet(); location.hash = '#map'; setTimeout(function () { pl.focus(p); }, 400);
+      closeSheet(); goHash('#map'); setTimeout(function () { pl.focus(p); }, 400);
     }
   });
   // ---------- Food tab ----------
