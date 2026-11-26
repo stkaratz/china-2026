@@ -1225,6 +1225,30 @@ html.map-mode .sbar { display: none; }
 .todo-empty { background: var(--surface); border-radius: 16px; padding: 18px; text-align: center; color: var(--muted); }
 
 /* ---------- Train tickets ---------- */
+/* Flights as boarding passes */
+.fls { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); gap: 14px; }
+.fl { position: relative; overflow: hidden; padding: 16px 18px 14px; border-radius: 22px; color: #fff; background: radial-gradient(120% 120% at 100% 0%, rgb(255 255 255 / 0.16), transparent 50%), linear-gradient(135deg, #3b5bdb, #1e3a8a); box-shadow: 0 10px 26px rgb(30 58 138 / 0.25); }
+.fl.ret { background: radial-gradient(120% 120% at 100% 0%, rgb(255 255 255 / 0.14), transparent 50%), linear-gradient(135deg, #7c3aed, #312e81); box-shadow: 0 10px 26px rgb(49 46 129 / 0.25); }
+.fl-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.fl-tag { padding: 3px 9px; border-radius: 99px; background: rgb(255 255 255 / 0.18); font-size: 0.66rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.fl-date { font-size: 0.82rem; font-weight: 600; opacity: 0.9; }
+.fl-leg { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; }
+.fl-end { display: flex; flex-direction: column; }
+.fl-end.r { text-align: right; align-items: flex-end; }
+.fl-end b { font: 800 2rem/1 var(--f-display); letter-spacing: 0.01em; }
+.fl-end span { font-size: 0.74rem; opacity: 0.8; margin-top: 2px; }
+.fl-end i { font-style: normal; font: 700 1rem var(--f-display); margin-top: 4px; font-variant-numeric: tabular-nums; }
+.fl-end sup { font-size: 0.62rem; margin-left: 2px; opacity: 0.85; }
+.fl-mid { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; }
+.fl-mid::before { content: ""; position: absolute; left: 0; right: 0; top: 11px; border-top: 1.5px dashed rgb(255 255 255 / 0.45); }
+.fl-mid svg { position: relative; width: 22px; height: 22px; padding: 0 6px; box-sizing: content-box; fill: #fff; transform: rotate(90deg); background: transparent; }
+.fl-mid span { font-size: 0.72rem; font-weight: 700; opacity: 0.9; }
+.fl-conn { position: relative; margin: 12px -18px; padding: 8px 18px; border-top: 1.5px dashed rgb(255 255 255 / 0.3); border-bottom: 1.5px dashed rgb(255 255 255 / 0.3); font-size: 0.78rem; font-weight: 600; text-align: center; opacity: 0.9; }
+.fl-note { margin: 12px 0 0; font-size: 0.76rem; opacity: 0.8; }
+.prog { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 0.8rem; color: var(--muted); }
+.prog b { color: var(--ink); }
+.prog-bar { flex: 1; max-width: 220px; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.prog-bar i { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg, #2f9a7c, #1f7a63); transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
 /* Trip hero */
 .hero { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; padding: 20px 18px 16px; border-radius: 24px; color: #fff; background: radial-gradient(120% 140% at 100% 0%, #2f9a7c 0%, transparent 55%), linear-gradient(135deg, #1f7a63, #173f6b); box-shadow: 0 10px 30px rgb(23 63 107 / 0.25); }
 .hero::after { content: ""; position: absolute; right: -60px; bottom: -80px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgb(255 255 255 / 0.12), transparent 70%); pointer-events: none; }
@@ -1279,6 +1303,11 @@ html.map-mode .sbar { display: none; }
 .bs-lead { margin: 0 2px 12px; font-size: 0.86rem; color: var(--muted); }
 .bs-note { margin: 14px 4px 0; font-size: 0.78rem; color: var(--muted); }
 html.bs-open, html.bs-open body { overflow: hidden; }
+.ph-quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.ph-q { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 6px 10px; border: 0; border-radius: 16px; background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; box-shadow: 0 1px 2px rgb(0 0 0 / 0.04); transition: transform 0.12s; }
+.ph-q:active { transform: scale(0.95); }
+.ph-q b { font-size: 1.15rem; font-weight: 700; }
+.ph-q span { font-size: 0.7rem; color: var(--muted); }
 .ph-group { margin-top: 14px; background: var(--surface); border-radius: 18px; overflow: hidden; }
 .ph-group h3 { margin: 0; padding: 12px 14px 4px; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
 .ph-row { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 1px 10px; width: 100%; padding: 10px 14px; border: 0; background: none; color: var(--ink); text-align: left; font: inherit; cursor: pointer; }
@@ -1830,34 +1859,29 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     <p class="foot">Live forecast from Open-Meteo (free) for the next 16 days. Your trip dates fill in from about 1 Dec; until then each city shows typical December values, marked “typ.”. Typical values are long-term averages, rounded.</p>
   </section>
 
+<section class="stop" aria-labelledby="handy">
+    <div class="stop-head"><h2 id="handy">Handy</h2><span class="nights">phrases, money and help, ready offline</span></div>
+    <div class="hd">
+      <button type="button" class="hd-tile hd-phr" data-handy="phrases"><span class="hd-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-7l-4.5 3.5V16.5H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z"/></svg></span><b>Phrases</b><span class="hd-sub zh">不要辣 · 谢谢</span></button>
+      <button type="button" class="hd-tile hd-money" data-handy="money"><span class="hd-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9 7.5l3 4.5 3-4.5M12 12v5M9.2 12.5h5.6M9.2 15h5.6"/></svg></span><b>Money</b><span class="hd-sub">¥100 ≈ 91 kr</span></button>
+      <button type="button" class="hd-tile hd-sos" data-handy="sos"><span class="hd-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 20.5 19h-17z"/><path d="M12 10v4M12 16.6v.1"/></svg></span><b>Emergency</b><span class="hd-sub">110 · 120 · 999</span></button>
+    </div>
+  </section>
 <section class="stop" aria-labelledby="flights">
     <div class="stop-head"><h2 id="flights">Flights</h2><span class="nights">times are local</span></div>
-    <div class="tickets">
-      <div class="ticket">
-        <span class="tag">Outbound · Tue 15 Dec</span>
-        <div class="leg">
-          <div><div class="code">CPH</div><div class="time">18:00 · 15 Dec</div></div>
-          <div class="dur">8h 55m</div>
-          <div><div class="code">BJS</div><div class="time">09:55 · 16 Dec</div></div>
-        </div>
-      </div>
-      <div class="ticket">
-        <span class="tag">Return leg 1 · Thu 31 Dec</span>
-        <div class="leg">
-          <div><div class="code">HKG</div><div class="time">23:15 · 31 Dec</div></div>
-          <div class="dur">11h 55m</div>
-          <div><div class="code">IST</div><div class="time">06:10 · 1 Jan</div></div>
-        </div>
-      </div>
-      <div class="ticket">
-        <span class="tag">Return leg 2 · Fri 1 Jan</span>
-        <div class="leg">
-          <div><div class="code">IST</div><div class="time">08:20 · 1 Jan</div></div>
-          <div class="dur">3h 20m</div>
-          <div><div class="code">CPH</div><div class="time">09:40 · 1 Jan</div></div>
-        </div>
-        <span class="time mono muted">2h 10m connection in Istanbul</span>
-      </div>
+    <div class="fls">
+      <article class="fl">
+        <div class="fl-top"><span class="fl-tag">Outbound</span><span class="fl-date">Tue 15 Dec</span></div>
+        <div class="fl-leg"><div class="fl-end"><b>CPH</b><span>Copenhagen</span><i>18:00</i></div><div class="fl-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15.5v-2l-8-5V4a1.5 1.5 0 0 0-3 0v4.5l-8 5v2l8-2.5V18l-2 1.5V21l3.5-1 3.5 1v-1.5L13 18v-4.5z"/></svg><span>8h 55m</span></div><div class="fl-end r"><b>BJS</b><span>Beijing</span><i>09:55<sup>+1</sup></i></div></div>
+        <p class="fl-note">Overnight · lands Wed 16 Dec, local time</p>
+      </article>
+      <article class="fl ret">
+        <div class="fl-top"><span class="fl-tag">Return</span><span class="fl-date">Thu 31 Dec → Fri 1 Jan</span></div>
+        <div class="fl-leg"><div class="fl-end"><b>HKG</b><span>Hong Kong</span><i>23:15</i></div><div class="fl-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15.5v-2l-8-5V4a1.5 1.5 0 0 0-3 0v4.5l-8 5v2l8-2.5V18l-2 1.5V21l3.5-1 3.5 1v-1.5L13 18v-4.5z"/></svg><span>11h 55m</span></div><div class="fl-end r"><b>IST</b><span>Istanbul</span><i>06:10<sup>+1</sup></i></div></div>
+        <div class="fl-conn"><span>2h 10m connection in Istanbul</span></div>
+        <div class="fl-leg"><div class="fl-end"><b>IST</b><span>Istanbul</span><i>08:20</i></div><div class="fl-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15.5v-2l-8-5V4a1.5 1.5 0 0 0-3 0v4.5l-8 5v2l8-2.5V18l-2 1.5V21l3.5-1 3.5 1v-1.5L13 18v-4.5z"/></svg><span>3h 20m</span></div><div class="fl-end r"><b>CPH</b><span>Copenhagen</span><i>09:40</i></div></div>
+        <p class="fl-note">Home on New Year's Day morning · all times local</p>
+      </article>
     </div>
   </section>
 <section class="stop" aria-labelledby="s-bj">
@@ -1975,14 +1999,6 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
         <div class="date">1 Jan<span class="dow">Fri</span></div>
         <div class="body"><h3>Istanbul 06:10 → Copenhagen 09:40</h3><p class="muted">Home on New Year's morning.</p></div>
       </div>
-    </div>
-  </section>
-<section class="stop" aria-labelledby="handy">
-    <div class="stop-head"><h2 id="handy">Handy</h2><span class="nights">phrases, money and help, ready offline</span></div>
-    <div class="hd">
-      <button type="button" class="hd-tile hd-phr" data-handy="phrases"><span class="hd-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-7l-4.5 3.5V16.5H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z"/></svg></span><b>Phrases</b><span class="hd-sub zh">你好 · 谢谢</span></button>
-      <button type="button" class="hd-tile hd-money" data-handy="money"><span class="hd-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9 7.5l3 4.5 3-4.5M12 12v5M9.2 12.5h5.6M9.2 15h5.6"/></svg></span><b>Money</b><span class="hd-sub">¥100 ≈ 91 kr</span></button>
-      <button type="button" class="hd-tile hd-sos" data-handy="sos"><span class="hd-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 20.5 19h-17z"/><path d="M12 10v4M12 16.6v.1"/></svg></span><b>Emergency</b><span class="hd-sub">110 · 120 · 999</span></button>
     </div>
   </section>
 <section class="notes" aria-labelledby="open">
@@ -2446,7 +2462,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261518">26 Nov 2026, 15:18</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261537">26 Nov 2026, 15:37</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -4143,24 +4159,48 @@ document.querySelectorAll('.copy').forEach(function (btn) {
 
   // ---------- Handy: phrases ----------
   var PHRASES = [
+    ['Food', [
+      ['Not spicy, please', '不要辣', 'bú yào là'], ['Just a little spicy', '微辣', 'wēi là'], ['No coriander', '不要香菜', 'bú yào xiāngcài'],
+      ['Less oil, please', '少油', 'shǎo yóu'], ['No MSG', '不要味精', 'bú yào wèijīng'], ['I\'m vegetarian', '我吃素', 'wǒ chī sù'],
+      ['I\'m allergic to peanuts', '我对花生过敏', 'wǒ duì huāshēng guòmǐn'], ['Do you have an English menu?', '有英文菜单吗？', 'yǒu yīngwén càidān ma?'],
+      ['What do you recommend?', '有什么推荐的菜？', 'yǒu shénme tuījiàn de cài?'], ['This one, please', '我要这个', 'wǒ yào zhège'],
+      ['A bottle of water, please', '请给我一瓶水', 'qǐng gěi wǒ yì píng shuǐ'], ['No ice, please', '不要冰', 'bú yào bīng'],
+      ['To take away, please', '打包', 'dǎbāo'], ['Delicious!', '很好吃！', 'hěn hǎo chī!'], ['The bill, please', '买单', 'mǎidān']
+    ]],
     ['Basics', [
-      ['Hello', '你好', 'nǐ hǎo'], ['Thank you', '谢谢', 'xièxie'], ['Excuse me / sorry', '不好意思', 'bù hǎo yìsi'],
-      ['I don\'t understand', '我听不懂', 'wǒ tīng bù dǒng'], ['Where is the toilet?', '洗手间在哪里？', 'xǐshǒujiān zài nǎlǐ?'],
-      ['How much is it?', '多少钱？', 'duōshao qián?'], ['Can you take a photo of us?', '可以帮我们拍张照吗？', 'kěyǐ bāng wǒmen pāi zhāng zhào ma?']
+      ['Hello', '你好', 'nǐ hǎo'], ['Thank you', '谢谢', 'xièxie'], ['Goodbye', '再见', 'zàijiàn'], ['Yes / No', '是 / 不是', 'shì / bú shì'],
+      ['Excuse me / sorry', '不好意思', 'bù hǎo yìsi'], ['I don\'t understand', '我听不懂', 'wǒ tīng bù dǒng'],
+      ['Do you speak English?', '你会说英语吗？', 'nǐ huì shuō yīngyǔ ma?'], ['Please write it down', '请写下来', 'qǐng xiě xiàlái'],
+      ['Where is the toilet?', '洗手间在哪里？', 'xǐshǒujiān zài nǎlǐ?'], ['Can you take a photo of us?', '可以帮我们拍张照吗？', 'kěyǐ bāng wǒmen pāi zhāng zhào ma?']
+    ]],
+    ['Paying & shopping', [
+      ['How much is it?', '多少钱？', 'duōshao qián?'], ['Can it be a bit cheaper?', '可以便宜一点吗？', 'kěyǐ piányi yìdiǎn ma?'],
+      ['I\'m just looking', '我只是看看', 'wǒ zhǐshì kànkan'], ['Can I pay by card?', '可以刷卡吗？', 'kěyǐ shuākǎ ma?'],
+      ['Can I pay with Alipay?', '可以用支付宝吗？', 'kěyǐ yòng zhīfùbǎo ma?'], ['Can I scan your QR code?', '我扫你吧', 'wǒ sǎo nǐ ba']
     ]],
     ['Taxi & DiDi', [
       ['Please take me to this address', '请带我去这个地址', 'qǐng dài wǒ qù zhège dìzhǐ'], ['Please stop here', '请在这里停车', 'qǐng zài zhèlǐ tíngchē'],
       ['We have two big suitcases. Please open the boot.', '我们有两个大行李箱，请打开后备箱。', 'wǒmen yǒu liǎng gè dà xínglixiāng, qǐng dǎkāi hòubèixiāng.'],
-      ['To the railway station, please', '请去火车站', 'qǐng qù huǒchēzhàn']
+      ['Please use the meter', '请打表', 'qǐng dǎbiǎo'], ['How far is it?', '有多远？', 'yǒu duō yuǎn?'], ['Where is the metro station?', '地铁站在哪里？', 'dìtiězhàn zài nǎlǐ?']
     ]],
-    ['Food', [
-      ['Not spicy, please', '不要辣', 'bú yào là'], ['Just a little spicy', '微辣', 'wēi là'], ['No coriander', '不要香菜', 'bú yào xiāngcài'],
-      ['I\'m vegetarian', '我吃素', 'wǒ chī sù'], ['The bill, please', '买单', 'mǎidān'], ['Can I pay by card?', '可以刷卡吗？', 'kěyǐ shuākǎ ma?']
+    ['Trains', [
+      ['To the railway station, please', '请去火车站', 'qǐng qù huǒchēzhàn'], ['Where is the ticket gate?', '检票口在哪里？', 'jiǎnpiàokǒu zài nǎlǐ?'],
+      ['Is this the right train?', '这是这趟车吗？', 'zhè shì zhè tàng chē ma?'], ['Where is my seat?', '我的座位在哪里？', 'wǒ de zuòwèi zài nǎlǐ?'],
+      ['Where can we put big luggage?', '大行李放在哪里？', 'dà xíngli fàng zài nǎlǐ?']
+    ]],
+    ['Hotel', [
+      ['Can we leave our luggage here?', '可以寄存行李吗？', 'kěyǐ jìcún xíngli ma?'], ['What time is breakfast?', '早餐几点？', 'zǎocān jǐ diǎn?'],
+      ['What is the Wi-Fi password?', 'WiFi密码是多少？', 'WiFi mìmǎ shì duōshao?'], ['Could we check out a bit later?', '可以晚一点退房吗？', 'kěyǐ wǎn yìdiǎn tuìfáng ma?'],
+      ['Please call a taxi for us', '请帮我们叫一辆车', 'qǐng bāng wǒmen jiào yí liàng chē']
     ]],
     ['Help', [
-      ['Help!', '救命！', 'jiùmìng!'], ['I need a doctor', '我需要看医生', 'wǒ xūyào kàn yīshēng'], ['Please call the police', '请帮我报警', 'qǐng bāng wǒ bàojǐng'], ['I\'m lost', '我迷路了', 'wǒ mílù le']
+      ['Help!', '救命！', 'jiùmìng!'], ['I need a doctor', '我需要看医生', 'wǒ xūyào kàn yīshēng'], ['Where is a pharmacy?', '药店在哪里？', 'yàodiàn zài nǎlǐ?'],
+      ['I don\'t feel well', '我不舒服', 'wǒ bù shūfu'], ['Please call the police', '请帮我报警', 'qǐng bāng wǒ bàojǐng'], ['I\'m lost', '我迷路了', 'wǒ mílù le'],
+      ['I lost my passport', '我的护照丢了', 'wǒ de hùzhào diū le']
     ]]
   ];
+  var QUICK = [['Not spicy', '不要辣', 'bú yào là'], ['Thank you', '谢谢', 'xièxie'], ['How much?', '多少钱？', 'duōshao qián?'], ['The bill', '买单', 'mǎidān'], ['Toilet?', '厕所在哪？', 'cèsuǒ zài nǎ?'], ['No coriander', '不要香菜', 'bú yào xiāngcài']];
+
   function phraseRow(p) {
     return '<button type="button" class="ph-row" data-show="' + esc(p[1]) + '" data-py="' + esc(p[2]) + '" data-en="' + esc(p[0]) + '"><span class="ph-en">' + esc(p[0]) + '</span><span class="ph-zh">' + esc(p[1]) + '</span><span class="ph-py">' + esc(p[2]) + '</span>' + I.expand + '</button>';
   }
@@ -4173,7 +4213,8 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     }).join('');
   }
   function openPhrases() {
-    var html = '<p class="bs-lead">Tap a phrase to show it full screen. Most people won\'t read pinyin, so show the characters.</p>' +
+    var html = '<p class="bs-lead">Tap any phrase to show it full screen. Show the characters: most people won\'t read pinyin.</p>' +
+      '<div class="ph-quick">' + QUICK.map(function (q) { return '<button type="button" class="ph-q" data-show="' + esc(q[1]) + '" data-py="' + esc(q[2]) + '" data-en="' + esc(q[0]) + '"><b>' + esc(q[1]) + '</b><span>' + esc(q[0]) + '</span></button>'; }).join('') + '</div>' +
       '<div class="ph-group"><h3>Take me to my hotel</h3>' + hotelsHtml() + '</div>' +
       PHRASES.map(function (g) { return '<div class="ph-group"><h3>' + g[0] + '</h3>' + g[1].map(phraseRow).join('') + '</div>'; }).join('') +
       '<p class="bs-note">Hong Kong speaks Cantonese, but written characters work and English is widely understood.</p>';
@@ -4229,7 +4270,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   // ---------- Handy: emergency ----------
   function call(n, label, sub) { return '<a class="em-row" href="tel:' + n + '"><span class="em-n">' + n + '</span><span class="em-l"><b>' + label + '</b>' + (sub ? '<small>' + sub + '</small>' : '') + '</span>' + I.phone + '</a>'; }
   function openEmergency() {
-    var help = PHRASES[3][1];
+    var help = PHRASES[PHRASES.length - 1][1];
     var html = '<div class="ph-group"><h3>Mainland China</h3>' + call('110', 'Police') + call('120', 'Ambulance') + call('119', 'Fire') + '</div>' +
       '<div class="ph-group"><h3>Hong Kong</h3>' + call('999', 'Police, ambulance, fire') + '</div>' +
       '<div class="ph-group"><h3>Show this</h3>' + help.map(phraseRow).join('') + '</div>' +
@@ -4244,8 +4285,18 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     if (k === 'phrases') openPhrases(); else if (k === 'money') openMoney(); else if (k === 'sos') openEmergency();
   });
 
+  // ---------- To do progress ----------
+  function renderProgress() {
+    var td = window.china2026Todo, head = document.querySelector('#book .large'); if (!td || !head) return;
+    var items = td.T.filter(function (it) { return it.kind === 'book' && !it.opt; });
+    var done = items.filter(function (it) { return td.done(it.id); }).length, pct = items.length ? Math.round(done / items.length * 100) : 0;
+    var el = head.querySelector('.prog');
+    if (!el) { el = document.createElement('div'); el.className = 'prog'; head.appendChild(el); }
+    el.innerHTML = '<div class="prog-bar"><i style="width:' + pct + '%"></i></div><span><b>' + done + ' of ' + items.length + '</b> bookings done' + (done === items.length && items.length ? ' 🎉' : '') + '</span>';
+  }
+  document.addEventListener('change', function (e) { if (e.target.closest && e.target.closest('#book')) setTimeout(renderProgress, 300); });
   function start() {
-    renderHero(); renderPlaces(); moneyTile();
+    renderHero(); renderPlaces(); moneyTile(); renderProgress();
     setInterval(renderHero, 30000);
     document.addEventListener('visibilitychange', function () { if (!document.hidden) renderHero(); });
   }
