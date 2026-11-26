@@ -1266,6 +1266,11 @@ button.sc-code { margin-left: 0; }
 .map-search { top: calc(env(safe-area-inset-top, 0px) + 84px); }
 .srch-in { position: sticky; top: 0; z-index: 1; padding-bottom: 8px; background: var(--bg); }
 .srch-in input { width: 100%; box-sizing: border-box; padding: 12px 14px 12px 40px; border: 0; border-radius: 14px; background: var(--surface) no-repeat 12px center / 18px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a9aa0' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='m16 16 4.5 4.5'/%3E%3C/svg%3E"); color: var(--ink); font: 500 1rem var(--f-body); }
+.srch-group { margin-top: 14px; }
+.srch-group:first-child { margin-top: 4px; }
+.srch-group h3 { display: flex; align-items: baseline; gap: 6px; margin: 0 4px 6px; font: 800 1.05rem var(--f-display); }
+.srch-group h3 .zh { font: 500 0.85rem var(--f-body); color: var(--muted); }
+.srch-group h3 i { margin-left: auto; font: 600 0.74rem var(--f-body); font-style: normal; color: var(--muted); }
 .srch-list { background: var(--surface); border-radius: 18px; overflow: hidden; }
 .srch-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 14px; border: 0; background: none; color: var(--ink); text-align: left; font: inherit; cursor: pointer; }
 .srch-row + .srch-row { border-top: 0.5px solid var(--line); }
@@ -2492,7 +2497,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261546">26 Nov 2026, 15:46</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261548">26 Nov 2026, 15:48</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -4362,14 +4367,21 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     var rows = pl.P.map(function (p, i) {
       var ph = pl.PH[p.n], img = ph ? thumb(ph.ph[0]).replace(/\/500px-/, '/120px-') : '';
       var city = cityOf(p, pl);
-      return { p: p, key: (p.n + ' ' + p.zh + ' ' + city + ' ' + kind[p.t] + ' ' + (p.d || '')).toLowerCase(),
-        html: '<button type="button" class="srch-row" data-i="' + i + '"><span class="srch-dot" style="--dc:' + DOT[p.t] + (img ? ';background-image:url(&quot;' + esc(img) + '&quot;)' : '') + '"></span><span class="srch-t"><b>' + esc(p.n) + '</b><span>' + esc(kind[p.t] + ' · ' + city + ' · ' + p.zh) + '</span></span></button>' };
+      return { p: p, city: city, key: (p.n + ' ' + p.zh + ' ' + city + ' ' + kind[p.t] + ' ' + (p.d || '')).toLowerCase(),
+        html: '<button type="button" class="srch-row" data-i="' + i + '"><span class="srch-dot" style="--dc:' + DOT[p.t] + (img ? ';background-image:url(&quot;' + esc(img) + '&quot;)' : '') + '"></span><span class="srch-t"><b>' + esc(p.n) + '</b><span>' + esc(kind[p.t] + ' · ' + p.zh) + '</span></span></button>' };
     });
-    openSheet('Search places', '<div class="srch-in"><input type="search" placeholder="Panda, duck, temple, Hong Kong…" aria-label="Search places" autocomplete="off"></div><div class="srch-list"></div>', function (body) {
-      var inp = body.querySelector('input'), list = body.querySelector('.srch-list');
+    openSheet('Search places', '<div class="srch-in"><input type="search" placeholder="Panda, duck, temple, Hong Kong…" aria-label="Search places" autocomplete="off"></div><div class="srch-groups"></div>', function (body) {
+      var inp = body.querySelector('input'), list = body.querySelector('.srch-groups');
       function draw() {
         var q = inp.value.trim().toLowerCase(), hits = rows.filter(function (r) { return !q || q.split(/\s+/).every(function (w) { return r.key.indexOf(w) >= 0; }); });
-        list.innerHTML = hits.length ? hits.map(function (r) { return r.html; }).join('') : '<div class="srch-empty">Nothing found</div>';
+        if (!hits.length) { list.innerHTML = '<div class="srch-list"><div class="srch-empty">Nothing found</div></div>'; return; }
+        var order = { hotel: 0, sight: 1, station: 2, idea: 3 };
+        list.innerHTML = CITIES.map(function (c) {
+          var g = hits.filter(function (r) { return r.city === c.n; });
+          if (!g.length) return '';
+          g.sort(function (a, b) { return order[a.p.t] - order[b.p.t]; });
+          return '<div class="srch-group"><h3>' + esc(c.n) + ' <span class="zh">' + c.zh + '</span><i>' + g.length + '</i></h3><div class="srch-list">' + g.map(function (r) { return r.html; }).join('') + '</div></div>';
+        }).join('');
       }
       inp.addEventListener('input', draw); draw();
       list.addEventListener('click', function (e) {
