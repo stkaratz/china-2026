@@ -34,7 +34,7 @@ img { max-width: 100%; }
   --seal-soft: #fdeee6;
   --bar: rgba(249, 249, 251, 0.86);
   --glass: rgba(255, 255, 255, 0.3);
-  --glass-compact: rgba(255, 255, 255, 0.14);
+  --glass-compact: rgba(255, 255, 255, 0.05);
   --glass-edge: rgba(255, 255, 255, 0.65);
   --glass-hi: rgba(255, 255, 255, 0.6);
   --rim1: rgba(255, 255, 255, 0.95);
@@ -48,12 +48,12 @@ img { max-width: 100%; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #000000; --surface: #1c1c1e; --ink: #f2f2f7; --muted: #9a9aa0; --line: #38383a;
-    --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(30, 30, 34, 0.38); --glass-compact: rgba(30, 30, 34, 0.2); --glass-edge: rgba(255, 255, 255, 0.16); --glass-hi: rgba(255, 255, 255, 0.12); --rim1: rgba(255, 255, 255, 0.35); --rim2: rgba(255, 255, 255, 0.08); --rim3: rgba(255, 255, 255, 0.03); --tab-on: rgba(255, 255, 255, 0.14); color-scheme: dark;
+    --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(30, 30, 34, 0.38); --glass-compact: rgba(30, 30, 34, 0.08); --glass-edge: rgba(255, 255, 255, 0.16); --glass-hi: rgba(255, 255, 255, 0.12); --rim1: rgba(255, 255, 255, 0.35); --rim2: rgba(255, 255, 255, 0.08); --rim3: rgba(255, 255, 255, 0.03); --tab-on: rgba(255, 255, 255, 0.14); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #000000; --surface: #1c1c1e; --ink: #f2f2f7; --muted: #9a9aa0; --line: #38383a;
-  --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(30, 30, 34, 0.38); --glass-compact: rgba(30, 30, 34, 0.2); --glass-edge: rgba(255, 255, 255, 0.16); --glass-hi: rgba(255, 255, 255, 0.12); --rim1: rgba(255, 255, 255, 0.35); --rim2: rgba(255, 255, 255, 0.08); --rim3: rgba(255, 255, 255, 0.03); --tab-on: rgba(255, 255, 255, 0.14); color-scheme: dark;
+  --jade: #4fc3a1; --jade-soft: #12302a; --seal: #ff8a5c; --seal-soft: #3a1f14; --bar: rgba(22, 22, 24, 0.86); --glass: rgba(30, 30, 34, 0.38); --glass-compact: rgba(30, 30, 34, 0.08); --glass-edge: rgba(255, 255, 255, 0.16); --glass-hi: rgba(255, 255, 255, 0.12); --rim1: rgba(255, 255, 255, 0.35); --rim2: rgba(255, 255, 255, 0.08); --rim3: rgba(255, 255, 255, 0.03); --tab-on: rgba(255, 255, 255, 0.14); color-scheme: dark;
 }
 body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
 h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
@@ -245,7 +245,7 @@ a:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 body::before { content: none; }
 /* Solid band behind the status bar. iOS blurs the strip just under the clock, so everything that sits there is plain colour. */
 .sbar { position: fixed; top: 0; left: 0; right: 0; height: env(safe-area-inset-top, 0px); z-index: 50; background: var(--bg); pointer-events: none; }
-.toast { position: fixed; z-index: 45; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 88px - var(--ios-gap, 0px)); width: max-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 12px; padding: 7px 7px 7px 16px; border-radius: 99px; background: var(--ink); color: var(--bg); font-size: 0.88rem; font-weight: 600; box-shadow: 0 8px 24px rgb(0 0 0 / 0.22); }
+.toast { position: fixed; z-index: 45; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 88px); width: max-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 12px; padding: 7px 7px 7px 16px; border-radius: 99px; background: var(--ink); color: var(--bg); font-size: 0.88rem; font-weight: 600; box-shadow: 0 8px 24px rgb(0 0 0 / 0.22); }
 .toast button { flex: 0 0 auto; min-height: 34px; padding: 0 16px; border: 0; border-radius: 99px; background: var(--jade); color: var(--surface); font: 700 0.85rem var(--f-body); cursor: pointer; }
 
 .app { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px)); }
@@ -266,7 +266,7 @@ body::before { content: none; }
 h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 89px); }
 
 /* Floating, rounded tab bar (current iOS style) */
-.tabbar { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 10px - var(--ios-gap, 0px)); width: min(calc(100% - 24px), 520px); display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 5px; border-radius: 34px; background: var(--glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border: 0.5px solid var(--glass-edge); box-shadow: 0 10px 30px rgb(0 0 0 / 0.14), 0 1px 3px rgb(0 0 0 / 0.08); }
+.tabbar { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); width: min(calc(100% - 24px), 520px); display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 5px; border-radius: 34px; background: var(--glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border: 0.5px solid var(--glass-edge); box-shadow: 0 10px 30px rgb(0 0 0 / 0.14), 0 1px 3px rgb(0 0 0 / 0.08); }
 .tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; height: 54px; border-radius: 28px; color: var(--muted); text-decoration: none; font-size: 0.64rem; font-weight: 600; letter-spacing: 0.01em; transition: background-color 0.2s, color 0.2s; }
 .tab svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 /* Liquid-glass look: more see-through, stronger blur, a light top sheen and a bright rim. */
@@ -1035,6 +1035,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .tab span { transition: opacity 0.2s, max-height 0.3s; max-height: 20px; overflow: hidden; }
 .tab svg { transition: width 0.3s, height 0.3s; }
 .tabbar.compact { width: min(calc(100% - 110px), 290px); padding: 3px; background: var(--glass-compact); }
+.tabbar.compact { backdrop-filter: blur(8px) saturate(150%); -webkit-backdrop-filter: blur(8px) saturate(150%); box-shadow: 0 6px 18px rgb(0 0 0 / 0.1), inset 0 1px 1px var(--glass-hi); }
+.tabbar.compact::before { opacity: 0.25; }
+.tabbar.compact .tab.on { background: rgba(255, 255, 255, 0.35); }
 .tabbar.compact .tab { height: 40px; gap: 0; }
 .tabbar.compact .tab span { opacity: 0; max-height: 0; }
 .tabbar.compact .tab svg { width: 20px; height: 20px; }
@@ -1078,7 +1081,7 @@ html.map-mode .sbar { display: none; }
 .me { width: 18px; height: 18px; border-radius: 50%; background: #0a84ff; border: 3px solid #fff; box-shadow: 0 0 0 0 rgb(10 132 255 / 0.5), 0 1px 4px rgb(0 0 0 / 0.3); animation: mepulse 2s ease-out infinite; }
 @keyframes mepulse { 70% { box-shadow: 0 0 0 14px rgb(10 132 255 / 0), 0 1px 4px rgb(0 0 0 / 0.3); } 100% { box-shadow: 0 0 0 0 rgb(10 132 255 / 0), 0 1px 4px rgb(0 0 0 / 0.3); } }
 @media (prefers-reduced-motion: reduce) { .me, .locate.busy svg { animation: none; } }
-.map-pane .map-chips { position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 84px - var(--ios-gap, 0px)); max-width: 520px; margin-inline: auto; }
+.map-pane .map-chips { position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 84px); max-width: 520px; margin-inline: auto; }
 .map-pane .map-off { position: fixed; }
 /* City switcher: a small pill showing the current view; tap to open the full row, tap elsewhere to close. */
 .chips-toggle { position: relative; z-index: 1; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 12px 0 10px; border: 0; border-radius: 99px; background: transparent; color: var(--ink); font: 700 0.86rem var(--f-body); cursor: pointer; }
@@ -1850,7 +1853,7 @@ html.map-mode .sbar { display: none; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260859">26 Nov 2026, 08:59</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260918">26 Nov 2026, 09:18</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
