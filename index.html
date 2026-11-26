@@ -1120,11 +1120,11 @@ html.map-mode .sbar { display: none; }
 	-o-transition: -o-stroke-dashoffset 0.3s ease-out, -o-stroke-opacity 0.3s ease-in;
 	transition: stroke-dashoffset 0.3s ease-out, stroke-opacity 0.3s ease-in;
 }
-.cluster { display: grid; place-items: center; align-content: center; gap: 1px; border-radius: 50%; background: rgba(28, 28, 30, 0.86); color: #fff; border: 2.5px solid #fff; box-shadow: 0 4px 12px rgb(0 0 0 / 0.3); font: 800 15px var(--f-body); }
+.cluster { display: grid; place-items: center; align-content: center; gap: 1px; border-radius: 50%; background: radial-gradient(circle at 30% 25%, rgba(46, 132, 140, 0.9), rgba(17, 74, 84, 0.86) 70%); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); color: #fff; border: 2px solid rgba(255, 255, 255, 0.92); box-shadow: 0 4px 14px rgb(13 60 68 / 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.35); font: 800 15px var(--f-body); }
 .cluster b { line-height: 1; }
 .cluster span { display: flex; gap: 2px; }
 .cluster i { width: 6px; height: 6px; border-radius: 50%; display: block; }
-.cd-hotel { background: #4fc3a1; } .cd-sight { background: #ff8a5c; } .cd-station { background: #c7c7cc; } .cd-idea { background: #9b9bff; }
+.cd-hotel { background: #7de8c8; } .cd-sight { background: #ffa274; } .cd-station { background: #e5e5ea; } .cd-idea { background: #b9b9ff; }
 .c-hotel { background: var(--jade); } .c-sight { background: var(--seal); } .c-idea { background: #5b5bd6; } .c-station { background: #6c6c70; }
 
 /* Pins and popups */
@@ -1877,7 +1877,7 @@ html.map-mode .sbar { display: none; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261015">26 Nov 2026, 10:15</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261019">26 Nov 2026, 10:19</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
