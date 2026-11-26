@@ -1284,6 +1284,20 @@ button.sc-code { margin-left: 0; }
 .chip.early { background: #fdeee6; color: #c2410c; }
 .maps.meet { margin-top: 8px; }
 .maps.meet button.amap { border: 0; cursor: pointer; }
+.srch-clear { margin-left: auto; padding: 2px 4px; border: 0; background: none; color: var(--jade); font: 600 0.8rem var(--f-body); cursor: pointer; }
+/* Beat the crowds */
+.tips-cities { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px 10px; padding: 0 16px; }
+.tips-cities::-webkit-scrollbar { display: none; }
+.tips-cities button { flex: none; padding: 7px 13px; border: 0; border-radius: 99px; background: var(--surface); color: var(--ink); font: 600 0.82rem var(--f-body); cursor: pointer; box-shadow: inset 0 0 0 0.5px var(--line); }
+.tips-cities button.on { background: var(--ink); color: var(--bg); box-shadow: none; }
+.tips-list { display: flex; flex-direction: column; background: var(--surface); border-radius: 18px; overflow: hidden; }
+.tip { display: flex; gap: 12px; padding: 13px 14px; border: 0; background: none; color: var(--ink); text-align: left; font: inherit; cursor: pointer; }
+.tip + .tip { border-top: 0.5px solid var(--line); }
+.tip:active { background: var(--bg); }
+.tip-when { flex: none; align-self: flex-start; min-width: 54px; padding: 4px 8px; border-radius: 10px; background: linear-gradient(135deg, #f59e0b, #ea580c); color: #fff; font: 800 0.74rem/1.2 var(--f-display); text-align: center; font-variant-numeric: tabular-nums; }
+.tip-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.tip-body b { font-size: 0.92rem; }
+.tip-body span { font-size: 0.84rem; line-height: 1.45; color: var(--muted); }
 /* Trip hero */
 .hero { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; padding: 20px 18px 16px; border-radius: 24px; color: #fff; background: radial-gradient(120% 140% at 100% 0%, #2f9a7c 0%, transparent 55%), linear-gradient(135deg, #1f7a63, #173f6b); box-shadow: 0 10px 30px rgb(23 63 107 / 0.25); }
 .hero::after { content: ""; position: absolute; right: -60px; bottom: -80px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgb(255 255 255 / 0.12), transparent 70%); pointer-events: none; }
@@ -1431,6 +1445,7 @@ html.bs-open, html.bs-open body { overflow: hidden; }
 .dt-row + .dt-row { border-top: 0.5px solid var(--line); }
 .dt-ic { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: color-mix(in srgb, var(--pc) 12%, var(--surface)); color: var(--pc); }
 .dt-ic svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.dt-row:first-child .dt-l { color: var(--pc); }
 .dt-row > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding-top: 1px; }
 .dt-l { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
 .dt-v { font-size: 0.92rem; line-height: 1.45; overflow-wrap: anywhere; }
@@ -1868,6 +1883,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <button type="button" data-go="today" class="hl" hidden>Today</button>
       <button type="button" data-go="weather">Weather</button>
       <button type="button" data-go="handy">Handy</button>
+      <button type="button" data-go="tips">Tips</button>
       <button type="button" data-go="flights">Flights</button>
       <button type="button" data-go="s-bj">Beijing</button>
       <button type="button" data-go="s-xa">Xi'an</button>
@@ -1906,6 +1922,10 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <button type="button" class="hd-tile hd-sos" data-handy="sos"><span class="hd-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 20.5 19h-17z"/><path d="M12 10v4M12 16.6v.1"/></svg></span><b>Emergency</b><span class="hd-sub">110 · 120 · 999</span></button>
     </div>
   </section>
+<section class="stop" aria-labelledby="tips">
+    <div class="stop-head"><h2 id="tips">Beat the crowds</h2><span class="nights">when to go for the best experience</span></div>
+    <div id="tips-box"></div>
+  </section>
 <section class="stop" aria-labelledby="flights">
     <div class="stop-head"><h2 id="flights">Flights</h2><span class="nights">times are local</span></div>
     <div class="fls">
@@ -1941,11 +1961,11 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       </div>
       <div class="day">
         <div class="date">18 Dec<span class="dow">Fri</span></div>
-        <div class="body"><h3>Great Wall <span class="chip move">booked</span> <span class="chip early">meet 06:20</span></h3><p class="muted"><b>Meet at 06:20 at Dongzhimen metro, Exit C</b> (<span class="zh">东直门地铁C出口</span>), Beijing Mubus; 06:25 is the latest. Schedule a <b>DiDi the night before for 05:50</b> from Jiugulou Street: about 15 min and ¥20 at that hour. Backup: metro Line 2 from Guloudajie, 3 stops; leave the hotel by 05:40. Tickets included, bring both passports.</p><div class="maps meet"><a class="amap" href="https://uri.amap.com/search?keyword=%E4%B8%9C%E7%9B%B4%E9%97%A8%E5%9C%B0%E9%93%81%E7%AB%99C%E5%8F%A3&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=%E4%B8%9C%E7%9B%B4%E9%97%A8%E5%9C%B0%E9%93%81%E7%AB%99C%E5%8F%A3&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Meeting point</a><button type="button" class="amap" data-show="东直门地铁站C口" data-py="请带我去这里 · Please take me here" data-en="Dongzhimen metro station, Exit C"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4.5h5.5V10M10 19.5H4.5V14M19.5 4.5 13.5 10.5M4.5 19.5l6-6"/></svg>Show to driver</button></div></div>
+        <div class="body"><h3>Great Wall <span class="chip move">booked</span> <span class="chip early">meet 06:20</span></h3><p class="muted"><b>Meet at 06:20 at Dongzhimen metro, Exit C</b> (<span class="zh">东直门地铁C出口</span>), Beijing Mubus; 06:25 is the latest. Schedule a <b>DiDi the night before for 05:50</b> from Jiugulou Street: about 15 min and ¥20 at that hour. Backup: metro Line 2 from Guloudajie, 3 stops; leave the hotel by 05:40. Tickets included, bring both passports.</p><div class="addr"><span class="zh">北京市东城区东直门地铁站C口</span><button class="copy" type="button">Copy</button><span class="en">Dongzhimen metro station, Exit C · paste into DiDi as the destination</span></div><div class="maps meet"><a class="amap" href="https://uri.amap.com/search?keyword=%E4%B8%9C%E7%9B%B4%E9%97%A8%E5%9C%B0%E9%93%81%E7%AB%99C%E5%8F%A3&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=%E4%B8%9C%E7%9B%B4%E9%97%A8%E5%9C%B0%E9%93%81%E7%AB%99C%E5%8F%A3&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Meeting point</a></div></div>
       </div>
       <div class="day">
         <div class="date">19 Dec<span class="dow">Sat</span></div>
-        <div class="body"><h3>Mao Mausoleum, Tiananmen Square &amp; Forbidden City</h3><p class="muted">Mausoleum first: it opens 08:00 and closes at 12:00, with no bags allowed inside. Then the square, then walk north through the Meridian Gate into the Forbidden City. All three need advance booking with your passport, and Saturday Forbidden City tickets go in minutes (see the booking timeline).</p><div class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=毛主席纪念堂&amp;city=北京&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=北京毛主席纪念堂&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Mausoleum</a><a class="amap" href="https://uri.amap.com/search?keyword=天安门广场&amp;city=北京&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=北京天安门广场&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Tiananmen</a><a class="amap" href="https://uri.amap.com/search?keyword=故宫博物院午门&amp;city=北京&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=北京故宫博物院午门&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Forbidden City entrance</a></div></div>
+        <div class="body"><h3>Mao Mausoleum, Tiananmen Square &amp; Forbidden City</h3><p class="muted">Mausoleum first: it opens 08:00 and closes at 12:00, with no bags allowed inside. Then the square, then walk north through the Meridian Gate into the Forbidden City. All three need advance booking with your passport, and Saturday Forbidden City tickets go in minutes (see the booking timeline). <b>Tip:</b> leave the palace by the north gate around 16:15 and climb Jingshan Park opposite for sunset over the roofs.</p><div class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=毛主席纪念堂&amp;city=北京&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=北京毛主席纪念堂&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Mausoleum</a><a class="amap" href="https://uri.amap.com/search?keyword=天安门广场&amp;city=北京&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=北京天安门广场&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Tiananmen</a><a class="amap" href="https://uri.amap.com/search?keyword=故宫博物院午门&amp;city=北京&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=北京故宫博物院午门&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Forbidden City entrance</a></div></div>
       </div>
     </div>
   </section>
@@ -1959,7 +1979,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       </div>
       <div class="day">
         <div class="date">21 Dec<span class="dow">Mon</span></div>
-        <div class="body"><h3>Terracotta Warriors</h3><p class="muted">About 1 h east of the city centre. Plan most of the day for it. Tickets only online, booked from 14 Dec.</p><div class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=秦始皇帝陵博物院&amp;city=西安&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=西安秦始皇帝陵博物院&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Terracotta Warriors</a></div></div>
+        <div class="body"><h3>Terracotta Warriors</h3><p class="muted">About 1 h east of the city centre. <b>Be there for the 08:30 opening</b> and see Pit 1 first, before the tour buses (around 10:00). Plan most of the day; the Huaqing Palace hot springs are 10 minutes away. Tickets only online, booked from 14 Dec.</p><div class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=秦始皇帝陵博物院&amp;city=西安&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=西安秦始皇帝陵博物院&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Terracotta Warriors</a></div></div>
       </div>
     </div>
   </section>
@@ -1973,7 +1993,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       </div>
       <div class="day">
         <div class="date">23 Dec<span class="dow">Wed</span></div>
-        <div class="body"><h3>Giant pandas</h3><p class="muted">Chengdu Research Base of Giant Panda Breeding (成都大熊猫繁育研究基地), the big main base. Enter by the <b>West Gate (西门)</b>, which opens at <b>08:00</b> in winter (Nov–Feb). Be there for opening: the pandas are most active early and sleep by midday.</p><div class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=成都大熊猫繁育研究基地西门&amp;city=成都&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=成都成都大熊猫繁育研究基地西门&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Panda Base West Gate</a></div></div>
+        <div class="body"><h3>Giant pandas</h3><p class="muted">Chengdu Research Base of Giant Panda Breeding (成都大熊猫繁育研究基地), the big main base. Enter by the <b>West Gate (西门)</b>, which opens at <b>08:00</b> in winter (Nov–Feb). <b>Be at the gate by 07:30</b> to be first in, then head straight up to the adult enclosures and the nursery: the pandas eat and play until about 10:00 and sleep by midday.</p><div class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=成都大熊猫繁育研究基地西门&amp;city=成都&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=成都成都大熊猫繁育研究基地西门&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Panda Base West Gate</a></div></div>
       </div>
     </div>
   </section>
@@ -2501,7 +2521,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261550">26 Nov 2026, 15:50</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261606">26 Nov 2026, 16:06</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -2864,7 +2884,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     "Crowne Plaza Landmark": { x: "A big business hotel in Luohu, Shenzhen's older commercial district. It's well placed for the walk to Hong Kong: the Luohu border crossing is 1.7 km away, and Guomao metro is 310 m from the door. Dongmen's shopping streets are a short ride north.", tk: "Booked · 27–29 Dec, 2 nights", bk: "Booked on Trip.com. Check-in from 14:00, check-out by 12:00 (usual times).", m: "Line 1, Guomao station, 310 m." },
     "Stanford Hillview Hotel": { x: "A small, quiet hotel on Observatory Road, up the hill from the bustle of Tsim Sha Tsui. Knutsford Terrace's bars are around the corner, Nathan Road and the harbourfront are a 10-minute walk, and Hung Hom station is about 900 m away.", tk: "Booked · 29–31 Dec, 2 nights", bk: "Booked on Trip.com. Check-in from 14:00, check-out by 12:00 (usual times).", m: "MTR Tsim Sha Tsui / East Tsim Sha Tsui, about 8 min walk." },
 
-    "Great Wall meeting point": { x: "The meeting point for your Great Wall tour with Beijing Mubus. Dongzhimen is a big interchange (Line 2, Line 13 and the Airport Express): come up to street level at Exit C (C口) and look for the guide in a red vest. Be there by 06:20; 06:25 is the latest to keep your seats. It's dark and around −7 °C at that hour, so dress for the wall before you leave.", tk: "Tour booked with Beijing Mubus, Great Wall tickets included.", bk: "Bring both passports. If something changes, use Get support in the booking app.", hr: "Fri 18 Dec · arrive by 06:20 (latest 06:25). Alarm 05:15.", m: "Backup: Line 2 from Guloudajie (10 min walk from the hotel), 3 stops to Dongzhimen (~8 min), then follow the signs to Exit C. First trains run from about 05:10; leave the hotel by 05:40.", didi: "≈ 5 km · ~12–15 min at 05:50 · ≈ ¥20. Schedule it the night before (预约), pick-up on Jiugulou Street." },
+    "Great Wall meeting point": { addr: "北京市东城区东直门地铁站C口", x: "The meeting point for your Great Wall tour with Beijing Mubus. Dongzhimen is a big interchange (Line 2, Line 13 and the Airport Express): come up to street level at Exit C (C口) and look for the guide in a red vest. Be there by 06:20; 06:25 is the latest to keep your seats. It's dark and around −7 °C at that hour, so dress for the wall before you leave.", tk: "Tour booked with Beijing Mubus, Great Wall tickets included.", bk: "Bring both passports. If something changes, use Get support in the booking app.", hr: "Fri 18 Dec · arrive by 06:20 (latest 06:25). Alarm 05:15.", m: "Backup: Line 2 from Guloudajie (10 min walk from the hotel), 3 stops to Dongzhimen (~8 min), then follow the signs to Exit C. First trains run from about 05:10; leave the hotel by 05:40.", didi: "≈ 5 km · ~12–15 min at 05:50 · ≈ ¥20. Schedule it the night before (预约), pick-up on Jiugulou Street." },
     "Great Wall day trip": { x: "Badaling is the most visited section of the Ming Great Wall, with steep, fully restored stretches and cable cars. Your agency tour may go to Mutianyu instead, which is greener and less crowded. Wrap up warm: it's windy and well below zero on the wall in December.", tk: "Badaling about ¥40 (winter); cable car extra. Included in many tours.", bk: "Booked with Beijing Mubus for Fri 18 Dec. Meet at 06:20 at Dongzhimen metro, Exit C. Bring both passports.", hr: "Most of a day including the drive.", far: "Tour bus from Dongzhimen (meet 06:20), about 1–1.5 h each way." },
     "Forbidden City": { x: "The imperial palace of the Ming and Qing dynasties, now the Palace Museum. You walk from south to north through huge courtyards and halls to the Imperial Garden. Side wings like the Treasure Gallery and the Clock Gallery are worth the small extra fee. Closed on Mondays.", tk: "¥40 in winter (Nov–Mar); Treasure Gallery and Clock Gallery ¥10 each.", bk: "Required: real-name booking on the Palace Museum site, opens 7 days ahead at 20:00 Beijing time and sells out. Bring the passport you booked with.", hr: "08:30–16:30 in winter (last entry 15:30). Allow 3–4 hours.", m: "Line 1, Tiananmen East, then walk through Tiananmen to the Meridian Gate." },
     "Tiananmen Square": { x: "The vast square in front of Tiananmen Gate, with the Monument to the People's Heroes, the Great Hall of the People and Mao's mausoleum. The flag-raising at sunrise draws big crowds. Security is tight: expect several passport and bag checks.", tk: "Free.", bk: "Required: free real-name booking in the 天安门广场预约参观 mini program, opens 7 days ahead.", hr: "About 1 hour, plus security queues.", m: "Line 1, Tiananmen East / West, or Line 2/8 Qianmen." },
@@ -3004,6 +3024,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     back: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>',
     ticket: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 8.5V6.5a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v2a3.5 3.5 0 0 0 0 7v2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-2a3.5 3.5 0 0 0 0-7z"/><path d="M14 6v12" stroke-dasharray="2 2.2"/></svg>',
     cal: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="3"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M9 14.8l2 2 4-4"/></svg>',
+    bolt: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3 5.5 13.5H12L11 21l7.5-10.5H12z"/></svg>',
     clock: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
     car: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/></svg>',
     metro: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/></svg>',
@@ -3198,6 +3219,9 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       var cid = HOTEL_CARD[p.n], a = cid && document.querySelector('#hc-' + cid + ' .hc-addr .zh');
       if (a) rows.push([IC.pin, 'Address', '<button type="button" class="dt-copy zh" data-copy="' + esc(a.textContent) + '">' + esc(a.textContent) + IC.copy + '</button>']);
     }
+    if (D.addr) rows.push([IC.pin, 'Address for DiDi', '<button type="button" class="dt-copy zh" data-copy="' + esc(D.addr) + '">' + esc(D.addr) + IC.copy + '</button>']);
+    var TP = window.china2026Tips && window.china2026Tips[p.n];
+    if (TP) rows.unshift([IC.bolt, 'Insider tip · ' + esc(TP[0]), esc(TP[2])]);
     if (D.tk) rows.push([IC.ticket, p.t === 'hotel' ? 'Stay' : 'Tickets', esc(D.tk)]);
     if (D.bk) rows.push([IC.cal, p.t === 'hotel' ? 'Booking' : 'Booking', esc(D.bk)]);
     if (D.hr) rows.push([IC.clock, 'Hours & time', esc(D.hr)]);
@@ -4377,11 +4401,22 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     });
     openSheet('Search places', '<div class="srch-in"><input type="search" placeholder="Panda, duck, temple, Hong Kong…" aria-label="Search places" autocomplete="off"></div><div class="srch-groups"></div>', function (body) {
       var inp = body.querySelector('input'), list = body.querySelector('.srch-groups');
+      function recent() { try { return JSON.parse(ls('china2026:recent') || '[]'); } catch (e) { return []; } }
       function draw() {
-        var q = inp.value.trim().toLowerCase(), hits = rows.filter(function (r) { return !q || q.split(/\s+/).every(function (w) { return r.key.indexOf(w) >= 0; }); });
+        var q0 = inp.value.trim();
+        if (!q0) {
+          var rc = recent().map(function (n) { for (var i = 0; i < rows.length; i++) if (rows[i].p.n === n) return rows[i]; return null; }).filter(Boolean);
+          var top = rc.length ? '<div class="srch-group"><h3>Recent<button type="button" class="srch-clear">Clear</button></h3><div class="srch-list">' + rc.map(function (r) { return r.html; }).join('') + '</div></div>' : '';
+          list.innerHTML = top + groups(rows);
+          return;
+        }
+        var q = q0.toLowerCase(), hits = rows.filter(function (r) { return !q || q.split(/\s+/).every(function (w) { return r.key.indexOf(w) >= 0; }); });
         if (!hits.length) { list.innerHTML = '<div class="srch-list"><div class="srch-empty">Nothing found</div></div>'; return; }
+        list.innerHTML = groups(hits);
+      }
+      function groups(hits) {
         var order = { hotel: 0, sight: 1, station: 2, idea: 3 };
-        list.innerHTML = CITIES.map(function (c) {
+        return CITIES.map(function (c) {
           var g = hits.filter(function (r) { return r.city === c.n; });
           if (!g.length) return '';
           g.sort(function (a, b) { return order[a.p.t] - order[b.p.t]; });
@@ -4390,8 +4425,10 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       }
       inp.addEventListener('input', draw); draw();
       list.addEventListener('click', function (e) {
+        if (e.target.closest('.srch-clear')) { ls('china2026:recent', '[]'); draw(); return; }
         var r = e.target.closest('.srch-row'); if (!r) return;
         var p = pl.P[+r.getAttribute('data-i')];
+        var rc = recent().filter(function (n) { return n !== p.n; }); rc.unshift(p.n); ls('china2026:recent', JSON.stringify(rc.slice(0, 6)));
         closeSheet();
         if (location.hash !== '#map') location.hash = '#map';
         setTimeout(function () { pl.focus(p); }, 350);
@@ -4400,6 +4437,67 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     }, true);
   }
   document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('#search-btn')) openSearch(); });
+  // ---------- Beat the crowds: timing tips per city ----------
+  var TIPS = {
+    bj: [
+      ['06:20', 'Great Wall meeting point', 'An early tour means the wall before the crowds. On the wall, walk away from the entrance and cable car: within 15 minutes it empties out. Hat, gloves and hand warmers: it\'s windy up there.'],
+      ['07:30', 'Mao Mausoleum', 'Queue from about 07:30 with only your passport: no bags, and phones away. The line moves fast but grows quickly after 08:30.'],
+      ['Afternoon', 'Forbidden City', 'Everyone walks the central axis. Peel off into the east wing (Treasure Gallery, Nine-Dragon Screen) and the western palaces: half the crowds, more atmosphere. Last entry 15:30.'],
+      ['16:15', 'Jingshan Park', 'Leave the palace by the north gate and climb Jingshan for sunset (about 16:50 in December): the golden roofs of the whole Forbidden City below you.'],
+      ['07:00', 'Temple of Heaven', 'Come early through the East Gate: locals do tai chi, dance and play shuttlecock in the Long Corridor. The halls open at 08:00, before the tour groups.'],
+      ['Dusk', 'Houhai & Shichahai hutongs', 'Right by your hotel: walk the frozen lakes at dusk, skate if the rink is open, then dinner in the hutongs.'],
+      ['10:30', 'Peking duck at Siji Minfu', 'Take a queue number at opening (10:30) or around 16:00 to skip the 1–2 hour dinner wait.']
+    ],
+    xa: [
+      ['08:30', 'Terracotta Warriors', 'Be at the gate for the 08:30 opening and see Pit 1 first, before the tour buses arrive around 10:00. An official guide at the entrance brings the pits to life.'],
+      ['Sunset', 'City Wall by bike', 'Rent bikes at the South Gate around 15:30 and ride towards sunset; the lanterns on the wall light up afterwards.'],
+      ['19:00', 'Datang Everbright City', 'Come after 19:00 for the lights and costumed performers. Weekends are packed; your Monday evening (21 Dec) is ideal.'],
+      ['Book ahead', 'Shaanxi History Museum', 'Free timed tickets go online days ahead and vanish fast. It\'s closed on Mondays, so your chance is Sun 20 Dec afternoon.'],
+      ['Evening', 'Muslim Quarter', 'Stalls are busiest 18:00–21:00. Peek into the Great Mosque in the late afternoon, when it\'s quiet.']
+    ],
+    cd: [
+      ['07:30', 'Giant Panda Base', 'Be at the West Gate by 07:30, first in line for the 08:00 opening. Head straight up to the adult enclosures and the nursery: pandas eat and play until about 10:00, then sleep. Done by 11:00.'],
+      ['14:00', 'People\'s Park teahouse', 'The Heming teahouse is liveliest in the afternoon, with mahjong all around. Grab a table by the lake.'],
+      ['18:00', 'Jinli Ancient Street', 'The lanterns come on at dusk. Arrive around 18:00 for photos before the evening crowd peaks.'],
+      ['20:00', 'Sichuan Opera & face-changing', 'Book a seat in the front rows: the face-changing finale is best seen up close.']
+    ],
+    ys: [
+      ['06:15', 'Xianggong Hill', 'Sunrise is about 07:25 in late December. Leave town by 06:15; mist over the river bends is most likely on calm, cold mornings.'],
+      ['Before 10:00', 'Li River at Xingping', 'Morning rafts and boats have the river almost to themselves. The 20-yuan view is right by Xingping pier.'],
+      ['Morning', 'Yulong River rafting', 'Start upstream near Dragon Bridge in the morning: quieter, with soft light on the peaks.'],
+      ['Evening', 'West Street', 'Wander West Street after dinner when it lights up; it\'s two minutes from your hotel.']
+    ],
+    sz: [
+      ['17:00', 'Free Sky at Ping An Finance Centre', 'Check the visibility first, then go about 45 minutes before sunset (around 17:50): day and night views for one ticket.'],
+      ['Sunset', 'Lianhuashan Park', 'Climb at sunset for the Futian skyline lighting up below you.']
+    ],
+    hk: [
+      ['Before 10:00', 'Victoria Peak', 'Skip the Peak Tram queue: go before 10:00 or after 20:00, or take bus 15 from Central. The free Lugard Road loop has better views than the paid terrace.'],
+      ['20:00', 'Avenue of Stars', 'The Symphony of Lights starts at 20:00. Watch from the harbourfront, then ride the Star Ferry across for the skyline from the water.'],
+      ['Opening', 'Big Buddha, Ngong Ping', 'Book the cable car online and be there at opening: later queues can take an hour.'],
+      ['After 19:00', 'Temple Street Night Market', 'It gets going after 19:00. Eat at the open-air dai pai dong stalls.']
+    ]
+  };
+  var TIP_BY_NAME = {};
+  Object.keys(TIPS).forEach(function (k) { TIPS[k].forEach(function (t) { TIP_BY_NAME[t[1]] = t; }); });
+  window.china2026Tips = TIP_BY_NAME;
+  function renderTips() {
+    var box = document.getElementById('tips-box'); if (!box) return;
+    var today = ymd(new Date(), 'Asia/Shanghai'), cur = 'bj';
+    CITIES.forEach(function (c) { if (today >= c.from && today < c.to) cur = c.id; });
+    var sel = ls('china2026:tips-city') || cur;
+    function draw() {
+      box.innerHTML = '<div class="tips-cities">' + CITIES.map(function (c) { return '<button type="button" data-tc="' + c.id + '"' + (c.id === sel ? ' class="on"' : '') + '>' + esc(c.n) + '</button>'; }).join('') + '</div>' +
+        '<div class="tips-list">' + (TIPS[sel] || []).map(function (t) {
+          return '<button type="button" class="tip" data-place="' + esc(t[1]) + '"><span class="tip-when">' + esc(t[0]) + '</span><span class="tip-body"><b>' + esc(t[1]) + '</b><span>' + esc(t[2]) + '</span></span></button>';
+        }).join('') + '</div>';
+    }
+    box.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-tc]'); if (!b) return;
+      sel = b.getAttribute('data-tc'); ls('china2026:tips-city', sel); draw();
+    });
+    draw();
+  }
   // ---------- To do progress ----------
   function renderProgress() {
     var td = window.china2026Todo, head = document.querySelector('#book .large'); if (!td || !head) return;
@@ -4411,7 +4509,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   }
   document.addEventListener('change', function (e) { if (e.target.closest && e.target.closest('#book')) setTimeout(renderProgress, 300); });
   function start() {
-    renderHero(); renderPlaces(); moneyTile(); renderProgress(); addShowButtons();
+    renderHero(); renderPlaces(); moneyTile(); renderProgress(); addShowButtons(); renderTips();
     setInterval(renderHero, 30000);
     document.addEventListener('visibilitychange', function () { if (!document.hidden) renderHero(); });
   }
