@@ -1054,6 +1054,21 @@ html.sheet-open, html.sheet-open body { overflow: hidden; }
 .map-legend span { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 5px; }
 .map-legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
 .map-off { position: absolute; z-index: 1000; left: 16px; right: 16px; top: 45%; text-align: center; padding: 14px 16px; border-radius: 14px; background: var(--surface); color: var(--ink); font-size: 0.92rem; box-shadow: 0 6px 20px rgb(0 0 0 / 0.12); }
+/* Map tab: full screen under the floating tab bar */
+html.map-mode, html.map-mode body { overflow: hidden; }
+.map-pane .map { position: fixed; inset: 0; z-index: 5; }
+.map-pane .map-legend { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 10px); left: 12px; }
+.map-pane .map-chips { position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 84px); max-width: 520px; margin-inline: auto; }
+.map-pane .map-off { position: fixed; }
+.map-pane .leaflet-bottom { bottom: calc(env(safe-area-inset-bottom, 0px) + 136px); }
+
+/* Title row with the About button; back link on About */
+.title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.info-btn { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: var(--jade); }
+.info-btn svg { position: relative; z-index: 1; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; }
+.info-btn:focus-visible, .back:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
+.back { align-self: flex-start; display: inline-flex; align-items: center; gap: 2px; margin-left: -6px; color: var(--jade); font-weight: 600; font-size: 1rem; text-decoration: none; }
+.back svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 .c-hotel { background: var(--jade); } .c-sight { background: var(--seal); } .c-station { background: #6c6c70; }
 
 /* Pins and popups */
@@ -1384,7 +1399,7 @@ html.sheet-open, html.sheet-open body { overflow: hidden; }
   </section>
 
   <section class="pane" id="trip" data-title="Trip" aria-label="Trip" hidden>
-    <div class="large"><h1>China 2026</h1><div class="facts">
+    <div class="large"><div class="title-row"><h1>China 2026</h1><a href="#about" class="info-btn glass" aria-label="About this app"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".7"/></svg></a></div><div class="facts">
       <span><b>15 Dec 2026 → 1 Jan 2027</b></span>
       <span><b>6</b> cities</span>
       <span><b>15</b> nights on the ground, 2 on planes</span>
@@ -1799,12 +1814,12 @@ html.sheet-open, html.sheet-open body { overflow: hidden; }
   </section>
 
   <section class="pane" id="about" data-title="About" aria-label="About" hidden>
-    <div class="large"><h1>About</h1><p class="lead">China 2026 · final plan, kept up to date</p></div>
+    <div class="large"><a href="#trip" class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Trip</a><h1>About</h1><p class="lead">China 2026 · final plan, kept up to date</p></div>
     <div class="pane-body">
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260835">26 Nov 2026, 08:35</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260842">26 Nov 2026, 08:42</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
         </div>
@@ -1821,14 +1836,10 @@ html.sheet-open, html.sheet-open body { overflow: hidden; }
       </section>
     </div>
   </section>
-</main>
-
-<button type="button" class="fab glass" id="map-btn" aria-label="Open the trip map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 3.5 6.8v12.7L9 17.2l6 2.3 5.5-2.3V4.5L15 6.8 9 4.5zM9 4.5v12.7M15 6.8v12.7"/></svg><span>Map</span></button>
-<div class="sheet" id="map-sheet" role="dialog" aria-modal="true" aria-labelledby="map-title" hidden>
-  <div id="map" class="map"></div>
-  <div class="sheet-bar glass"><h2 id="map-title">Trip map</h2><button type="button" class="sheet-x" id="map-close" aria-label="Close the map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
-  <div class="map-legend glass"><span><i class="c-hotel"></i>Hotel</span><span><i class="c-sight"></i>Sight</span><span><i class="c-station"></i>Station</span></div>
-  <div class="map-chips glass" id="map-chips">
+  <section class="pane map-pane" id="map" data-title="Map" aria-label="Trip map" hidden>
+    <div id="leafmap" class="map"></div>
+    <div class="map-legend glass"><span><i class="c-hotel"></i>Hotel</span><span><i class="c-sight"></i>Sight</span><span><i class="c-station"></i>Station</span></div>
+    <div class="map-chips glass" id="map-chips">
     <button type="button" data-fly="all" class="on">All China</button>
     <button type="button" data-fly="0">Beijing</button>
     <button type="button" data-fly="1">Xi'an</button>
@@ -1837,25 +1848,24 @@ html.sheet-open, html.sheet-open body { overflow: hidden; }
     <button type="button" data-fly="4">Shenzhen</button>
     <button type="button" data-fly="5">Hong Kong</button>
   </div>
-  <p class="map-off" id="map-off" hidden></p>
-</div>
+    <p class="map-off" id="map-off" hidden></p>
+  </section>
+</main>
 
 <nav class="tabbar" aria-label="Main">
   <a href="#trip" class="tab" data-tab="trip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 3.5 6.8v12.7L9 17.2l6 2.3 5.5-2.3V4.5L15 6.8 9 4.5zM9 4.5v12.7M15 6.8v12.7"/></svg><span>Trip</span></a>
   <a href="#book" class="tab" data-tab="book"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3"/><path d="M8 9l1.6 1.6L12.5 7.7M8 15h8"/></svg><span>Bookings</span></a>
   <a href="#stay" class="tab" data-tab="stay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.5v-11M3.5 14h17v4.5M20.5 14v-2.5a3 3 0 0 0-3-3H11V14"/><circle cx="7.2" cy="10.8" r="1.8"/></svg><span>Hotels</span></a>
   <a href="#move" class="tab" data-tab="move"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3.5" width="12" height="13" rx="3"/><path d="M6 11h12M9 20.5l1.5-4M15 20.5l-1.5-4"/><circle cx="9.3" cy="13.7" r=".6"/><circle cx="14.7" cy="13.7" r=".6"/></svg><span>Transit</span></a>
-  <a href="#about" class="tab" data-tab="about"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".7"/></svg><span>About</span></a>
+  <a href="#map" class="tab" data-tab="map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg><span>Map</span></a>
 </nav>
 
 <script>
 (function () {
   // Trip map: Leaflet + free Amap tiles (English labels, work inside China). Loaded only when opened.
   var LEAFLET = 'vendor/leaflet.js';
-  var btn = document.getElementById('map-btn');
-  var sheet = document.getElementById('map-sheet');
   var off = document.getElementById('map-off');
-  if (!btn || !sheet) return;
+  if (!document.getElementById('leafmap')) return;
   var map = null, cityView = [];
   var G = {
     hotel: '<svg viewBox="0 0 24 24"><path d="M3.5 18.5v-11M3.5 14h17v4.5M20.5 14v-2.5a3 3 0 0 0-3-3H11V14"/><circle cx="7.2" cy="10.8" r="1.8"/></svg>',
@@ -1913,7 +1923,7 @@ html.sheet-open, html.sheet-open body { overflow: hidden; }
 
   function build() {
     var L = window.L;
-    map = L.map('map', { zoomControl: false, attributionControl: true, worldCopyJump: false }).setView([31, 110], 5);
+    map = L.map('leafmap', { zoomControl: false, attributionControl: true, worldCopyJump: false }).setView([31, 110], 5);
     var tiles = L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=en&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
       subdomains: '234', maxZoom: 18, attribution: '&copy; AutoNavi 高德地图'
     }).addTo(map);
@@ -1939,7 +1949,7 @@ html.sheet-open, html.sheet-open body { overflow: hidden; }
     fitAll();
     map.on('popupopen', function (e) {
       var b = e.popup.getElement().querySelector('[data-goto]');
-      if (b) b.addEventListener('click', function () { close(); location.hash = b.getAttribute('data-goto'); });
+      if (b) b.addEventListener('click', function () { location.hash = b.getAttribute('data-goto'); });
     });
   }
   function fitAll() {
@@ -1954,21 +1964,12 @@ html.sheet-open, html.sheet-open body { overflow: hidden; }
     s.onerror = function () { showOff('The map needs internet the first time you open it.'); };
     document.head.appendChild(s);
   }
-  function open() {
-    sheet.hidden = false;
-    document.documentElement.classList.add('sheet-open');
+  function show() {
     loadLeaflet(function () {
       if (!map) build();
       setTimeout(function () { map.invalidateSize(); }, 50);
     });
   }
-  function close() {
-    sheet.hidden = true;
-    document.documentElement.classList.remove('sheet-open');
-  }
-  btn.addEventListener('click', open);
-  document.getElementById('map-close').addEventListener('click', close);
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !sheet.hidden) close(); });
   document.querySelectorAll('#map-chips button').forEach(function (b) {
     b.addEventListener('click', function () {
       if (!map) return;
@@ -1978,7 +1979,7 @@ html.sheet-open, html.sheet-open body { overflow: hidden; }
       else { var c = CITIES[+v]; map.flyTo(c.ll, c.z, { duration: 0.8 }); }
     });
   });
-  window.china2026Map = { open: open, close: close };
+  window.china2026Map = { show: show };
 })();
 (function () {
   // Weather: free Open-Meteo forecast (16 days, no key). Falls back to the last saved forecast, then to typical December values.
@@ -2122,7 +2123,7 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
   });
 });
 (function () {
-  var TABS = ['trip', 'book', 'stay', 'move', 'about'];
+  var TABS = ['trip', 'book', 'stay', 'move', 'map', 'about'];
   var panes = {};
   TABS.forEach(function (t) { panes[t] = document.getElementById(t); });
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabbar .tab'));
@@ -2144,9 +2145,9 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
       if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
     if (title) title.textContent = panes[tab].getAttribute('data-title');
-    var mapBtn = document.getElementById('map-btn');
-    if (mapBtn) mapBtn.hidden = !(tab === 'trip' || tab === 'stay');
+    document.documentElement.classList.toggle('map-mode', tab === 'map');
     resetBar();
+    if (tab === 'map' && window.china2026Map) window.china2026Map.show();
     var changed = active !== tab;
     active = tab;
     store('china2026:tab', tab);
