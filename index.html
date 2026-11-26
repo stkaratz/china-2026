@@ -1125,6 +1125,77 @@ html.map-mode .sbar { display: none; }
 .cluster span { display: flex; gap: 2px; }
 .cluster i { width: 6px; height: 6px; border-radius: 50%; display: block; }
 .cd-hotel { background: #7de8c8; } .cd-sight { background: #ffa274; } .cd-station { background: #e5e5ea; } .cd-idea { background: #b9b9ff; }
+/* ---------- To do: Up next list ---------- */
+.tab { position: relative; }
+.tab-badge { position: absolute; top: 5px; left: calc(50% + 6px); min-width: 17px; height: 17px; padding: 0 5px; border-radius: 99px; background: #ff3b30; color: #fff; font: 700 10.5px/17px var(--f-body); font-style: normal; text-align: center; box-shadow: 0 0 0 2px var(--surface); z-index: 2; }
+.tabbar.compact .tab-badge { top: 2px; }
+.todo { display: flex; flex-direction: column; gap: 14px; }
+.todo-group { display: flex; flex-direction: column; gap: 8px; }
+.todo-group > h3 { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.todo-group > h3 i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.g-missed > h3 { color: #ff3b30; } .g-today > h3 { color: var(--seal); } .g-tomorrow > h3 { color: #f08a24; } .g-soon > h3 { color: #c49a00; } .g-week > h3, .g-later > h3, .g-done > h3 { color: var(--muted); }
+.todo-card { position: relative; display: grid; grid-template-columns: 28px 1fr; gap: 12px; background: var(--surface); border-radius: 16px; padding: 14px 14px 14px 12px; overflow: hidden; }
+.todo-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--line); }
+.g-missed .todo-card::before { background: #ff3b30; } .g-today .todo-card::before { background: var(--seal); } .g-tomorrow .todo-card::before { background: #f08a24; } .g-soon .todo-card::before { background: #e3b505; }
+.g-today .todo-card.hero { background: linear-gradient(135deg, var(--seal-soft), var(--surface) 70%); box-shadow: 0 6px 20px rgb(194 65 12 / 0.12); }
+.todo-card input[type="checkbox"] { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--jade); cursor: pointer; }
+.todo-card .tc-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.todo-card .tc-when { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 0.78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.todo-card .tc-when b { color: var(--ink); font-weight: 700; }
+.todo-card .tc-count { padding: 2px 8px; border-radius: 99px; background: var(--seal-soft); color: var(--seal); font-weight: 700; }
+.todo-card h4 { margin: 0; font: 700 1rem/1.3 var(--f-display); }
+.g-today .todo-card.hero h4 { font-size: 1.12rem; }
+.todo-card p { font-size: 0.88rem; color: var(--muted); }
+.todo-card .tc-acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.todo-card .tc-acts a, .todo-card .tc-acts button { display: inline-flex; align-items: center; min-height: 30px; padding: 0 12px; border: 0; border-radius: 99px; background: var(--jade-soft); color: var(--jade); font: 600 0.8rem var(--f-body); text-decoration: none; cursor: pointer; }
+.todo-card .tc-tag { align-self: flex-start; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; background: var(--bg); color: var(--muted); }
+.todo-card .tc-tag.hot { background: #ff3b30; color: #fff; }
+.todo-card.done { opacity: 0.55; }
+.todo-card.done h4 { text-decoration: line-through; }
+.todo-more { align-self: flex-start; border: 0; background: none; color: var(--jade); font: 600 0.88rem var(--f-body); cursor: pointer; padding: 4px 2px; }
+.todo-empty { background: var(--surface); border-radius: 16px; padding: 18px; text-align: center; color: var(--muted); }
+
+/* ---------- Train tickets ---------- */
+.tks { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); gap: 14px; }
+.tk { position: relative; background: var(--surface); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.05); scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 84px); }
+.tk-top { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; padding: 16px 18px 14px; background: linear-gradient(135deg, #1f7a63, #175f75); color: #fff; }
+.tk-end { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.tk-end.r { text-align: right; align-items: flex-end; }
+.tk-end b { font: 800 1.25rem/1.1 var(--f-display); letter-spacing: -0.01em; }
+.tk-end .zh { font-size: 0.9rem; opacity: 0.9; }
+.tk-code { font-family: var(--f-mono); font-size: 0.72rem; opacity: 0.8; }
+.tk-mid { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.74rem; font-weight: 600; opacity: 0.95; white-space: nowrap; }
+.tk-mid svg { width: 26px; height: 26px; fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tk-sale { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 10px 18px; font-size: 0.82rem; color: var(--muted); border-bottom: 0.5px solid var(--line); }
+.tk-sale b { color: var(--ink); }
+.tk-count { padding: 2px 9px; border-radius: 99px; background: var(--bg); color: var(--ink); font-weight: 700; font-size: 0.76rem; }
+.tk-count.soon { background: var(--seal-soft); color: var(--seal); }
+.tk-count.now { background: #ff3b30; color: #fff; }
+.tk-count.open { background: var(--jade-soft); color: var(--jade); }
+.tk-flag { margin-left: auto; padding: 2px 8px; border-radius: 6px; background: #fff1e6; color: #c2410c; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; }
+.tk-flag.fb { background: var(--bg); color: var(--muted); }
+.tk-opt { display: grid; grid-template-columns: auto auto auto 1fr auto; align-items: center; gap: 10px; padding: 12px 18px 4px; font-variant-numeric: tabular-nums; }
+.tk-role { font-size: 0.64rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; background: var(--jade); color: #fff; }
+.tk-opt.bk .tk-role { background: var(--line); color: var(--ink); }
+.tk-no { font: 800 1.05rem var(--f-mono); }
+.tk-t { font: 700 1.05rem var(--f-display); }
+.tk-line { position: relative; height: 1px; background: repeating-linear-gradient(90deg, var(--muted) 0 4px, transparent 4px 8px); opacity: 0.6; }
+.tk-line i { position: absolute; left: 50%; top: -9px; transform: translateX(-50%); padding: 0 6px; background: var(--surface); font: 600 0.68rem var(--f-body); font-style: normal; color: var(--muted); white-space: nowrap; }
+.tk-fares { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 6px 18px 10px; font-size: 0.78rem; color: var(--muted); }
+.tk-fares span { padding: 3px 8px; border-radius: 8px; background: var(--bg); }
+.tk-fares b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.tk-copy { margin-left: auto; border: 0; background: none; color: var(--jade); font: 600 0.78rem var(--f-body); cursor: pointer; padding: 3px 0; }
+.tk-perf { position: relative; height: 0; margin: 8px 0 0; border-top: 1.5px dashed var(--line); }
+.tk-perf::before, .tk-perf::after { content: ""; position: absolute; top: -9px; width: 18px; height: 18px; border-radius: 50%; background: var(--bg); }
+.tk-perf::before { left: -9px; } .tk-perf::after { right: -9px; }
+.tk-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 14px 18px 6px; }
+.tk-btn.primary { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 18px; border-radius: 99px; background: linear-gradient(135deg, #1f7a63, #175f75); color: #fff; font: 700 0.92rem var(--f-body); text-decoration: none; box-shadow: 0 4px 12px rgb(23 95 117 / 0.3); }
+.tk-btn.primary svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tk-link { font-size: 0.82rem; color: var(--jade); font-weight: 600; }
+.tk-note { padding: 4px 18px 16px; font-size: 0.82rem; color: var(--muted); }
+.tk-fallback { opacity: 0.8; }
+.tk-fallback .tk-top { background: linear-gradient(135deg, #6c6c70, #48484a); }
+.tk-btn:focus-visible, .tk-copy:focus-visible, .todo-more:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 .c-hotel { background: var(--jade); } .c-sight { background: var(--seal); } .c-idea { background: #5b5bd6; } .c-station { background: #6c6c70; }
 
 /* Pins and popups */
@@ -1151,16 +1222,21 @@ html.map-mode .sbar { display: none; }
 <div class="toast" id="update-banner" role="status" hidden><span>New version of the plan</span><button type="button" id="reload-btn">Reload</button></div>
 
 <main class="app">
-  <section class="pane" id="book" data-title="Bookings" aria-label="Bookings">
-    <div class="large"><h1>Bookings</h1><p class="lead">Final plan · kept up to date</p></div>
+  <section class="pane" id="book" data-title="To do" aria-label="To do">
+    <div class="large"><h1>To do</h1><p class="lead">What's next, most urgent first</p></div>
     <nav class="seg" aria-label="Bookings sections">
-      <button type="button" data-go="next" class="hl" hidden>Next up</button>
+      <button type="button" data-go="todo" class="hl">Up next</button>
       <button type="button" data-go="setup">Setup</button>
       <button type="button" data-go="booking">Dates</button>
       <button type="button" data-go="links">Sights</button>
       <button type="button" data-go="trainguide">Trains</button>
     </nav>
     <div class="pane-body">
+<section class="stop" aria-labelledby="todo">
+    <div class="stop-head"><h2 id="todo">Up next</h2><span class="nights" id="todo-sub">times in Copenhagen and Beijing</span></div>
+    <div class="todo" id="todo-list"><p class="muted">Loading…</p></div>
+  </section>
+
 <section class="stop" aria-labelledby="setup">
     <div class="stop-head"><h2 id="setup">Set up before the booking days</h2><span class="progress" id="setup-progress">tick as you go</span></div>
     <div class="setup">
@@ -1375,83 +1451,93 @@ html.map-mode .sbar { display: none; }
     <p class="foot">Step-by-step setup is in “Set up before the booking days” above.</p>
   </section>
 <section class="stop" aria-labelledby="trainguide">
-    <div class="stop-head"><h2 id="trainguide">Train booking guide</h2><span class="nights">what to type and tap on each booking day</span></div>
+    <div class="stop-head"><h2 id="trainguide">Train tickets</h2><span class="nights">main + backup for each leg</span></div>
     <div class="howto">
       <ol>
-        <li>Open <b>Railway 12306</b> in English. Type the station names exactly as shown below (pinyin, no spaces or apostrophes) and pick the travel date.</li>
-        <li>Find the train number, then tap the class: <b>second-class seat</b>, <b>first class seat</b> or <b>business class seat</b>.</li>
-        <li>Choose seats on the seat map. Window seats are <b>A</b> and <b>F</b> in second and first class. Pick D + F (or A + B) to sit together.</li>
-        <li>Pay. If the class is sold out, tap <b>Waitlist</b> (候补) on the main train straight away, then book the backup.</li>
+        <li><b>Open 12306</b> opens the app (or the 12306 website if the app doesn't open). Type the station names shown under each city, exactly as written, and pick the date.</li>
+        <li>Tap the train number, then the class: <b>second-class seat</b>, <b>first class seat</b> or <b>business class seat</b>. Use <b>Copy</b> to paste the train number into search.</li>
+        <li>Window seats are <b>A</b> and <b>F</b>; pick D + F (or A + B) to sit together.</li>
+        <li>Sold out? Tap <b>Waitlist</b> (候补) on the main train straight away, then book the backup.</li>
       </ol>
     </div>
-    <div class="guide">
-      <article class="tcard">
-        <header><span class="when">Book <b>Sun 6 Dec</b></span><span class="for">for Sun 20 Dec</span></header>
-        <h3>Beijing → Xi'an</h3>
-        <div class="app"><span>From <b>Beijingxi</b> <span class="zh">北京西</span></span><span>To <b>Xianbei</b> <span class="zh">西安北</span></span></div>
-        <table class="fare">
-          <thead><tr><th></th><th>Train</th><th>Time</th><th>2nd</th><th>1st</th><th>Business</th></tr></thead>
-          <tbody>
-            <tr><td><span class="pick">Main</span></td><td class="code">G365</td><td class="code">09:55 → 14:05<br><span class="muted">4h10</span></td><td class="code">¥587</td><td class="code">¥939</td><td class="code">¥1,945</td></tr>
-            <tr><td><span class="pick bk">Backup</span></td><td class="code">G353</td><td class="code">12:55 → 17:08<br><span class="muted">4h13</span></td><td class="code">¥618</td><td class="code">¥988</td><td class="code">¥1,945</td></tr>
-          </tbody>
-        </table>
-        <p class="muted">DiDi to <span class="zh">北京西站</span>. For G365 leave the hotel around 08:30.</p>
-      </article>
-      <article class="tcard">
-        <header><span class="when">Book <b>Tue 8 Dec</b></span><span class="for">for Tue 22 Dec</span></header>
-        <h3>Xi'an → Chengdu</h3>
-        <div class="app"><span>From <b>Xianbei</b> <span class="zh">西安北</span></span><span>To <b>Chengdudong</b> <span class="zh">成都东</span></span></div>
-        <table class="fare">
-          <thead><tr><th></th><th>Train</th><th>Time</th><th>2nd</th><th>1st</th><th>Business</th></tr></thead>
-          <tbody>
-            <tr><td><span class="pick">Main</span></td><td class="code">G321</td><td class="code">11:25 → 14:30<br><span class="muted">3h05</span></td><td class="code">¥300</td><td class="code">¥481</td><td class="code">¥940</td></tr>
-            <tr><td><span class="pick bk">Backup</span></td><td class="code">G1839</td><td class="code">11:30 → 14:58<br><span class="muted">3h28</span></td><td class="code">¥285</td><td class="code">¥455</td><td class="code">¥829</td></tr>
-          </tbody>
-        </table>
-        <p class="muted">DiDi to <span class="zh">西安北站</span>. Leave the hotel around 10:00. No fast trains to Chengdu leave from the central Xi'an station.</p>
-      </article>
-      <article class="tcard">
-        <header><span class="when">Book <b>Thu 10 Dec</b></span><span class="for">for Thu 24 Dec</span></header>
-        <h3>Chengdu → Yangshuo <span class="chip tbd">only 2 direct</span></h3>
-        <div class="app"><span>From <b>Chengdudong</b> <span class="zh">成都东</span></span><span>To <b>Yangshuo</b> <span class="zh">阳朔</span></span></div>
-        <table class="fare">
-          <thead><tr><th></th><th>Train</th><th>Time</th><th>2nd</th><th>1st</th><th>Business</th></tr></thead>
-          <tbody>
-            <tr><td><span class="pick">Main</span></td><td class="code">D1807</td><td class="code">10:05 → 16:35<br><span class="muted">6h30</span></td><td class="code">¥479</td><td class="code">¥768</td><td class="code">—</td></tr>
-            <tr><td><span class="pick bk">Backup</span></td><td class="code">D1822</td><td class="code">07:41 → 15:16<br><span class="muted">7h35</span></td><td class="code">¥432</td><td class="code">¥691</td><td class="code">—</td></tr>
-          </tbody>
-        </table>
-        <p class="muted">DiDi to <span class="zh">成都东站</span>. For D1807 leave the hotel around 08:45. Hotel in Yangshuo around 17:45.</p>
-      </article>
-      <article class="tcard">
-        <header><span class="when">Book <b>Sun 13 Dec</b></span><span class="for">for Sun 27 Dec</span></header>
-        <h3>Yangshuo → Shenzhen <span class="chip tbd">3 trains a day</span></h3>
-        <div class="app"><span>From <b>Yangshuo</b> <span class="zh">阳朔</span></span><span>To <b>Shenzhenbei</b> <span class="zh">深圳北</span></span></div>
-        <table class="fare">
-          <thead><tr><th></th><th>Train</th><th>Time</th><th>2nd</th><th>1st</th><th>Premium</th></tr></thead>
-          <tbody>
-            <tr><td><span class="pick">Main</span></td><td class="code">G2929</td><td class="code">11:25 → 14:04<br><span class="muted">2h39</span></td><td class="code">¥235.5</td><td class="code">¥356.5</td><td class="code">¥409.5</td></tr>
-            <tr><td><span class="pick bk">Backup</span></td><td class="code">G3741</td><td class="code">10:20 → 13:23<br><span class="muted">3h03</span></td><td class="code">¥263.5</td><td class="code">¥400.5</td><td class="code">¥756.5</td></tr>
-          </tbody>
-        </table>
-        <p class="muted">DiDi to <span class="zh">阳朔站</span>. For G2929 leave the hotel around 09:45 (the station is 55 min away). Last resort: G2905 at 20:04.</p>
-      </article>
-      <article class="tcard">
-        <header><span class="when">Book <b>Tue 15 Dec</b> or later</span><span class="for">for Tue 29 Dec</span></header>
-        <h3>Shenzhen → Hong Kong <span class="chip move">fallback only</span></h3>
-        <div class="app"><span>From <b>Futian</b> <span class="zh">福田</span></span><span>To <span class="zh">香港西九龙</span></span></div>
-        <table class="fare">
-          <thead><tr><th></th><th>Train</th><th>Time</th><th>2nd</th><th>1st</th><th></th></tr></thead>
-          <tbody>
-            <tr><td><span class="pick">Main</span></td><td class="code">G5807</td><td class="code">13:54 → 14:08<br><span class="muted">14 min</span></td><td class="code">¥68</td><td class="code">¥109</td><td></td></tr>
-            <tr><td><span class="pick bk">Backup</span></td><td class="code">G5621</td><td class="code">14:34 → 14:48<br><span class="muted">14 min</span></td><td class="code">¥68</td><td class="code">¥109</td><td></td></tr>
-          </tbody>
-        </table>
-        <p class="muted">The plan is to cross on foot at Luohu, so this is only a fallback (for example if a suitcase is over the MTR size limit). The English 12306 search did not list Hong Kong West Kowloon. Switch the app to Chinese and type 香港西九龙, or buy at the Futian ticket office on the day. DiDi to <span class="zh">福田站</span> (8.6 km, ~20 min) and be there 45 min early.</p>
-      </article>
+    <div class="tks">
+    <article class="tk" id="tk-bj">
+      <div class="tk-top">
+        <div class="tk-end"><b>Beijing</b><span class="zh">北京西</span><span class="tk-code">Beijingxi</span></div>
+        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Sun 20 Dec</span></div>
+        <div class="tk-end r"><b>Xi'an</b><span class="zh">西安北</span><span class="tk-code">Xianbei</span></div>
+      </div>
+      <div class="tk-sale"><span>Sale opens <b>Sun 6 Dec</b></span><span class="tk-count" data-open="2026-12-06"></span></div>
+      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G365</b><span class="tk-t">09:55</span><span class="tk-line"><i>4h 10m</i></span><span class="tk-t">14:05</span></div>
+      <div class="tk-fares"><span>2nd <b>¥587</b></span><span>1st <b>¥939</b></span><span>Business <b>¥1,945</b></span><button type="button" class="tk-copy" data-copy="G365">Copy G365</button></div>
+      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">G353</b><span class="tk-t">12:55</span><span class="tk-line"><i>4h 13m</i></span><span class="tk-t">17:08</span></div>
+      <div class="tk-fares"><span>2nd <b>¥618</b></span><span>1st <b>¥988</b></span><span>Business <b>¥1,945</b></span><button type="button" class="tk-copy" data-copy="G353">Copy G353</button></div>
+      <div class="tk-perf" aria-hidden="true"></div>
+      <div class="tk-actions"><a class="tk-btn primary" href="https://www.12306.cn/en/left-ticket.html?fs=Beijingxi%28%u5317%u4EAC%u897F%29,BXP&amp;ts=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;date=2026-12-20" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Beijingxi%28%u5317%u4EAC%u897F%29,BXP&amp;ts=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;date=2026-12-20" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <p class="tk-note">DiDi to <span class="zh">北京西站</span> · leave the hotel around 08:30</p>
+    </article>
+    <article class="tk" id="tk-xa">
+      <div class="tk-top">
+        <div class="tk-end"><b>Xi'an</b><span class="zh">西安北</span><span class="tk-code">Xianbei</span></div>
+        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Tue 22 Dec</span></div>
+        <div class="tk-end r"><b>Chengdu</b><span class="zh">成都东</span><span class="tk-code">Chengdudong</span></div>
+      </div>
+      <div class="tk-sale"><span>Sale opens <b>Tue 8 Dec</b></span><span class="tk-count" data-open="2026-12-08"></span></div>
+      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G321</b><span class="tk-t">11:25</span><span class="tk-line"><i>3h 05m</i></span><span class="tk-t">14:30</span></div>
+      <div class="tk-fares"><span>2nd <b>¥300</b></span><span>1st <b>¥481</b></span><span>Business <b>¥940</b></span><button type="button" class="tk-copy" data-copy="G321">Copy G321</button></div>
+      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">G1839</b><span class="tk-t">11:30</span><span class="tk-line"><i>3h 28m</i></span><span class="tk-t">14:58</span></div>
+      <div class="tk-fares"><span>2nd <b>¥285</b></span><span>1st <b>¥455</b></span><span>Business <b>¥829</b></span><button type="button" class="tk-copy" data-copy="G1839">Copy G1839</button></div>
+      <div class="tk-perf" aria-hidden="true"></div>
+      <div class="tk-actions"><a class="tk-btn primary" href="https://www.12306.cn/en/left-ticket.html?fs=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;ts=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;date=2026-12-22" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;ts=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;date=2026-12-22" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <p class="tk-note">DiDi to <span class="zh">西安北站</span> · leave the hotel around 10:00</p>
+    </article>
+    <article class="tk" id="tk-cd">
+      <div class="tk-top">
+        <div class="tk-end"><b>Chengdu</b><span class="zh">成都东</span><span class="tk-code">Chengdudong</span></div>
+        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Thu 24 Dec</span></div>
+        <div class="tk-end r"><b>Yangshuo</b><span class="zh">阳朔</span><span class="tk-code">Yangshuo</span></div>
+      </div>
+      <div class="tk-sale"><span>Sale opens <b>Thu 10 Dec</b></span><span class="tk-count" data-open="2026-12-10"></span><span class="tk-flag">Only 2 direct trains</span></div>
+      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">D1807</b><span class="tk-t">10:05</span><span class="tk-line"><i>6h 30m</i></span><span class="tk-t">16:35</span></div>
+      <div class="tk-fares"><span>2nd <b>¥479</b></span><span>1st <b>¥768</b></span><button type="button" class="tk-copy" data-copy="D1807">Copy D1807</button></div>
+      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">D1822</b><span class="tk-t">07:41</span><span class="tk-line"><i>7h 35m</i></span><span class="tk-t">15:16</span></div>
+      <div class="tk-fares"><span>2nd <b>¥432</b></span><span>1st <b>¥691</b></span><button type="button" class="tk-copy" data-copy="D1822">Copy D1822</button></div>
+      <div class="tk-perf" aria-hidden="true"></div>
+      <div class="tk-actions"><a class="tk-btn primary" href="https://www.12306.cn/en/left-ticket.html?fs=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;ts=Yangshuo%28%u9633%u6714%29,YCZ&amp;date=2026-12-24" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;ts=Yangshuo%28%u9633%u6714%29,YCZ&amp;date=2026-12-24" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <p class="tk-note">Be online when sales open; if sold out, join the waitlist (候补) at once. DiDi to <span class="zh">成都东站</span> · leave around 08:45</p>
+    </article>
+    <article class="tk" id="tk-ys">
+      <div class="tk-top">
+        <div class="tk-end"><b>Yangshuo</b><span class="zh">阳朔</span><span class="tk-code">Yangshuo</span></div>
+        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Sun 27 Dec</span></div>
+        <div class="tk-end r"><b>Shenzhen</b><span class="zh">深圳北</span><span class="tk-code">Shenzhenbei</span></div>
+      </div>
+      <div class="tk-sale"><span>Sale opens <b>Sun 13 Dec</b></span><span class="tk-count" data-open="2026-12-13"></span><span class="tk-flag">3 trains a day</span></div>
+      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G2929</b><span class="tk-t">11:25</span><span class="tk-line"><i>2h 39m</i></span><span class="tk-t">14:04</span></div>
+      <div class="tk-fares"><span>2nd <b>¥235.5</b></span><span>1st <b>¥356.5</b></span><span>Premium <b>¥409.5</b></span><button type="button" class="tk-copy" data-copy="G2929">Copy G2929</button></div>
+      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">G3741</b><span class="tk-t">10:20</span><span class="tk-line"><i>3h 03m</i></span><span class="tk-t">13:23</span></div>
+      <div class="tk-fares"><span>2nd <b>¥263.5</b></span><span>1st <b>¥400.5</b></span><span>Business <b>¥756.5</b></span><button type="button" class="tk-copy" data-copy="G3741">Copy G3741</button></div>
+      <div class="tk-perf" aria-hidden="true"></div>
+      <div class="tk-actions"><a class="tk-btn primary" href="https://www.12306.cn/en/left-ticket.html?fs=Yangshuo%28%u9633%u6714%29,YCZ&amp;ts=Shenzhenbei%28%u6DF1%u5733%u5317%29,IOQ&amp;date=2026-12-27" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Yangshuo%28%u9633%u6714%29,YCZ&amp;ts=Shenzhenbei%28%u6DF1%u5733%u5317%29,IOQ&amp;date=2026-12-27" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <p class="tk-note">Car to <span class="zh">阳朔站</span> (55 min) · leave around 09:45 · last resort G2905 at 20:04</p>
+    </article>
+    <article class="tk tk-fallback" id="tk-hk">
+      <div class="tk-top">
+        <div class="tk-end"><b>Shenzhen</b><span class="zh">福田</span><span class="tk-code">Futian</span></div>
+        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Tue 29 Dec</span></div>
+        <div class="tk-end r"><b>Hong Kong</b><span class="zh">香港西九龙</span><span class="tk-code">Chinese mode</span></div>
+      </div>
+      <div class="tk-sale"><span>Sale opens <b>Tue 15 Dec</b></span><span class="tk-count" data-open="2026-12-15"></span><span class="tk-flag fb">Fallback</span></div>
+      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G5807</b><span class="tk-t">13:54</span><span class="tk-line"><i>14m</i></span><span class="tk-t">14:08</span></div>
+      <div class="tk-fares"><span>2nd <b>¥68</b></span><span>1st <b>¥109</b></span><button type="button" class="tk-copy" data-copy="G5807">Copy G5807</button></div>
+      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">G5621</b><span class="tk-t">14:34</span><span class="tk-line"><i>14m</i></span><span class="tk-t">14:48</span></div>
+      <div class="tk-fares"><span>2nd <b>¥68</b></span><span>1st <b>¥109</b></span><button type="button" class="tk-copy" data-copy="G5621">Copy G5621</button></div>
+      <div class="tk-perf" aria-hidden="true"></div>
+      <div class="tk-actions"><a class="tk-btn primary" href="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E7%A6%8F%E7%94%B0,NZQ&amp;ts=%E9%A6%99%E6%B8%AF%E8%A5%BF%E4%B9%9D%E9%BE%99,XJA&amp;date=2026-12-29&amp;flag=N,N,Y" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E7%A6%8F%E7%94%B0,NZQ&amp;ts=%E9%A6%99%E6%B8%AF%E8%A5%BF%E4%B9%9D%E9%BE%99,XJA&amp;date=2026-12-29&amp;flag=N,N,Y" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <p class="tk-note">Fallback only: the plan is to walk across at Luohu. If you need it, buy at the Futian ticket office or switch the app to Chinese.</p>
+    </article>
     </div>
-    <p class="foot">Times and prices from 12306 for the same weekday in late November (current timetable). The next timetable change is expected in January, so December should match, but check on the booking day. Prices now vary by train and demand and can be 5–20% lower on quiet trains.</p>
+    <p class="foot">Times and prices from 12306 for the same weekday in late November (current timetable). Prices vary a little by demand. The app link is best-effort: if it doesn't open the 12306 app, the button falls back to the website.</p>
   </section>
     </div>
   </section>
@@ -1877,7 +1963,7 @@ html.map-mode .sbar { display: none; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261019">26 Nov 2026, 10:19</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261140">26 Nov 2026, 11:40</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -1915,13 +2001,173 @@ html.map-mode .sbar { display: none; }
 
 <nav class="tabbar" aria-label="Main">
   <a href="#trip" class="tab" data-tab="trip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 3.5 6.8v12.7L9 17.2l6 2.3 5.5-2.3V4.5L15 6.8 9 4.5zM9 4.5v12.7M15 6.8v12.7"/></svg><span>Trip</span></a>
-  <a href="#book" class="tab" data-tab="book"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3"/><path d="M8 9l1.6 1.6L12.5 7.7M8 15h8"/></svg><span>Bookings</span></a>
+  <a href="#book" class="tab" data-tab="book"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3"/><path d="M8 9l1.6 1.6L12.5 7.7M8 15h8"/></svg><span>To do</span><i class="tab-badge" id="todo-badge" hidden></i></a>
   <a href="#stay" class="tab" data-tab="stay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.5v-11M3.5 14h17v4.5M20.5 14v-2.5a3 3 0 0 0-3-3H11V14"/><circle cx="7.2" cy="10.8" r="1.8"/></svg><span>Hotels</span></a>
   <a href="#move" class="tab" data-tab="move"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3.5" width="12" height="13" rx="3"/><path d="M6 11h12M9 20.5l1.5-4M15 20.5l-1.5-4"/><circle cx="9.3" cy="13.7" r=".6"/><circle cx="14.7" cy="13.7" r=".6"/></svg><span>Transit</span></a>
   <a href="#map" class="tab" data-tab="map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg><span>Map</span></a>
 </nav>
 
 <script>
+(function () {
+  // ---------- Up next: everything with a date, grouped by urgency ----------
+  // at: ISO time with zone (timed) or YYYY-MM-DD (all day). kind: 'book' (a task you must do) or 'day' (trip agenda; disappears once past).
+  var FC = 'https://bookingticket.dpm.org.cn/';
+  var T = [
+    { id: 'rehearsal', at: '2026-11-28T20:00+08:00', kind: 'book', t: 'Rehearse the Forbidden City booking', d: 'Book Sat 5 Dec up to the payment page, then stop. Log in at 12:50 CPH.', a: [['Booking site', FC]] },
+    { id: 'tr-bj', at: '2026-12-06', kind: 'book', t: 'Book train G365 Beijing → Xi\'an', d: 'For Sun 20 Dec · backup G353. Sale time is per station: check it in the app the day before.', a: [['Train ticket', '#tk-bj']] },
+    { id: 'tr-xa', at: '2026-12-08', kind: 'book', t: 'Book train G321 Xi\'an → Chengdu', d: 'For Tue 22 Dec · backup G1839.', a: [['Train ticket', '#tk-xa']] },
+    { id: 'panda', at: '2026-12-09', kind: 'book', t: 'Book the Giant Panda Base', d: 'For Wed 23 Dec · Trip.com, adult ×2.', a: [['Trip.com', 'https://www.trip.com/travel-guide/attraction/chengdu/chengdu-research-base-of-giant-panda-breeding-76342']] },
+    { id: 'tr-cd', at: '2026-12-10', kind: 'book', hot: 'Only 2 trains', t: 'Book train D1807 Chengdu → Yangshuo', d: 'For Thu 24 Dec · backup D1822. Be online at sale time; waitlist at once if sold out.', a: [['Train ticket', '#tk-cd']] },
+    { id: 'fc-safe', at: '2026-12-10T20:00+08:00', kind: 'book', opt: 1, t: 'Forbidden City safety ticket for Thu 17', d: 'Optional backup in case Saturday sells out.', a: [['Booking site', FC]] },
+    { id: 'fc', at: '2026-12-12T20:00+08:00', kind: 'book', hot: 'Sells out fast', t: 'Book the Forbidden City for Sat 19 Dec', d: 'Afternoon slot, both passports. Be logged in 15 min early.', a: [['Booking site', FC]] },
+    { id: 'tam', at: '2026-12-12', kind: 'book', t: 'Book Tiananmen Square for Sat 19 Dec', d: 'WeChat mini program 天安门广场预约参观, morning slot.', a: [['How to', '#links']] },
+    { id: 'tr-ys', at: '2026-12-13', kind: 'book', t: 'Book train G2929 Yangshuo → Shenzhen', d: 'For Sun 27 Dec · backup G3741.', a: [['Train ticket', '#tk-ys']] },
+    { id: 'mao', at: '2026-12-13T12:30+08:00', kind: 'book', opt: 1, t: 'Book the Mao Mausoleum for Sat 19', d: 'Free; skip it if it asks for a Chinese phone number.', a: [['Booking site', 'https://jnt.mfu.com.cn/page/']] },
+    { id: 'terra', at: '2026-12-14', kind: 'book', t: 'Book the Terracotta Warriors', d: 'For Mon 21 Dec · Trip.com, adult ×2.', a: [['Trip.com', 'https://www.trip.com/travel-guide/attraction/xi-an/emperor-qinshihuang-s-mausoleum-site-museum-75682/?locale=en_xx&curr=USD']] },
+    { id: 'fly-out', at: '2026-12-15T18:00+01:00', kind: 'day', t: 'Fly Copenhagen → Beijing', d: 'Lands 09:55 on Wed 16 Dec. Passports!', a: [['Flights', '#flights']] },
+    { id: 'land', at: '2026-12-16T09:55+08:00', kind: 'day', t: 'Land in Beijing', d: 'DiDi to Manxin Mansion: copy the address in Hotels.', a: [['Hotel address', '#hotels']] },
+    { id: 'wall', at: '2026-12-18', kind: 'day', t: 'Great Wall day trip', d: 'Check the agency\'s pick-up time the evening before.', a: [['Beijing days', '#s-bj']] },
+    { id: 'sat19', at: '2026-12-19T08:00+08:00', kind: 'day', t: 'Mausoleum → Tiananmen → Forbidden City', d: 'Bring both passports. No bags in the Mausoleum. Palace on the afternoon slot.', a: [['Beijing days', '#s-bj']] },
+    { id: 'go-bj', at: '2026-12-20T08:30+08:00', kind: 'day', t: 'Leave the hotel for Beijing West', d: 'G365 at 09:55 · DiDi Premier for the suitcases.', a: [['Train ticket', '#tk-bj']] },
+    { id: 'terra-day', at: '2026-12-21', kind: 'day', t: 'Terracotta Warriors', d: 'About 1 h east of the city; plan most of the day.', a: [['Xi\'an days', '#s-xa']] },
+    { id: 'go-xa', at: '2026-12-22T10:00+08:00', kind: 'day', t: 'Leave the hotel for Xi\'an North', d: 'G321 at 11:25.', a: [['Train ticket', '#tk-xa']] },
+    { id: 'panda-day', at: '2026-12-23T07:30+08:00', kind: 'day', t: 'Leave for the Panda Base West Gate', d: 'Gate opens 08:00; pandas are most active early.', a: [['Chengdu days', '#s-cd']] },
+    { id: 'go-cd', at: '2026-12-24T08:45+08:00', kind: 'day', t: 'Leave the hotel for Chengdu East', d: 'D1807 at 10:05, arrives Yangshuo 16:35.', a: [['Train ticket', '#tk-cd']] },
+    { id: 'car-ys', at: '2026-12-26T20:00+08:00', kind: 'day', t: 'Arrange tomorrow\'s car to Yangshuo station', d: 'Ask the hotel or pre-book a DiDi Premier for 09:45.', a: [['DiDi tips', '#didi']] },
+    { id: 'go-ys', at: '2026-12-27T09:45+08:00', kind: 'day', t: 'Leave the hotel for Yangshuo station', d: 'G2929 at 11:25 · the drive takes about 55 min.', a: [['Train ticket', '#tk-ys']] },
+    { id: 'hk-cross', at: '2026-12-29', kind: 'day', t: 'Cross into Hong Kong at Luohu', d: 'DiDi to 罗湖口岸(出境), walk across, East Rail to Hung Hom.', a: [['Shenzhen → HK', '#s-hk']] },
+    { id: 'airport', at: '2026-12-31T20:00+08:00', kind: 'day', t: 'Leave for the airport', d: 'Airport Express from Kowloon Station · flight 23:15.', a: [['Flights', '#flights']] }
+  ];
+  var list = document.getElementById('todo-list');
+  if (!list) return;
+  function load(id) { try { return localStorage.getItem('china2026:todo:' + id) === '1'; } catch (e) { return false; } }
+  function save(id, v) { try { localStorage.setItem('china2026:todo:' + id, v ? '1' : '0'); } catch (e) {} }
+  function dayKey(d) { return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate(); }
+  function when(it) {
+    if (it.at.length === 10) { var p = it.at.split('-'); return { date: new Date(+p[0], +p[1] - 1, +p[2], 12), timed: false }; }
+    return { date: new Date(it.at), timed: true };
+  }
+  function fmt(d, tz) {
+    try { return new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: tz }).format(d); } catch (e) { return ''; }
+  }
+  function dayLabel(d) {
+    try { return new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).format(d); } catch (e) { return d.toDateString(); }
+  }
+  function countdown(ms) {
+    if (ms <= 0) return 'now';
+    var m = Math.round(ms / 60000), h = Math.floor(m / 60);
+    return 'in ' + (h ? h + ' h ' : '') + (m % 60) + ' min';
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  var showLater = false;
+
+  function render() {
+    var now = new Date(), today = dayKey(now);
+    var tmr = new Date(now); tmr.setDate(tmr.getDate() + 1);
+    var groups = { missed: [], today: [], tomorrow: [], soon: [], week: [], later: [], done: [] };
+    T.forEach(function (it) {
+      var w = when(it), k = dayKey(w.date), done = load(it.id);
+      var diff = Math.round((new Date(w.date.getFullYear(), w.date.getMonth(), w.date.getDate()) - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000);
+      var e = { it: it, w: w, done: done, diff: diff };
+      if (done) { if (diff >= -1) groups.done.push(e); return; }
+      if (diff < 0) { if (it.kind === 'book' && !it.opt) groups.missed.push(e); return; }
+      if (k === today) groups.today.push(e);
+      else if (k === dayKey(tmr)) groups.tomorrow.push(e);
+      else if (diff <= 3) groups.soon.push(e);
+      else if (diff <= 7) groups.week.push(e);
+      else groups.later.push(e);
+    });
+    // Setup checklist still open? Put it up front.
+    var setupLeft = document.querySelectorAll('.setup input[type="checkbox"]:not(:checked)').length;
+    var html = '';
+    function card(e, hero) {
+      var it = e.it, w = e.w, when = '';
+      if (w.timed) {
+        when = '<b>' + dayLabel(w.date) + '</b><span>' + fmt(w.date, 'Europe/Copenhagen') + ' CPH · ' + fmt(w.date, 'Asia/Shanghai') + ' Beijing</span>';
+        if (e.diff === 0 && !e.done) when += '<span class="tc-count">' + countdown(w.date - Date.now()) + '</span>';
+      } else {
+        when = '<b>' + dayLabel(w.date) + '</b><span>any time that day</span>';
+      }
+      var tag = it.hot ? '<span class="tc-tag hot">' + esc(it.hot) + '</span>' : (it.opt ? '<span class="tc-tag">Optional</span>' : '');
+      var acts = (it.a || []).map(function (x) {
+        var ext = /^https?:/.test(x[1]);
+        return '<a href="' + esc(x[1]) + '"' + (ext ? ' target="_blank" rel="noopener"' : '') + '>' + esc(x[0]) + (ext ? ' ↗' : '') + '</a>';
+      }).join('');
+      return '<div class="todo-card' + (hero ? ' hero' : '') + (e.done ? ' done' : '') + '"><input type="checkbox" data-todo="' + it.id + '" aria-label="Done: ' + esc(it.t) + '"' + (e.done ? ' checked' : '') + '>' +
+        '<div class="tc-body"><div class="tc-when">' + when + '</div>' + tag + '<h4>' + esc(it.t) + '</h4><p>' + esc(it.d) + '</p>' + (acts ? '<div class="tc-acts">' + acts + '</div>' : '') + '</div></div>';
+    }
+    function group(key, title, items, opts) {
+      if (!items.length) return '';
+      opts = opts || {};
+      var shown = opts.limit && !showLater ? items.slice(0, opts.limit) : items;
+      var out = '<div class="todo-group g-' + key + '"><h3><i></i>' + title + '</h3>' + shown.map(function (e, i) { return card(e, key === 'today' && i === 0); }).join('');
+      if (opts.limit && items.length > opts.limit) out += '<button type="button" class="todo-more" data-more>' + (showLater ? 'Show less' : 'Show ' + (items.length - opts.limit) + ' more') + '</button>';
+      return out + '</div>';
+    }
+    if (setupLeft) {
+      html += '<div class="todo-group g-soon"><h3><i></i>Now</h3><div class="todo-card"><span></span><div class="tc-body"><h4>Finish the setup checklist</h4><p>' + setupLeft + ' of the setup tasks still open (accounts, passports, WeChat).</p><div class="tc-acts"><a href="#setup">Open checklist</a></div></div></div></div>';
+    }
+    html += group('missed', 'Missed', groups.missed);
+    html += group('today', 'Today', groups.today);
+    html += group('tomorrow', 'Tomorrow', groups.tomorrow);
+    html += group('soon', 'In 2–3 days', groups.soon);
+    html += group('week', 'This week', groups.week);
+    html += group('later', 'Later', groups.later, { limit: 3 });
+    html += group('done', 'Done', groups.done);
+    if (!html) html = '<div class="todo-empty">Nothing left to do. Enjoy the trip!</div>';
+    list.innerHTML = html;
+    var urgent = groups.missed.length + groups.today.length;
+    var badge = document.getElementById('todo-badge');
+    if (badge) { badge.textContent = urgent; badge.hidden = !urgent; }
+  }
+  list.addEventListener('change', function (e) {
+    var id = e.target.getAttribute && e.target.getAttribute('data-todo');
+    if (!id) return;
+    save(id, e.target.checked);
+    setTimeout(render, 250);
+  });
+  list.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('[data-more]')) { showLater = !showLater; render(); }
+  });
+  document.addEventListener('change', function (e) { if (e.target.closest && e.target.closest('.setup')) render(); });
+  render();
+  setInterval(render, 60000);
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') render(); });
+})();
+(function () {
+  // ---------- Train tickets: sale countdown, copy train number, open the 12306 app ----------
+  var now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  document.querySelectorAll('.tk-count[data-open]').forEach(function (el) {
+    var p = el.getAttribute('data-open').split('-');
+    var d = Math.round((new Date(+p[0], +p[1] - 1, +p[2]) - today) / 86400000);
+    if (d > 3) { el.textContent = 'in ' + d + ' days'; }
+    else if (d > 1) { el.textContent = 'in ' + d + ' days'; el.className = 'tk-count soon'; }
+    else if (d === 1) { el.textContent = 'tomorrow'; el.className = 'tk-count soon'; }
+    else if (d === 0) { el.textContent = 'opens today'; el.className = 'tk-count now'; }
+    else { el.textContent = 'on sale'; el.className = 'tk-count open'; }
+  });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('[data-copy]') : null;
+    if (!b) return;
+    var txt = b.getAttribute('data-copy'), label = b.textContent;
+    function done(t) { b.textContent = t; setTimeout(function () { b.textContent = label; }, 1500); }
+    try { navigator.clipboard.writeText(txt).then(function () { done('Copied'); }, function () { done(txt); }); } catch (err) { done(txt); }
+  });
+  var ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (!ios || !/github\.io$/.test(location.hostname)) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[data-app]') : null;
+    if (!a) return;
+    e.preventDefault();
+    var web = a.href, left = false, timer;
+    function gone() { left = true; clearTimeout(timer); }
+    window.addEventListener('blur', gone, { once: true });
+    window.addEventListener('pagehide', gone, { once: true });
+    document.addEventListener('visibilitychange', function () { if (document.hidden) gone(); }, { once: true });
+    timer = setTimeout(function () { if (!left && !document.hidden) window.open(web, '_blank'); }, 2200);
+    window.location.href = a.getAttribute('data-app');
+  });
+})();
 (function () {
   // iOS home-screen apps sometimes report a viewport shorter than the screen, leaving an empty strip at the bottom.
   // Measure it so the map and tab bar can reach the real bottom edge.
