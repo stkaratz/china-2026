@@ -1136,11 +1136,13 @@ html.map-mode, html.map-mode body { background: #f3f1ec; overscroll-behavior: no
 /* On iPhone home-screen apps, a page that can't scroll is laid out in the shorter 797pt root box and everything below it is cut off.
    The other tabs scroll, so they get the full screen. Give the map tab a page taller than the screen too (everything on it is fixed, so nothing moves). */
 .map-pane { min-height: calc(var(--screen-h, 100vh) + 240px); }
-html.map-mode .sbar { z-index: 1002; }
+/* iOS draws its own blur over the top ~50pt below the status bar. On the map that smears the tiles, so the map tab gets a solid top bar
+   covering that zone, with the legend and the locate button inside it. */
+html.map-mode .sbar { z-index: 1002; height: calc(env(safe-area-inset-top, 0px) + 54px); background: var(--bg); box-shadow: 0 0.5px 0 var(--line); }
 /* Fill the whole screen, including the strip behind the home indicator (iOS leaves a gap with inset: 0 in home-screen apps). */
 .map-pane .map { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: 100vh; height: calc(var(--screen-h, 100vh) + 160px); z-index: 5; }
-.map-pane .map-legend { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 12px); left: 12px; }
-.locate { position: fixed; z-index: 1000; top: calc(env(safe-area-inset-top, 0px) + 4px); right: 12px; width: 46px; height: 46px; border: 0; border-radius: 50%; display: grid; place-items: center; color: var(--jade); cursor: pointer; }
+.map-pane .map-legend { position: fixed; z-index: 1003; top: calc(env(safe-area-inset-top, 0px) + 12px); left: 12px; }
+.locate { position: fixed; z-index: 1003; top: calc(env(safe-area-inset-top, 0px) + 4px); right: 12px; width: 46px; height: 46px; border: 0; border-radius: 50%; display: grid; place-items: center; color: var(--jade); cursor: pointer; }
 .locate svg { position: relative; z-index: 1; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
 .locate.on svg { fill: currentColor; }
 .locate.busy svg { animation: locpulse 1s ease-in-out infinite; }
@@ -2333,7 +2335,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261454">26 Nov 2026, 14:54</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261458">26 Nov 2026, 14:58</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
