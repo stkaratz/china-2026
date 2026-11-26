@@ -1329,6 +1329,10 @@ button.sc-code { margin-left: 0; }
 .bs.in { background: rgb(0 0 0 / 0.4); }
 .bs-sheet { position: relative; width: 100%; max-height: calc(100% - env(safe-area-inset-top, 0px) - 30px); display: flex; flex-direction: column; background: var(--bg); border-radius: 26px 26px 0 0; box-shadow: 0 -10px 40px rgb(0 0 0 / 0.2); transform: translate3d(0, 100%, 0); transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.25, 1); }
 .bs.in .bs-sheet { transform: none; }
+.bs.tall .bs-sheet { height: calc(100% - env(safe-area-inset-top, 0px) - 30px); }
+.bs.tall .bs-body { flex: 1; }
+.srch-empty { padding: 28px 18px; }
+.srch-in input:focus { outline: 2px solid var(--jade); outline-offset: 0; }
 .bs-grab { position: absolute; left: 50%; top: 7px; width: 36px; height: 5px; margin-left: -18px; border-radius: 3px; background: var(--line); }
 .bs-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 18px 8px; }
 .bs-head h2 { margin: 0; font: 800 1.45rem var(--f-display); letter-spacing: -0.02em; }
@@ -2497,7 +2501,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261548">26 Nov 2026, 15:48</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261550">26 Nov 2026, 15:50</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -4051,7 +4055,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
 
   // ---------- Generic bottom sheet ----------
   var sheet = null;
-  function openSheet(title, html, onOpen) {
+  function openSheet(title, html, onOpen, tall) {
     if (!sheet) {
       sheet = document.createElement('div');
       sheet.className = 'bs'; sheet.hidden = true;
@@ -4077,6 +4081,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       }
       sh.addEventListener('touchend', letGo); sh.addEventListener('touchcancel', letGo);
     }
+    sheet.classList.toggle('tall', !!tall);
     sheet.querySelector('.bs-head h2').textContent = title;
     sheet.setAttribute('aria-label', title);
     var body = sheet.querySelector('.bs-body');
@@ -4392,7 +4397,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
         setTimeout(function () { pl.focus(p); }, 350);
       });
       setTimeout(function () { try { inp.focus({ preventScroll: true }); } catch (err) {} }, 350);
-    });
+    }, true);
   }
   document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('#search-btn')) openSearch(); });
   // ---------- To do progress ----------

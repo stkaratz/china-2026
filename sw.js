@@ -1,4 +1,4 @@
-const CACHE = 'china2026-202611261548';
+const CACHE = 'china2026-202611261550';
 const CORE = ['./', './apple-touch-icon.png', './manifest.webmanifest', './vendor/leaflet.js', './vendor/leaflet.markercluster.js'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
