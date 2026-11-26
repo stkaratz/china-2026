@@ -2546,7 +2546,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261625">26 Nov 2026, 16:25</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261627">26 Nov 2026, 16:27</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -4639,7 +4639,8 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     });
     document.querySelectorAll('.hc').forEach(function (h) {
       var zh = h.querySelector('.hc-zh'), row = h.querySelector('.hc-actions'); if (!zh || !row || row.querySelector('[data-didi]')) return;
-      row.insertAdjacentHTML('beforeend', didiBtn(zh.getAttribute('data-copy'), null, 'hotel'));
+      var hz = zh.getAttribute('data-copy');
+      row.insertAdjacentHTML('beforeend', '<button type="button" class="amap didi didi-ic" data-didi="' + esc(hz) + '" aria-label="DiDi to the hotel" title="DiDi to the hotel">' + I.car + '</button>');
     });
     document.querySelectorAll('.sc').forEach(function (s) {
       var zh = s.querySelector('.sc-zh'), row = s.querySelector('.sc-maps'); if (!zh || !row || row.querySelector('[data-didi]')) return;
