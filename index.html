@@ -1105,18 +1105,19 @@ html.map-mode .sbar { display: none; }
 .info-btn:focus-visible, .back:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 .back { align-self: flex-start; display: inline-flex; align-items: center; gap: 2px; margin-left: -6px; color: var(--jade); font-weight: 600; font-size: 1rem; text-decoration: none; }
 .back svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.c-hotel { background: var(--jade); } .c-sight { background: var(--seal); } .c-station { background: #6c6c70; }
+.c-hotel { background: var(--jade); } .c-sight { background: var(--seal); } .c-idea { background: #5b5bd6; } .c-station { background: #6c6c70; }
 
 /* Pins and popups */
 .pin { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50% 50% 50% 4px; transform: rotate(-45deg); color: #fff; box-shadow: 0 3px 8px rgb(0 0 0 / 0.3); border: 2px solid #fff; }
 .pin svg { width: 15px; height: 15px; transform: rotate(45deg); fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.pin-hotel { background: #1f7a63; } .pin-sight { background: #c2410c; }
+.pin-hotel { background: #1f7a63; } .pin-sight { background: #c2410c; } .pin-idea { background: #5b5bd6; }
 .pin-station { background: #6c6c70; }
 .pin-station svg { width: 13px; height: 13px; }
 .city-label { font: 700 12px var(--f-body); color: #1c1c1e; text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff; white-space: nowrap; }
 .leaflet-popup-content-wrapper { border-radius: 14px; }
 .leaflet-popup-content { margin: 12px 14px; font: 14px/1.4 var(--f-body); color: #1c1c1e; min-width: 190px; }
 .pop h4 { margin: 0 0 2px; font-size: 0.98rem; }
+.tag-idea { display: inline-block; margin-bottom: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #5b5bd6; }
 .pop .zh { color: #6c6c70; font-size: 0.86rem; }
 .pop p { margin: 4px 0 8px; color: #6c6c70; font-size: 0.82rem; }
 .pop .maps { margin-top: 0; }
@@ -1856,7 +1857,7 @@ html.map-mode .sbar { display: none; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261004">26 Nov 2026, 10:04</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261012">26 Nov 2026, 10:12</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -1877,7 +1878,7 @@ html.map-mode .sbar { display: none; }
   <section class="pane map-pane" id="map" data-title="Map" aria-label="Trip map" hidden>
     <div id="leafmap" class="map"></div>
     <button type="button" class="locate glass" id="locate-btn" aria-label="Show my location"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4 3.5 11.2l7 1.9 1.9 7z"/></svg></button>
-    <div class="map-legend glass"><span><i class="c-hotel"></i>Hotel</span><span><i class="c-sight"></i>Sight</span><span><i class="c-station"></i>Station</span></div>
+    <div class="map-legend glass"><span><i class="c-hotel"></i>Hotel</span><span><i class="c-sight"></i>Sight</span><span><i class="c-station"></i>Station</span><span><i class="c-idea"></i>Idea</span></div>
     <div class="map-chips glass collapsed" id="map-chips">
     <button type="button" class="chips-toggle" id="chips-toggle" aria-expanded="false" aria-label="Choose a city"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg><span id="chips-current">All China</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
     <button type="button" data-fly="all" class="on">All China</button>
@@ -1931,6 +1932,7 @@ html.map-mode .sbar { display: none; }
   var map = null, cityView = [];
   var G = {
     hotel: '<svg viewBox="0 0 24 24"><path d="M3.5 18.5v-11M3.5 14h17v4.5M20.5 14v-2.5a3 3 0 0 0-3-3H11V14"/><circle cx="7.2" cy="10.8" r="1.8"/></svg>',
+    idea: '<svg viewBox="0 0 24 24"><path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>',
     sight: '<svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>',
     station: '<svg viewBox="0 0 24 24"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg>'
   };
@@ -1962,7 +1964,34 @@ html.map-mode .sbar { display: none; }
     { t: 'station', n: 'Yangshuo', zh: '阳朔站', d: 'Arrive 24, depart 27 Dec', ll: [24.960139, 110.568081], go: 'stations' },
     { t: 'station', n: 'Shenzhen North', zh: '深圳北站', d: 'Arrive 27 Dec', ll: [22.609878, 114.029506], go: 'stations' },
     { t: 'station', n: 'Luohu Port', zh: '罗湖口岸(出境)', d: 'Walk into Hong Kong · Tue 29 Dec', ll: [22.528730, 114.118466], go: 'stations' },
-    { t: 'station', n: 'Hung Hom', zh: '红磡站', d: 'East Rail arrival · Tue 29 Dec', ll: [22.3029, 114.1817], go: 'stations', wgs: 1 }
+    { t: 'station', n: 'Hung Hom', zh: '红磡站', d: 'East Rail arrival · Tue 29 Dec', ll: [22.3029, 114.1817], go: 'stations', wgs: 1 },
+    // Ideas: recommended places, not booked. Pin positions are approximate; the Amap button searches by name.
+    { t: 'idea', n: 'Temple of Heaven', zh: '天坛公园', d: 'Ming-era altar in a huge park; locals do tai chi and sing there in the morning.', ll: [39.8819, 116.4108], go: 's-bj', q: '北京天坛公园' },
+    { t: 'idea', n: 'Jingshan Park', zh: '景山公园', d: 'Short climb right behind the Forbidden City for the classic view over its roofs. Perfect after your palace visit.', ll: [39.9281, 116.3969], go: 's-bj', q: '北京景山公园' },
+    { t: 'idea', n: 'Summer Palace', zh: '颐和园', d: 'Imperial lakeside gardens; in December the lake can freeze over. Half a day.', ll: [39.9996, 116.2752], go: 's-bj', q: '北京颐和园' },
+    { t: 'idea', n: 'Lama Temple', zh: '雍和宫', d: 'Beijing\'s most beautiful Tibetan Buddhist temple, with an 18 m Buddha carved from one tree.', ll: [39.9472, 116.4170], go: 's-bj', q: '北京雍和宫' },
+    { t: 'idea', n: 'Houhai & Shichahai hutongs', zh: '什刹海', d: 'Lakes and old alleys a short walk from your hotel; lovely at dusk.', ll: [39.9400, 116.3855], go: 's-bj', q: '北京什刹海' },
+    { t: 'idea', n: 'City Wall by bike', zh: '西安城墙', d: 'Rent a bike on top of the 14 km Ming city wall; about 2 hours around. Start at the South Gate.', ll: [34.2520, 108.9470], go: 's-xa', q: '西安城墙永宁门' },
+    { t: 'idea', n: 'Muslim Quarter', zh: '回民街', d: 'Street food right by your hotel: roujiamo, biangbiang noodles, persimmon cakes.', ll: [34.2630, 108.9410], go: 's-xa', q: '西安回民街' },
+    { t: 'idea', n: 'Big Wild Goose Pagoda', zh: '大雁塔', d: 'Tang-dynasty pagoda; the fountain show on the north square runs in the evening.', ll: [34.2192, 108.9640], go: 's-xa', q: '西安大雁塔' },
+    { t: 'idea', n: 'Kuanzhai Alley', zh: '宽窄巷子', d: 'Restored Qing courtyards with teahouses and snacks, 10 minutes\' walk from your hotel.', ll: [30.6700, 104.0590], go: 's-cd', q: '成都宽窄巷子' },
+    { t: 'idea', n: 'People\'s Park teahouse', zh: '人民公园鹤鸣茶社', d: 'Sit with a bowl of tea among locals, ear cleaners and mahjong. Right next to your hotel.', ll: [30.6595, 104.0620], go: 's-cd', q: '成都人民公园鹤鸣茶社' },
+    { t: 'idea', n: 'Wenshu Monastery', zh: '文殊院', d: 'Peaceful Buddhist temple with a good vegetarian restaurant.', ll: [30.6760, 104.0740], go: 's-cd', q: '成都文殊院' },
+    { t: 'idea', n: 'Sichuan Opera & face-changing', zh: '蜀风雅韵', d: 'Evening show with the famous instant mask changes, about 1.5 h.', ll: [30.6650, 104.0460], go: 's-cd', q: '成都蜀风雅韵' },
+    { t: 'idea', n: 'Xianggong Hill', zh: '相公山', d: 'The best sunrise view over the Li River bends and karst peaks.', ll: [24.9050, 110.4650], go: 's-ys', q: '阳朔相公山' },
+    { t: 'idea', n: 'Yulong River rafting', zh: '遇龙河', d: 'Slow bamboo raft through rice fields and peaks; combine with cycling.', ll: [24.8000, 110.4200], go: 's-ys', q: '阳朔遇龙河竹筏' },
+    { t: 'idea', n: 'Moon Hill', zh: '月亮山', d: 'Short climb to a natural stone arch with wide views.', ll: [24.7080, 110.4570], go: 's-ys', q: '阳朔月亮山' },
+    { t: 'idea', n: 'Impression Liu Sanjie', zh: '印象刘三姐', d: 'Zhang Yimou\'s light show staged on the river itself, in the evening.', ll: [24.7840, 110.5050], go: 's-ys', q: '阳朔印象刘三姐' },
+    { t: 'idea', n: 'Dongmen Pedestrian Street', zh: '东门步行街', d: 'Busy shopping and food streets a few minutes from your hotel.', ll: [22.5460, 114.1220], go: 's-sz', q: '深圳东门步行街' },
+    { t: 'idea', n: 'Huaqiangbei', zh: '华强北', d: 'The world\'s largest electronics market. Fun to walk through even without buying.', ll: [22.5440, 114.0850], go: 's-sz', q: '深圳华强北' },
+    { t: 'idea', n: 'Lianhuashan Park', zh: '莲花山公园', d: 'Hilltop view over the Futian skyline, great at sunset.', ll: [22.5560, 114.0590], go: 's-sz', q: '深圳莲花山公园' },
+    { t: 'idea', n: 'Shenzhen Bay Park', zh: '深圳湾公园', d: 'Long seafront promenade looking across to Hong Kong.', ll: [22.5020, 113.9520], go: 's-sz', q: '深圳湾公园' },
+    { t: 'idea', n: 'Victoria Peak', zh: '太平山顶', d: 'The classic skyline view; take the Peak Tram up and go at dusk.', ll: [22.2759, 114.1455], go: 's-hk', q: '香港太平山顶', wgs: 1 },
+    { t: 'idea', n: 'Star Ferry', zh: '天星小轮', d: 'The cheapest great view in town: 10 minutes across the harbour from Tsim Sha Tsui.', ll: [22.2937, 114.1683], go: 's-hk', q: '香港天星小轮尖沙咀码头', wgs: 1 },
+    { t: 'idea', n: 'Avenue of Stars', zh: '星光大道', d: 'Harbour-front walk with the Symphony of Lights at 20:00, close to your hotel.', ll: [22.2930, 114.1741], go: 's-hk', q: '香港星光大道', wgs: 1 },
+    { t: 'idea', n: 'Temple Street Night Market', zh: '庙街夜市', d: 'Night market with street food and fortune tellers.', ll: [22.3063, 114.1700], go: 's-hk', q: '香港庙街夜市', wgs: 1 },
+    { t: 'idea', n: 'M+ museum', zh: 'M+博物馆', d: 'Design and visual culture museum in West Kowloon, with harbour views.', ll: [22.3017, 114.1599], go: 's-hk', q: '香港M+博物馆', wgs: 1 },
+    { t: 'idea', n: 'Big Buddha, Ngong Ping', zh: '天坛大佛', d: 'Cable car up to the giant bronze Buddha on Lantau. Half a day.', ll: [22.2540, 113.9050], go: 's-hk', q: '香港天坛大佛', wgs: 1 },
   ];
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function amapLinks(p) {
@@ -1979,7 +2008,7 @@ html.map-mode .sbar { display: none; }
     return '<a class="amap" href="' + esc(web) + '" data-ios="' + esc(ios) + '" target="_blank" rel="noopener">Open in Amap</a>';
   }
   function popup(p) {
-    return '<div class="pop"><h4>' + esc(p.n) + '</h4><span class="zh">' + esc(p.zh) + '</span><p>' + esc(p.d) + '</p>' +
+    return '<div class="pop">' + (p.t === 'idea' ? '<span class="tag-idea">Idea · not in the plan yet</span>' : '') + '<h4>' + esc(p.n) + '</h4><span class="zh">' + esc(p.zh) + '</span><p>' + esc(p.d) + '</p>' +
       '<div class="maps">' + amapLinks(p) + '<button type="button" class="amap" data-goto="' + p.go + '">Details</button></div></div>';
   }
   function showOff(msg) { if (off) { off.textContent = msg; off.hidden = !msg; } }
@@ -2002,7 +2031,7 @@ html.map-mode .sbar { display: none; }
     L.polyline(route, { color: '#1f7a63', weight: 3, opacity: 0.75, dashArray: '6 8' }).addTo(map);
     P.forEach(function (p) {
       var icon = L.divIcon({ className: '', html: '<div class="pin pin-' + p.t + '">' + G[p.t] + '</div>', iconSize: [30, 30], iconAnchor: [15, 30], popupAnchor: [0, -30] });
-      L.marker(p.ll, { icon: icon, zIndexOffset: p.t === 'station' ? 0 : 500 }).addTo(map).bindPopup(popup(p), { maxWidth: 260 });
+      L.marker(p.ll, { icon: icon, zIndexOffset: p.t === 'station' ? 0 : (p.t === 'idea' ? 200 : 500) }).addTo(map).bindPopup(popup(p), { maxWidth: 260 });
     });
     CITIES.forEach(function (c) {
       L.marker(c.ll, { icon: L.divIcon({ className: 'city-label', html: c.name, iconSize: null }), interactive: false, keyboard: false }).addTo(map);
