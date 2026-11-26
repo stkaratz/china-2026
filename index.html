@@ -1974,7 +1974,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       </div>
       <div class="day">
         <div class="date">18 Dec<span class="dow">Fri</span></div>
-        <div class="body"><h3>Great Wall <span class="chip move">booked</span> <span class="chip early">meet 06:20</span></h3><p class="muted"><b>Meet at 06:20 at Dongzhimen metro, Exit C</b> (<span class="zh">东直门地铁C出口</span>), Beijing Mubus; 06:25 is the latest. Schedule a <b>DiDi the night before for 05:50</b> from Jiugulou Street: about 15 min and ¥20 at that hour. Backup: metro Line 2 from Guloudajie, 3 stops; leave the hotel by 05:40. Tickets included, bring both passports.</p><div class="addr"><span class="zh">北京市东城区东直门地铁站C口</span><button class="copy" type="button">Copy</button><span class="en">Dongzhimen metro station, Exit C · paste into DiDi as the destination</span></div><div class="maps meet"><a class="amap" href="https://uri.amap.com/search?keyword=%E4%B8%9C%E7%9B%B4%E9%97%A8%E5%9C%B0%E9%93%81%E7%AB%99C%E5%8F%A3&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=%E4%B8%9C%E7%9B%B4%E9%97%A8%E5%9C%B0%E9%93%81%E7%AB%99C%E5%8F%A3&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Meeting point</a></div></div>
+        <div class="body"><h3>Great Wall <span class="chip move">booked</span> <span class="chip early">meet 06:20</span></h3><p class="muted"><b>Meet at 06:20 at Dongzhimen metro, Exit C</b> (<span class="zh">东直门地铁C出口</span>), Beijing Mubus; 06:25 is the latest. Schedule a <b>DiDi the night before for 05:50</b> from Jiugulou Street: about 15 min and ¥20 at that hour. Backup: metro Line 2 from Guloudajie, 3 stops; leave the hotel by 05:40. Tickets included, bring both passports.</p><div class="addr"><span class="zh">北京市东城区东直门地铁站C口</span><button class="copy" type="button">Copy</button><span class="en">Dongzhimen metro station, Exit C · paste into DiDi as the destination</span></div><div class="maps meet"><a class="amap" href="https://uri.amap.com/search?keyword=%E4%B8%9C%E7%9B%B4%E9%97%A8%E5%9C%B0%E9%93%81%E7%AB%99C%E5%8F%A3&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=%E4%B8%9C%E7%9B%B4%E9%97%A8%E5%9C%B0%E9%93%81%E7%AB%99C%E5%8F%A3&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Meeting point</a><button type="button" class="amap didi" data-didi="东直门地铁站C口" aria-label="DiDi to Dongzhimen Exit C"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/></svg>DiDi to Exit C</button></div></div>
       </div>
       <div class="day">
         <div class="date">19 Dec<span class="dow">Sat</span></div>
@@ -2538,7 +2538,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261614">26 Nov 2026, 16:14</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261617">26 Nov 2026, 16:17</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -4566,16 +4566,17 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     var open = function () { if (isIOS) setTimeout(function () { window.location.href = 'diditaxi://'; }, 450); };
     (window.copyText ? window.copyText(dest) : Promise.reject()).then(function () { toast('Copied ' + dest + ' · paste it as the destination in DiDi'); open(); }, function () { toast('Type this as the destination in DiDi: ' + dest); open(); });
   }, true);
-  function didiBtn(dest, cls) { return '<button type="button" class="' + (cls || 'amap didi') + '" data-didi="' + esc(dest) + '" aria-label="DiDi to ' + esc(dest) + '">' + I.car + (cls ? '' : 'DiDi') + '</button>'; }
+  function didiBtn(dest, cls, label) { return '<button type="button" class="' + (cls || 'amap didi') + '" data-didi="' + esc(dest) + '" aria-label="DiDi to ' + esc(label || dest) + '">' + I.car + (cls ? '' : esc(label ? 'DiDi to ' + label : 'DiDi')) + '</button>'; }
   window.china2026Didi = didiBtn;
   function addDidiButtons() {
     document.querySelectorAll('.tk').forEach(function (t) {
       var st = t.querySelector('.tk-st'), row = t.querySelector('.tk-maps'); if (!st || !row || row.querySelector('[data-didi]')) return;
-      var name = st.getAttribute('data-copy'); row.insertAdjacentHTML('beforeend', didiBtn(/站$/.test(name) ? name : name + '站'));
+      var name = st.getAttribute('data-copy'), first = row.querySelector('a.amap');
+      row.insertAdjacentHTML('beforeend', didiBtn(/站$/.test(name) ? name : name + '站', null, first ? first.textContent.trim() : ''));
     });
     document.querySelectorAll('.hc').forEach(function (h) {
       var zh = h.querySelector('.hc-zh'), row = h.querySelector('.hc-actions'); if (!zh || !row || row.querySelector('[data-didi]')) return;
-      row.insertAdjacentHTML('beforeend', didiBtn(zh.getAttribute('data-copy')));
+      row.insertAdjacentHTML('beforeend', didiBtn(zh.getAttribute('data-copy'), null, 'hotel'));
     });
     document.querySelectorAll('.sc').forEach(function (s) {
       var zh = s.querySelector('.sc-zh'), row = s.querySelector('.sc-maps'); if (!zh || !row || row.querySelector('[data-didi]')) return;
