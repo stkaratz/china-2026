@@ -268,7 +268,7 @@ html.swiping .pane { will-change: transform; }
 h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 89px); }
 
 /* Floating, rounded tab bar (current iOS style) */
-.tabbar { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) * 0.3 + 6px); width: min(calc(100% - 24px), 520px); display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 5px; border-radius: 34px; background: var(--glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border: 0.5px solid var(--glass-edge); box-shadow: 0 10px 30px rgb(0 0 0 / 0.14), 0 1px 3px rgb(0 0 0 / 0.08); }
+.tabbar { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) * 0.3 + 6px); width: min(calc(100% - 24px), 520px); display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; padding: 5px; border-radius: 34px; background: var(--glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border: 0.5px solid var(--glass-edge); box-shadow: 0 10px 30px rgb(0 0 0 / 0.14), 0 1px 3px rgb(0 0 0 / 0.08); }
 .tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; height: 54px; border-radius: 28px; color: var(--muted); text-decoration: none; font-size: 0.64rem; font-weight: 600; letter-spacing: 0.01em; transition: background-color 0.2s, color 0.2s; }
 .tab svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 /* Liquid-glass look: more see-through, stronger blur, a light top sheen and a bright rim. */
@@ -1036,7 +1036,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .tab { transition: height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s, color 0.2s; }
 .tab span { transition: opacity 0.2s, max-height 0.3s; max-height: 20px; overflow: hidden; }
 .tab svg { transition: width 0.3s, height 0.3s; }
-.tabbar.compact { width: min(calc(100% - 110px), 290px); padding: 3px; background: var(--glass-compact); }
+.tabbar.compact { width: min(calc(100% - 80px), 330px); padding: 3px; background: var(--glass-compact); }
 .tabbar.compact { backdrop-filter: blur(8px) saturate(150%); -webkit-backdrop-filter: blur(8px) saturate(150%); box-shadow: 0 6px 18px rgb(0 0 0 / 0.1), inset 0 1px 1px var(--glass-hi); }
 .tabbar.compact::before { opacity: 0.25; }
 .tabbar.compact .tab.on { background: rgba(255, 255, 255, 0.35); }
@@ -1319,6 +1319,55 @@ button.amap.didi { border: 0; cursor: pointer; }
 .tk-maps button.amap.didi, .hc-actions button.amap.didi, .sc-maps button.amap.didi { font: 600 0.78rem var(--f-body); }
 .toast2 { position: fixed; z-index: 4000; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) * 0.3 + 92px); max-width: min(92vw, 420px); padding: 11px 16px; border-radius: 16px; background: rgb(28 28 30 / 0.92); color: #fff; font-size: 0.86rem; line-height: 1.35; text-align: center; box-shadow: 0 10px 30px rgb(0 0 0 / 0.25); transform: translate(-50%, 20px); opacity: 0; pointer-events: none; transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.25, 1.1), opacity 0.2s; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 .toast2.in { transform: translate(-50%, 0); opacity: 1; }
+/* Food tab */
+.spice { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 22px; color: #fff; background: radial-gradient(120% 140% at 100% 0%, rgb(255 255 255 / 0.18), transparent 50%), linear-gradient(135deg, #f43f5e, #9f1239); box-shadow: 0 10px 26px rgb(159 18 57 / 0.25); }
+.spice-h { display: flex; align-items: center; gap: 10px; }
+.spice-h > svg { width: 30px; height: 30px; padding: 6px; border-radius: 12px; background: rgb(255 255 255 / 0.18); fill: none; stroke: #fff; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+.spice-h b { display: block; font: 800 1.1rem var(--f-display); }
+.spice-h span { font-size: 0.8rem; opacity: 0.85; }
+.spice-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.spice-b { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 12px; border: 0; border-radius: 14px; background: rgb(255 255 255 / 0.16); color: #fff; text-align: left; font: inherit; cursor: pointer; transition: transform 0.12s; }
+.spice-b:active { transform: scale(0.96); }
+.spice-b b { font-size: 1.1rem; }
+.spice-b span { font-size: 0.72rem; opacity: 0.85; }
+.spice p { margin: 0; font-size: 0.78rem; opacity: 0.88; }
+.fd-cities { margin-top: -10px; margin-bottom: -16px; }
+.fds { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); gap: 14px; }
+.fd { display: flex; flex-direction: column; gap: 10px; padding: 0 0 14px; background: var(--surface); border-radius: 22px; overflow: hidden; box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.05); }
+.fd-top { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: linear-gradient(135deg, #fff1f2, #ffe4e6); color: #be123c; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
+.fd-p { letter-spacing: 0.1em; }
+.fd-main { display: flex; gap: 12px; padding: 0 16px; }
+.fd-img { flex: none; width: 72px; height: 72px; padding: 0; border: 0; border-radius: 16px; overflow: hidden; background: var(--bg); cursor: pointer; }
+.fd-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fd-t { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0; }
+.fd-t h3 { margin: 0; font: 800 1.12rem/1.2 var(--f-display); }
+.fd-zh { --h2: #be123c; background: var(--bg) !important; color: var(--ink) !important; font-size: 0.86rem; }
+.fd-zh svg { stroke: var(--muted) !important; }
+.chili { display: inline-flex; align-items: center; gap: 1px; }
+.chili i { display: inline-flex; }
+.chili svg { width: 15px; height: 15px; fill: none; stroke: #d1d5db; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+.chili i.on svg { fill: #ef4444; stroke: #ef4444; }
+.chili b { margin-left: 5px; font-size: 0.72rem; font-weight: 700; color: #16a34a; }
+.chili.s1 b { color: #ca8a04; } .chili.s2 b { color: #ea580c; } .chili.s3 b { color: #dc2626; }
+.fd-x { margin: 0; padding: 0 16px; font-size: 0.9rem; line-height: 1.45; }
+.fd-order { padding: 0 16px; }
+.fd-order > span { display: block; margin-bottom: 6px; font-size: 0.64rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.fd-order > div, .dt-dishes { display: flex; flex-wrap: wrap; gap: 6px; }
+.dish { display: inline-flex; flex-direction: column; align-items: flex-start; padding: 6px 10px; border: 0; border-radius: 12px; background: var(--bg); color: var(--ink); text-align: left; font: inherit; cursor: pointer; }
+.dish b { font-size: 0.8rem; font-weight: 600; }
+.dish i { font-style: normal; font-size: 0.86rem; color: #be123c; }
+.fd-meta, .fd-dist { margin: 0; padding: 0 16px; font-size: 0.78rem; color: var(--muted); }
+.fd-dist { display: flex; align-items: center; gap: 5px; }
+.fd-dist svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; }
+.fd-acts { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px; }
+.fd-acts .amap svg { width: 13px; height: 13px; }
+.fd-more { border: 0; cursor: pointer; margin-left: auto; }
+.also h2 { margin: 0 0 8px; font: 800 1.1rem var(--f-display); }
+.also-row { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 2px 16px 6px; }
+.also-row::-webkit-scrollbar { display: none; }
+.also-d { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 132px; padding: 12px; border: 0; border-radius: 18px; background: var(--surface); color: var(--ink); text-align: left; font: inherit; cursor: pointer; box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 6px 16px rgb(0 0 0 / 0.05); }
+.also-d b { font-size: 1.15rem; }
+.also-d span { font-size: 0.76rem; color: var(--muted); }
 /* Trip hero */
 .hero-wx { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; align-self: flex-start; padding: 6px 12px 6px 8px; border-radius: 99px; background: rgb(255 255 255 / 0.14); color: #fff; font-size: 0.8rem; text-decoration: none; }
 .hero-wx svg { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
@@ -1645,6 +1694,11 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
 /* Pins and popups */
 .pin { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50% 50% 50% 4px; transform: rotate(-45deg); color: #fff; box-shadow: 0 3px 8px rgb(0 0 0 / 0.3); border: 2px solid #fff; }
 .pin svg { width: 15px; height: 15px; transform: rotate(45deg); fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.pin-food { background: #e11d48; }
+.c-food { background: #e11d48; }
+.cd-food { background: #fda4af; }
+.pc-food { --pc: #e11d48; }
+.map-pane .map-legend { gap: 8px; padding: 6px 10px; font-size: 0.7rem; }
 .pin-hotel { background: #1f7a63; } .pin-sight { background: #c2410c; } .pin-idea { background: #5b5bd6; }
 .pin-station { background: #6c6c70; }
 .pin-station svg { width: 13px; height: 13px; }
@@ -2257,6 +2311,10 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     </div>
   </section>
 
+  <section class="pane" id="eat" data-title="Food" aria-label="Food" hidden>
+    <div class="large"><h1>Food</h1><p class="lead">Mild-friendly places travellers love, near your hotels</p></div>
+    <div class="pane-body" id="food-body"></div>
+  </section>
   <section class="pane" id="move" data-title="Getting around" aria-label="Getting around" hidden>
     <div class="large"><h1>Getting around</h1><p class="lead">Trains, stations, traffic and DiDi</p></div>
     <nav class="seg" aria-label="Getting around sections">
@@ -2546,7 +2604,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261629">26 Nov 2026, 16:29</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261634">26 Nov 2026, 16:34</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -2568,7 +2626,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     <div id="leafmap" class="map"></div>
     <button type="button" class="locate glass map-search" id="search-btn" aria-label="Search places"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5" stroke-linecap="round"/></svg></button>
     <button type="button" class="locate glass" id="locate-btn" aria-label="Show my location"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4 3.5 11.2l7 1.9 1.9 7z"/></svg></button>
-    <div class="map-legend glass"><span><i class="c-hotel"></i>Hotel</span><span><i class="c-sight"></i>Sight</span><span><i class="c-station"></i>Station</span><span><i class="c-idea"></i>Idea</span></div>
+    <div class="map-legend glass"><span><i class="c-hotel"></i>Hotel</span><span><i class="c-sight"></i>Sight</span><span><i class="c-station"></i>Station</span><span><i class="c-idea"></i>Idea</span><span><i class="c-food"></i>Food</span></div>
     <div class="map-chips glass collapsed" id="map-chips">
     <button type="button" class="chips-toggle" id="chips-toggle" aria-expanded="false" aria-label="Choose a city"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg><span id="chips-current">All China</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
     <button type="button" data-fly="all" class="on">All China</button>
@@ -2588,6 +2646,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
   <a href="#trip" class="tab" data-tab="trip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 3.5 6.8v12.7L9 17.2l6 2.3 5.5-2.3V4.5L15 6.8 9 4.5zM9 4.5v12.7M15 6.8v12.7"/></svg><span>Trip</span></a>
   <a href="#book" class="tab" data-tab="book"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3"/><path d="M8 9l1.6 1.6L12.5 7.7M8 15h8"/></svg><span>To do</span><i class="tab-badge" id="todo-badge" hidden></i></a>
   <a href="#stay" class="tab" data-tab="stay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.5v-11M3.5 14h17v4.5M20.5 14v-2.5a3 3 0 0 0-3-3H11V14"/><circle cx="7.2" cy="10.8" r="1.8"/></svg><span>Hotels</span></a>
+  <a href="#eat" class="tab" data-tab="eat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5v7a2 2 0 0 0 2 2v8M5 3.5v5M9 3.5v5M16.5 20.5v-17c-2.2 1-3.5 3.6-3.5 7v3h3.5"/></svg><span>Food</span></a>
   <a href="#move" class="tab" data-tab="move"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3.5" width="12" height="13" rx="3"/><path d="M6 11h12M9 20.5l1.5-4M15 20.5l-1.5-4"/><circle cx="9.3" cy="13.7" r=".6"/><circle cx="14.7" cy="13.7" r=".6"/></svg><span>Transit</span></a>
   <a href="#map" class="tab" data-tab="map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg><span>Map</span></a>
 </nav>
@@ -2805,7 +2864,8 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     hotel: '<svg viewBox="0 0 24 24"><path d="M3.5 18.5v-11M3.5 14h17v4.5M20.5 14v-2.5a3 3 0 0 0-3-3H11V14"/><circle cx="7.2" cy="10.8" r="1.8"/></svg>',
     idea: '<svg viewBox="0 0 24 24"><path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>',
     sight: '<svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>',
-    station: '<svg viewBox="0 0 24 24"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg>'
+    station: '<svg viewBox="0 0 24 24"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg>',
+    food: '<svg viewBox="0 0 24 24"><path d="M7 3.5v7a2 2 0 0 0 2 2v8M5 3.5v5M9 3.5v5M16.5 20.5v-17c-2.2 1-3.5 3.6-3.5 7v3h3.5"/></svg>'
   };
   var CITIES = [
     { name: 'Beijing', ll: [39.93, 116.36], z: 11 },
@@ -3029,7 +3089,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
   };
   function tile(icon, label) { return '<span class="pa-ic">' + ICON[icon] + '</span><span class="pa-l">' + label + '</span>'; }
   function popup(p) {
-    var tag = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea' }[p.t] || '';
+    var tag = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea', food: 'Food' }[p.t] || '';
     var acts = [amapLinks(p, tile('nav', 'Amap')),
       '<button type="button" class="pa" data-goto="' + p.go + '">' + tile('info', 'Details') + '</button>'];
     if (PH[p.n]) acts.push('<button type="button" class="pa" data-ph="' + esc(p.n) + '">' + tile('photo', 'Photos') + '</button>');
@@ -3110,7 +3170,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
   }
   function showCard(p, marker) {
     var c = cardEl(), ph = PH[p.n];
-    var tag = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea' }[p.t] || '';
+    var tag = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea', food: 'Food' }[p.t] || '';
     var text = (p.t !== 'idea' && ABOUT[p.n]) || p.d;
     var meta = p.t !== 'idea' ? p.d : '';
     var thumb = ph ? '<button type="button" class="pc-thumb" data-ph="' + esc(p.n) + '" aria-label="Photos of ' + esc(p.n) + '"><img src="' + esc(ph.ph[0]) + '" alt="" referrerpolicy="no-referrer" onerror="this.remove()"><span class="pc-n">' + IC.photo + ph.ph.length + '</span></button>'
@@ -3234,7 +3294,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     if (!p) return;
     var d = dtEl(), ph = PH[p.n], D = DET[p.n] || {};
     d._p = p;
-    var tag = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea' }[p.t] || '';
+    var tag = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea', food: 'Food' }[p.t] || '';
     var meta = p.t !== 'idea' ? p.d : '';
     var slides = ph ? ph.ph.map(function (u, i) {
       return '<figure class="dt-slide" data-i="' + i + '"><img src="' + esc(u) + '" alt="" referrerpolicy="no-referrer"' + (i > 1 ? ' loading="lazy"' : '') + ' onerror="this.parentNode.classList.add(\'bad\')"></figure>';
@@ -3248,7 +3308,8 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     if (D.addr) rows.push([IC.pin, 'Address for DiDi', '<button type="button" class="dt-copy zh" data-copy="' + esc(D.addr) + '">' + esc(D.addr) + IC.copy + '</button>']);
     var TP = window.china2026Tips && window.china2026Tips[p.n];
     if (TP) rows.unshift([IC.bolt, 'Insider tip · ' + esc(TP[0]), esc(TP[2])]);
-    if (D.tk) rows.push([IC.ticket, p.t === 'hotel' ? 'Stay' : 'Tickets', esc(D.tk)]);
+    if (D.order) rows.push([IC.info, 'Order this · tap to show', '<span class="dt-dishes">' + D.order.map(function (o) { return '<button type="button" class="dish" data-show="' + esc(o[1]) + '" data-en="' + esc(o[0]) + '"><b>' + esc(o[0]) + '</b><i>' + esc(o[1]) + '</i></button>'; }).join('') + '</span>']);
+    if (D.tk) rows.push([IC.ticket, p.t === 'hotel' ? 'Stay' : (p.t === 'food' ? 'Price & spice' : 'Tickets'), esc(D.tk)]);
     if (D.bk) rows.push([IC.cal, p.t === 'hotel' ? 'Booking' : 'Booking', esc(D.bk)]);
     if (D.hr) rows.push([IC.clock, 'Hours & time', esc(D.hr)]);
     getThere(p).forEach(function (r) { rows.push([r[0], r[1], esc(r[2])]); });
@@ -3395,7 +3456,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       });
     });
     var srcName = /trip\.com/.test(info.src) ? 'Trip.com' : (/wikipedia\.org/.test(info.src) ? 'Wikipedia' : 'Wikimedia Commons');
-    var kind = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea' }[p ? p.t : ''] || '';
+    var kind = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea', food: 'Food' }[p ? p.t : ''] || '';
     var text = (p && p.t !== 'idea' && ABOUT[name]) || (p ? p.d : '');
     var when = p && p.t !== 'idea' ? p.d : '';
     viewer.querySelector('.phv-info').innerHTML =
@@ -3457,7 +3518,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       iconCreateFunction: function (cl) {
         var kids = cl.getAllChildMarkers(), n = kids.length, has = {};
         kids.forEach(function (m) { has[m.options.kind] = 1; });
-        var dots = ['hotel', 'sight', 'station', 'idea'].filter(function (k) { return has[k]; })
+        var dots = ['hotel', 'sight', 'station', 'idea', 'food'].filter(function (k) { return has[k]; })
           .map(function (k) { return '<i class="cd-' + k + '"></i>'; }).join('');
         var size = n < 10 ? 40 : (n < 25 ? 46 : 52);
         return L.divIcon({ className: '', html: '<div class="cluster" style="width:' + size + 'px;height:' + size + 'px"><b>' + n + '</b><span>' + dots + '</span></div>', iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
@@ -3584,6 +3645,59 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     map.setView(p.ll, Math.max(map.getZoom(), 15), { animate: false });
     group.zoomToShowLayer(p._m, function () { showCard(p, p._m); });
   }
+  // ---- Food: mild-friendly places travellers love. spice 0 = not spicy … 3 = hot. Prices and hours are approximate. ----
+  var FOOD = [
+    { n: 'Peking duck at Siji Minfu', zh: '四季民福烤鸭店(故宫店)', go: 's-bj', ll: [39.9150, 116.4040], q: '四季民福烤鸭店 故宫店',
+      f: { c: 'Peking duck', p: '¥¥', s: 0, x: 'The most loved Peking duck in town for locals and visitors: crispy skin carved at your table, by the Forbidden City\'s east gate.', order: [['Roast duck (whole or half)', '烤鸭'], ['Sweet and sour pork', '糖醋里脊'], ['Zhajiang noodles', '炸酱面']], bk: 'No bookings: take a queue number at the door or in the app; go at 10:30 or 16:00.', hr: 'About 10:30–22:00' } },
+    { n: 'Da Dong roast duck', zh: '大董烤鸭店(南新仓店)', go: 's-bj', ll: [39.9330, 116.4330], q: '大董烤鸭 南新仓',
+      f: { c: 'Peking duck, fine dining', p: '¥¥¥', s: 0, x: 'Elegant, Michelin-recognised duck restaurant in an old Ming granary courtyard. Leaner, extra-crispy "Superlean" duck and beautiful plating.', order: [['Crispy roast duck', '酥不腻烤鸭'], ['Braised sea cucumber (signature)', '葱烧海参'], ['Seasonal vegetables', '时令蔬菜']], bk: 'Book a day ahead (Trip.com or via the hotel).', hr: 'Lunch and dinner' } },
+    { n: 'Jin Ding Xuan dim sum', zh: '金鼎轩(地坛店)', go: 's-bj', ll: [39.9490, 116.4170], q: '金鼎轩 地坛店',
+      f: { c: 'Cantonese dim sum, 24 hours', p: '¥', s: 0, x: 'Huge, lively Cantonese restaurant by the Lama Temple, open around the clock. Picture menu, nothing spicy, great for an easy meal.', order: [['Shrimp dumplings', '虾饺'], ['BBQ pork buns', '叉烧包'], ['Rice noodle rolls', '肠粉'], ['Custard buns', '流沙包']], bk: 'Walk in.', hr: 'Open 24 hours' } },
+    { n: 'Huguosi snacks', zh: '护国寺小吃(护国寺总店)', go: 's-bj', ll: [39.9395, 116.3790], q: '护国寺小吃 总店',
+      f: { c: 'Old Beijing snacks', p: '¥', s: 0, x: 'A time-honoured snack shop near Houhai, 15 minutes\' walk from your hotel. Point at the counter and try a few traditional sweets and pastries.', order: [['Rolling donkey (sweet rice roll)', '驴打滚'], ['Pea flour cake', '豌豆黄'], ['Sesame flatbread', '芝麻烧饼']], bk: 'Walk in, pay at the counter.', hr: 'Breakfast to evening' } },
+    { n: 'Wenyu milk custard', zh: '文宇奶酪店(南锣鼓巷店)', go: 's-bj', ll: [39.9360, 116.4030], q: '文宇奶酪店 南锣鼓巷',
+      f: { c: 'Dessert', p: '¥', s: 0, x: 'Famous little shop for old-Beijing "palace" milk custard, a silky set yoghurt-like dessert. Often a queue, always quick.', order: [['Milk custard', '奶酪'], ['Double-skin milk', '双皮奶']], bk: 'Walk in; sells out by evening.', hr: 'Midday to evening' } },
+    { n: 'Lao Sun Jia', zh: '老孙家饭庄(东大街店)', go: 's-xa', ll: [34.2600, 108.9560], q: '老孙家饭庄 东大街',
+      f: { c: 'Xi\'an mutton soup', p: '¥¥', s: 0, x: 'A century-old institution for paomo: you tear flatbread into tiny pieces, then they cook it in rich mutton or beef broth. Hearty and not spicy.', order: [['Mutton soup with bread', '羊肉泡馍'], ['Beef soup with bread', '牛肉泡馍']], bk: 'Walk in.', hr: 'Lunch and dinner' } },
+    { n: 'De Fa Chang dumplings', zh: '德发长(钟楼店)', go: 's-xa', ll: [34.2603, 108.9455], q: '德发长 钟楼',
+      f: { c: 'Dumpling banquet', p: '¥¥', s: 0, x: 'Right on Bell Tower square, two minutes from your hotel: a famous "dumpling banquet" of 15–20 dumplings in different shapes and fillings.', order: [['Dumpling banquet', '饺子宴'], ['Steamed dumplings', '蒸饺']], bk: 'Walk in; book the banquet at the counter.', hr: 'Lunch and dinner' } },
+    { n: 'Jia San soup dumplings', zh: '贾三灌汤包子(北院门店)', go: 's-xa', ll: [34.2640, 108.9410], q: '贾三灌汤包子 北院门',
+      f: { c: 'Muslim Quarter soup dumplings', p: '¥', s: 0, x: 'The best-known soup-dumpling shop in the Muslim Quarter, behind your hotel. Bite a small hole, sip the broth, then eat.', order: [['Beef soup dumplings', '牛肉灌汤包'], ['Eight-treasure rice porridge', '八宝稀饭']], bk: 'Walk in.', hr: 'Breakfast to evening' } },
+    { n: 'Long Chao Shou wontons', zh: '龙抄手(春熙路总店)', go: 's-cd', ll: [30.6550, 104.0790], q: '龙抄手 春熙路总店',
+      f: { c: 'Chengdu snacks', p: '¥', s: 1, x: 'Classic Chengdu snack house on Chunxi Road. Wontons come in chilli oil or clear broth: choose clear broth and you\'re safe.', order: [['Wontons in clear soup', '清汤抄手'], ['Sweet rice balls', '赖汤圆'], ['Steamed buns', '包子']], bk: 'Walk in.', hr: 'Breakfast to evening' } },
+    { n: 'Din Tai Fung, IFS', zh: '鼎泰丰(成都国际金融中心店)', go: 's-cd', ll: [30.6560, 104.0800], q: '鼎泰丰 成都国际金融中心',
+      f: { c: 'Taiwanese dumplings', p: '¥¥', s: 0, x: 'The famous xiaolongbao chain, in the IFS mall by the climbing panda. Zero spice, English menu, a safe and delicious break from Sichuan heat.', order: [['Pork soup dumplings', '小笼包'], ['Egg fried rice with shrimp', '虾仁蛋炒饭'], ['Shrimp and pork wontons', '鲜虾馄饨']], bk: 'Queue at peak times; get a number.', hr: 'Lunch and dinner' } },
+    { n: 'Haidilao hotpot', zh: '海底捞火锅(春熙路店)', go: 's-cd', ll: [30.6565, 104.0775], q: '海底捞 春熙路',
+      f: { c: 'Hotpot with mild broths', p: '¥¥', s: 0, x: 'The hotpot chain known for its service: iPad menu in English, free snacks while you wait, and a noodle-dancing show. Pick the tomato and mushroom broths and skip the red one.', order: [['Tomato broth', '番茄锅'], ['Mushroom broth', '菌汤锅'], ['Hand-pulled noodles (with a show)', '捞面'], ['Beef slices', '肥牛']], bk: 'Book or queue in the Haidilao app; waits are fun.', hr: 'Late into the night' } },
+    { n: 'Xie Dajie beer fish', zh: '谢大姐啤酒鱼', go: 's-ys', ll: [24.7775, 110.4945], q: '阳朔 谢大姐啤酒鱼',
+      f: { c: 'Guangxi, beer fish', p: '¥¥', s: 1, x: 'The best-known place on West Street for Yangshuo\'s signature dish: river fish braised in local beer with tomatoes and peppers. Ask for it not spicy.', order: [['Beer fish, not spicy', '啤酒鱼 不要辣'], ['Stuffed river snails', '田螺酿'], ['Stir-fried greens', '清炒时蔬']], bk: 'Walk in; fish is priced by weight, so confirm the price first.', hr: 'Lunch and dinner' } },
+    { n: 'Yangshuo Cooking School', zh: '阳朔烹饪学校', go: 's-ys', ll: [24.7440, 110.4700], q: '阳朔烹饪学校',
+      f: { c: 'Cooking class in a farmhouse', p: '¥¥', s: 0, x: 'A much-loved half-day class: a market tour, then cooking 4–5 local dishes on woks in a farmhouse among the karst peaks. You choose the spice level.', order: [['Beer fish', '啤酒鱼'], ['Stuffed vegetables', '酿菜'], ['Egg dumplings', '蛋饺']], bk: 'Book a day or two ahead online.', hr: 'Morning or afternoon session' } },
+    { n: 'Dian Dou De dim sum', zh: '点都德(罗湖店)', go: 's-sz', ll: [22.5440, 114.1180], q: '点都德 罗湖',
+      f: { c: 'Cantonese dim sum', p: '¥¥', s: 0, x: 'Popular Guangzhou-style teahouse chain: tick the boxes on the menu and the baskets keep coming. Great for a long lazy brunch.', order: [['Shrimp dumplings', '虾饺皇'], ['BBQ pork buns', '叉烧包'], ['Custard buns', '流沙包'], ['Rice noodle rolls', '肠粉']], bk: 'Queue at weekends; get a number.', hr: 'Breakfast to evening' } },
+    { n: 'Chaoshan beef hotpot', zh: '八合里海记牛肉火锅', go: 's-sz', ll: [22.5420, 114.1210], q: '八合里海记 罗湖',
+      f: { c: 'Clear-broth beef hotpot', p: '¥¥', s: 0, x: 'Chaoshan-style hotpot: fresh beef, cut to order, dipped for seconds in clear beef broth. The opposite of Sichuan hotpot: clean and mild.', order: [['Fresh beef (several cuts)', '鲜牛肉'], ['Hand-beaten beef balls', '手打牛肉丸'], ['Clear beef broth', '清汤锅底']], bk: 'Walk in or queue at dinner.', hr: 'Lunch to late' } },
+    { n: 'Tim Ho Wan', zh: '添好運點心專門店(深水埗)', go: 's-hk', ll: [22.3307, 114.1625], q: '添好運 深水埗', wgs: 1,
+      f: { c: 'Michelin dim sum, cheap', p: '¥', s: 0, x: 'Famous as one of the world\'s cheapest Michelin-starred meals. The baked BBQ pork buns are legendary.', order: [['Baked BBQ pork buns', '酥皮焗叉燒包'], ['Shrimp dumplings', '晶瑩鮮蝦餃'], ['Rice noodle rolls', '腸粉']], bk: 'Queue; turns over quickly.', hr: 'About 10:00–21:00' } },
+    { n: 'Australia Dairy Company', zh: '澳洲牛奶公司', go: 's-hk', ll: [22.3051, 114.1712], q: '澳洲牛奶公司 佐敦', wgs: 1,
+      f: { c: 'Hong Kong cafe (cha chaan teng)', p: '¥', s: 0, x: 'Legendary, brusque and fast: scrambled egg toast and steamed milk pudding, served in minutes. A Hong Kong rite of passage near Temple Street.', order: [['Scrambled egg toast', '炒蛋多士'], ['Steamed egg-white milk pudding', '蒸蛋白'], ['Hong Kong milk tea', '奶茶']], bk: 'Queue, share tables, eat fast.', hr: 'Breakfast to evening (closed Thursdays)' } },
+    { n: 'Mak\'s Noodle', zh: '麥奀雲吞麵世家(中環)', go: 's-hk', ll: [22.2817, 114.1556], q: '麥奀雲吞麵世家 中環', wgs: 1,
+      f: { c: 'Wonton noodles', p: '¥', s: 0, x: 'Tiny bowls of perfect shrimp wonton noodles in clear broth, a Central classic since the 1960s.', order: [['Shrimp wonton noodles', '鮮蝦雲吞麵'], ['Beef brisket noodles', '牛腩麵']], bk: 'Walk in.', hr: 'Lunch to evening' } },
+    { n: 'Kam\'s Roast Goose', zh: '甘牌燒鵝', go: 's-hk', ll: [22.2770, 114.1735], q: '甘牌燒鵝 灣仔', wgs: 1,
+      f: { c: 'Cantonese roast meats', p: '¥¥', s: 0, x: 'Michelin-starred roast goose in Wan Chai: crisp skin, juicy meat, over rice or noodles.', order: [['Roast goose with rice', '燒鵝飯'], ['BBQ pork (char siu)', '叉燒']], bk: 'Queue; go before 12:00 or after 14:00.', hr: 'Lunch and dinner' } },
+    { n: 'Lan Fong Yuen', zh: '蘭芳園(中環)', go: 's-hk', ll: [22.2828, 114.1545], q: '蘭芳園 中環', wgs: 1,
+      f: { c: 'Milk tea and pork chop buns', p: '¥', s: 0, x: 'Claims to have invented silk-stocking milk tea. Grab a pork chop bun and a cup, near the Mid-Levels escalator.', order: [['Silk-stocking milk tea', '絲襪奶茶'], ['Pork chop bun', '豬扒包']], bk: 'Walk in.', hr: 'Breakfast to evening' } }
+  ];
+  FOOD.forEach(function (fd) {
+    var ex = null;
+    P.forEach(function (p) { if (p.n === fd.n) ex = p; });
+    var d = fd.f.c + ' · ' + fd.f.p + ' · ' + ['not spicy', 'mild', 'some heat', 'hot'][fd.f.s];
+    if (ex) { ex.t = 'food'; ex.f = fd.f; ex.d = d; }
+    else P.push({ t: 'food', n: fd.n, zh: fd.zh, d: d, ll: fd.ll, go: fd.go, q: fd.q, wgs: fd.wgs, f: fd.f });
+    var D = DET[fd.n] || (DET[fd.n] = {});
+    D.x = fd.f.x; D.tk = 'Price ' + fd.f.p + ' · ' + ['not spicy', 'mild', 'some heat', 'hot'][fd.f.s]; D.bk = fd.f.bk; D.hr = fd.f.hr;
+    D.order = fd.f.order;
+  });
   window.china2026Places = { P: P, PH: PH, open: openDetails, focus: focusPin };
 })();
 (function () {
@@ -3729,7 +3843,7 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
   });
 });
 (function () {
-  var TABS = ['trip', 'book', 'stay', 'move', 'map', 'about'];
+  var TABS = ['trip', 'book', 'stay', 'eat', 'move', 'map', 'about'];
   var panes = {};
   TABS.forEach(function (t) { panes[t] = document.getElementById(t); });
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabbar .tab'));
@@ -3849,7 +3963,7 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
 
   // Swipe left/right to change tabs (like Instagram): the next page slides in beside this one. The map keeps its own pan gesture.
   (function () {
-    var ORDER = ['trip', 'book', 'stay', 'move', 'map'];
+    var ORDER = ['trip', 'book', 'stay', 'eat', 'move', 'map'];
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var EASE = 'cubic-bezier(.2,.8,.2,1)';
     var st = null;
@@ -4423,7 +4537,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
 
   // ---------- Map: search places ----------
   var CITY_BY_GO = { 's-bj': 'Beijing', 's-xa': "Xi'an", 's-cd': 'Chengdu', 's-ys': 'Yangshuo', 's-sz': 'Shenzhen', 's-hk': 'Hong Kong' };
-  var DOT = { hotel: '#1f7a63', sight: '#c2410c', station: '#6c6c70', idea: '#5b5bd6' };
+  var DOT = { hotel: '#1f7a63', sight: '#c2410c', station: '#6c6c70', idea: '#5b5bd6', food: '#e11d48' };
   function cityOf(p, pl) {
     if (CITY_BY_GO[p.go]) return CITY_BY_GO[p.go];
     var best = null, bd = 1e9;
@@ -4432,7 +4546,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   }
   function openSearch() {
     var pl = window.china2026Places; if (!pl) return;
-    var kind = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea' };
+    var kind = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea', food: 'Food' };
     var rows = pl.P.map(function (p, i) {
       var ph = pl.PH[p.n], img = ph ? thumb(ph.ph[0]).replace(/\/500px-/, '/120px-') : '';
       var city = cityOf(p, pl);
@@ -4455,7 +4569,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
         list.innerHTML = groups(hits);
       }
       function groups(hits) {
-        var order = { hotel: 0, sight: 1, station: 2, idea: 3 };
+        var order = { hotel: 0, sight: 1, station: 2, idea: 3, food: 4 };
         return CITIES.map(function (c) {
           var g = hits.filter(function (r) { return r.city === c.n; });
           if (!g.length) return '';
@@ -4488,12 +4602,10 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       ['07:00', 'Temple of Heaven', 'Come early through the East Gate: locals do tai chi, dance and play shuttlecock in the Long Corridor. The halls open at 08:00, before the tour groups.', '天坛公园东门', 'East Gate'],
       ['Dusk', 'Houhai & Shichahai hutongs', 'Right by your hotel: start at Silver Ingot Bridge, walk the frozen lakes at dusk, skate if the rink is open, then dinner in the hutongs.', '银锭桥', 'Silver Ingot Bridge'],
       ['10:30', 'Peking duck at Siji Minfu', 'Take a queue number at opening (10:30) or around 16:00 to skip the 1–2 hour dinner wait.', '四季民福烤鸭店(故宫店)', 'Siji Minfu, Forbidden City branch'],
-      ['Food', 'Peking duck at Siji Minfu', 'A whole duck feeds 2–3 with a few sides. Dip the crispy skin in sugar first, then wrap the rest in pancakes with cucumber, spring onion and sauce.'],
       ['Tip', 'Lama Temple', 'Free incense is handed out at the entrance, no need to buy any. Photos aren\'t allowed inside the halls.', '雍和宫', 'Lama Temple entrance'],
       ['Tip', 'Summer Palace', 'If December is cold enough, Kunming Lake freezes into a huge rink with ice bikes and sledges: a very Beijing experience.', '颐和园北宫门', 'North Palace Gate'],
       ['Tip', 'Nanluoguxiang', 'The main lane is packed. Turn into the side hutongs (Mao\'er, Beibingmasi) for the quiet old Beijing, five minutes from your hotel.', '南锣鼓巷', 'Nanluoguxiang'],
       ['Tip', 'Forbidden City', 'Bring the passports you booked with: they are scanned at the gate instead of a ticket. The audio guide at the entrance is worth it.', '故宫博物院午门', 'Meridian Gate'],
-      ['Food', 'Qianmen & Dashilar', 'Breakfast like a local: jianbing (煎饼) pancakes from a street stall, and zhajiangmian (炸酱面) noodles for lunch.', '前门大街', 'Qianmen Street'],
       ['Tip', '798 Art District', 'Most galleries close on Mondays. Go on a weekday afternoon and wander the side lanes for murals and small studios.', '798艺术区', '798 Art District'],
       ['Evening', 'Olympic Park & Bird\'s Nest', 'The Bird\'s Nest and Water Cube are lit up from dusk: it\'s free to walk around the Olympic Green.', '国家体育场', 'Bird\'s Nest']
     ],
@@ -4503,9 +4615,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       ['19:00', 'Datang Everbright City', 'Come after 19:00 for the lights and costumed performers. Weekends are packed; your Monday evening (21 Dec) is ideal.', '大唐不夜城', 'Datang Everbright City'],
       ['Book ahead', 'Shaanxi History Museum', 'Free timed tickets go online days ahead and vanish fast. It\'s closed on Mondays, so your chance is Sun 20 Dec afternoon.', '陕西历史博物馆', 'Museum entrance'],
       ['Evening', 'Muslim Quarter', 'Stalls are busiest 18:00–21:00. See the Great Mosque, a mosque built like a Chinese temple, in the quiet late afternoon.', '西安化觉巷清真大寺', 'Great Mosque'],
-      ['Food', 'Muslim Quarter', 'Try roujiamo (肉夹馍), biangbiang noodles and yangrou paomo (羊肉泡馍): tear the bread into tiny pieces yourself before they pour in the soup.'],
       ['Tip', 'Bell & Drum Towers', 'One combined ticket covers both. Climb the Drum Tower first, then come back at night when the Bell Tower is lit up, two minutes from your hotel.', '西安钟楼', 'Bell Tower'],
-      ['Food', 'Yongxingfang food street', 'Try "smash the bowl" rice wine (摔碗酒): drink it, then smash the clay bowl on the pile for good luck.', '永兴坊', 'Yongxingfang'],
       ['Tip', 'Huaqing Palace', 'It\'s 10 minutes from the Terracotta Army, so combine them on 21 Dec: a DiDi between the two is cheap.', '华清宫', 'Huaqing Palace'],
       ['Tip', 'Big Wild Goose Pagoda', 'Pair it with Datang Everbright City: the pagoda square at dusk, then walk south down the boulevard as the lights come on.', '大雁塔', 'Big Wild Goose Pagoda']
     ],
@@ -4514,10 +4624,8 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       ['14:00', 'People\'s Park teahouse', 'The Heming teahouse is liveliest in the afternoon, with mahjong all around. Grab a table by the lake.', '人民公园鹤鸣茶社', 'Heming Teahouse'],
       ['18:00', 'Jinli Ancient Street', 'The lanterns come on at dusk. Arrive around 18:00 for photos before the evening crowd peaks.', '锦里古街', 'Jinli'],
       ['20:00', 'Sichuan Opera & face-changing', 'Book a seat in the front rows: the face-changing finale is best seen up close.', '蜀风雅韵', 'Shufeng Yayun theatre'],
-      ['Food', 'Kuanzhai Alley', 'For hotpot, ask for a yuanyang pot (鸳鸯锅: half spicy, half mild) and 微辣. Sichuan "mild" is still hot.'],
       ['Tip', 'People\'s Park teahouse', 'Try ear cleaning (采耳) at the teahouse, about ¥30–50: a strange but very Chengdu experience.'],
       ['Tip', 'IFS climbing panda', 'Ride the escalators to the 7th-floor rooftop garden to see the giant panda up close, then walk over to Taikoo Li.', '成都国际金融中心', 'IFS mall'],
-      ['Food', 'Jinli Ancient Street', 'Try dan dan noodles (担担面), Zhong dumplings in chilli oil (钟水饺) and, if you\'re brave, spicy rabbit head (兔头).'],
       ['Morning', 'Wenshu Monastery', 'Calm early in the day, with incense and chanting. The vegetarian restaurant inside makes a great lunch.', '文殊院', 'Wenshu Monastery'],
       ['Day trip', 'Leshan Giant Buddha', 'Take an early fast train: the queue for the cliff stairway beside the Buddha grows fast after 10:00. A river boat shows the whole statue in 30 minutes.', '乐山大佛', 'Leshan Giant Buddha']
     ],
@@ -4527,7 +4635,6 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       ['Morning', 'Yulong River rafting', 'Start near Dragon Bridge in the morning: quieter, with soft light on the peaks. Agree the price and the stretch before you board.', '遇龙桥', 'Dragon Bridge'],
       ['Evening', 'West Street', 'Wander West Street after dinner when it lights up; it\'s two minutes from your hotel.', '阳朔西街', 'West Street'],
       ['Tip', 'Ten-Mile Gallery', 'Rent an e-bike for the day: check the brakes and battery, and photograph any scratches before you ride off.', '阳朔十里画廊', 'Ten-Mile Gallery'],
-      ['Food', 'West Street', 'Try beer fish (啤酒鱼), Yangshuo\'s signature dish, and Guilin rice noodles (桂林米粉) for breakfast.'],
       ['Sunset', 'Moon Hill', 'Climb in the late afternoon: about 800 steps (30 minutes) to the arch, with sunset over the karst peaks.', '月亮山', 'Moon Hill'],
       ['Rainy day', 'Silver Cave', 'The perfect plan B for a wet or cold day: warm, dry and lit in colour.', '银子岩', 'Silver Cave'],
       ['Evening', 'Impression Liu Sanjie', 'It\'s outdoors by the river: dress warmly and book the day before. The first show sells out first.', '阳朔印象刘三姐', 'Impression Liu Sanjie']
@@ -4537,7 +4644,6 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       ['Sunset', 'Lianhuashan Park', 'Climb at sunset for the Futian skyline lighting up below you.', '莲花山公园', 'Lianhuashan Park'],
       ['Morning', 'Luohu Port', 'Cross on 29 Dec in the morning, before the late-morning queues. Keep the small landing slip Hong Kong immigration gives you.', '罗湖口岸', 'Luohu Port'],
       ['Tip', 'Huaqiangbei', 'Prices at the stalls are negotiable. Test anything before paying and keep the receipt.', '华强北', 'Huaqiangbei'],
-      ['Food', 'Dongmen Pedestrian Street', 'Have a Cantonese breakfast: dim sum, rice rolls (肠粉) and congee (粥).', '东门步行街', 'Dongmen'],
       ['Tip', 'OCT Loft', 'Make a day of it: OCT Loft, then Window of the World two metro stops away, ending at Shenzhen Bay Park for sunset.', '华侨城创意文化园', 'OCT Loft'],
       ['Evening', 'Sea World, Shekou', 'Waterfront restaurants around the old Minghua cruise ship, with a fountain show in the evening.', '蛇口海上世界', 'Sea World']
     ],
@@ -4548,7 +4654,6 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       ['Opening', 'Big Buddha, Ngong Ping', 'Book the cable car online and be there at opening: later queues can take an hour.', '昂坪360东涌缆车站', 'Ngong Ping 360, Tung Chung'],
       ['After 19:00', 'Temple Street Night Market', 'It gets going after 19:00. Eat at the open-air dai pai dong stalls.', '庙街夜市', 'Temple Street'],
       ['31 Dec', 'Stanford Hillview Hotel', 'Check out in the morning and leave your bags at the hotel; the flight is at 23:15. Collect them by 20:00 and take the Airport Express from Kowloon Station.', '香港仕德福山景酒店', 'Hotel'],
-      ['Food', 'Temple Street Night Market', 'Try egg waffles (鸡蛋仔), Hong Kong milk tea and a pineapple bun (菠萝包) at any cha chaan teng.'],
       ['Tip', 'Mid-Levels escalator & SoHo', 'The escalator runs uphill from 10:00: ride it up, then walk back down through SoHo\'s lanes and street art.', '中环至半山自动扶梯', 'Escalator, Central'],
       ['Tip', 'Tai O fishing village', 'Pair it with the Big Buddha: bus 21 from Ngong Ping to Tai O, then bus 11 back to Tung Chung MTR.', '大澳', 'Tai O'],
       ['Money', 'Star Ferry', 'Just tap your contactless Visa or Mastercard on the MTR, buses, trams and ferries. No need to buy an Octopus card for two days.']
@@ -4647,6 +4752,64 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       row.insertAdjacentHTML('beforeend', didiBtn(zh.getAttribute('data-copy')));
     });
   }
+  // ---------- Food tab ----------
+  var DISHES = {
+    bj: [['Jianbing breakfast crepe', '煎饼', 0], ['Zhajiang noodles', '炸酱面', 0], ['Peking duck', '北京烤鸭', 0], ['Lamb skewers', '羊肉串', 1]],
+    xa: [['Roujiamo (meat burger)', '肉夹馍', 0], ['Mutton soup with bread', '羊肉泡馍', 0], ['Persimmon cakes', '柿子饼', 0], ['Biangbiang noodles, no chilli', 'biangbiang面 不要辣', 1]],
+    cd: [['Wontons in clear soup', '清汤抄手', 0], ['Sweet rice balls', '汤圆', 0], ['Kung pao chicken, mild', '宫保鸡丁 微辣', 1], ['Dan dan noodles (hot!)', '担担面', 3]],
+    ys: [['Beer fish, not spicy', '啤酒鱼 不要辣', 1], ['Guilin rice noodles', '桂林米粉', 1], ['Stuffed snails', '田螺酿', 1]],
+    sz: [['Rice noodle rolls', '肠粉', 0], ['Congee', '粥', 0], ['Roast goose', '烧鹅', 0]],
+    hk: [['Egg waffles', '鸡蛋仔', 0], ['Pineapple bun', '菠萝包', 0], ['Hong Kong milk tea', '奶茶', 0], ['Wonton noodles', '云吞面', 0]]
+  };
+  var SPICE = ['Not spicy', 'Mild', 'Some heat', 'Hot'];
+  var chili = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5c1.8-.4 3.4.4 4 2-3 .6-4.2 3-6 6.5S7.6 20 4.5 19.5c3-1.6 4.8-4.4 6.2-8.2.9-2.6 2-5.3 3.8-5.8z"/><path d="M14.5 5.5c.2-1.2.9-2 2-2.3"/></svg>';
+  function chilis(s) { var h = ''; for (var i = 0; i < 3; i++) h += '<i class="' + (i < s ? 'on' : '') + '">' + chili + '</i>'; return '<span class="chili s' + s + '" title="' + SPICE[s] + '">' + h + '<b>' + SPICE[s] + '</b></span>'; }
+  function fromHotel(p) {
+    var c = null; CITIES.forEach(function (x) { if ('s-' + x.id === p.go) c = x; });
+    var h = c && hotelPin(c.hotel); if (!h) return '';
+    var R = 6371, r = Math.PI / 180, dLa = (p.ll[0] - h.ll[0]) * r, dLo = (p.ll[1] - h.ll[1]) * r;
+    var a = Math.sin(dLa / 2) * Math.sin(dLa / 2) + Math.cos(h.ll[0] * r) * Math.cos(p.ll[0] * r) * Math.sin(dLo / 2) * Math.sin(dLo / 2);
+    var km = 2 * R * Math.asin(Math.sqrt(a)) * 1.3;
+    return km < 1.6 ? '~' + Math.max(3, Math.round(km / 4.5 * 60)) + ' min walk from the hotel' : '≈ ' + (km < 10 ? km.toFixed(1) : Math.round(km)) + ' km from the hotel · DiDi ~' + Math.round(km / 20 * 60 + 5) + ' min';
+  }
+  function renderFood() {
+    var box = document.getElementById('food-body'), pl = window.china2026Places; if (!box || !pl) return;
+    var today = ymd(new Date(), 'Asia/Shanghai'), cur = 'bj';
+    CITIES.forEach(function (c) { if (today >= c.from && today < c.to) cur = c.id; });
+    var sel = ls('china2026:food-city') || cur;
+    var spice = '<section class="spice"><div class="spice-h">' + chili + '<div><b>Not a spice person?</b><span>Show these to the waiter</span></div></div><div class="spice-btns">' +
+      [['No chilli, please', '不要辣', 'bú yào là'], ['No chilli at all', '一点都不要辣', 'yìdiǎn dōu bú yào là'], ['Is this spicy?', '这个辣吗？', 'zhège là ma?'], ['Any non-spicy dishes?', '有不辣的菜吗？', 'yǒu bú là de cài ma?']].map(function (q) {
+        return '<button type="button" class="spice-b" data-show="' + q[1] + '" data-py="' + q[2] + '" data-en="' + q[0] + '"><b>' + q[1] + '</b><span>' + q[0] + '</span></button>';
+      }).join('') + '</div><p>"微辣" (mild) in Sichuan is still hot. In Chengdu, go for clear broth, Cantonese or Taiwanese places.</p></section>';
+    function card(p) {
+      var f = p.f, ph = pl.PH[p.n], a = amapSearch(p.q || p.zh);
+      return '<article class="fd">' +
+        '<div class="fd-top"><span class="fd-c">' + esc(f.c) + '</span><span class="fd-p">' + esc(f.p) + '</span></div>' +
+        '<div class="fd-main">' + (ph ? '<button type="button" class="fd-img" data-place="' + esc(p.n) + '"><img src="' + esc(thumb(ph.ph[0])) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"></button>' : '') +
+        '<div class="fd-t"><h3>' + esc(p.n) + '</h3><button type="button" class="hc-zh zh fd-zh" data-copy="' + esc(p.zh) + '" aria-label="Copy ' + esc(p.zh) + '">' + esc(p.zh) + I.copy + '</button>' + chilis(f.s) + '</div></div>' +
+        '<p class="fd-x">' + esc(f.x) + '</p>' +
+        '<div class="fd-order"><span>Order this · tap to show</span><div>' + f.order.map(function (o) { return '<button type="button" class="dish" data-show="' + esc(o[1]) + '" data-en="' + esc(o[0]) + '"><b>' + esc(o[0]) + '</b><i>' + esc(o[1]) + '</i></button>'; }).join('') + '</div></div>' +
+        '<p class="fd-meta">' + esc(f.hr) + ' · ' + esc(f.bk) + '</p>' +
+        '<p class="fd-dist">' + I.pin + esc(fromHotel(p)) + '</p>' +
+        '<div class="fd-acts"><a class="amap" href="' + esc(a.web) + '" data-ios="' + esc(a.ios) + '" target="_blank" rel="noopener">' + I.pin + 'Amap</a>' +
+        '<button type="button" class="amap didi didi-ic" data-didi="' + esc(p.q || p.zh) + '" aria-label="DiDi to ' + esc(p.n) + '">' + I.car + '</button>' +
+        '<button type="button" class="amap fd-more" data-place="' + esc(p.n) + '">Details</button></div></article>';
+    }
+    function draw() {
+      var items = pl.P.filter(function (p) { return p.t === 'food' && p.go === 's-' + sel; });
+      items.sort(function (a, b) { return a.f.s - b.f.s; });
+      box.innerHTML = spice + '<div class="tips-cities fd-cities">' + CITIES.map(function (c) { return '<button type="button" data-fc="' + c.id + '"' + (c.id === sel ? ' class="on"' : '') + '>' + esc(c.n) + '</button>'; }).join('') + '</div>' +
+        '<div class="fds">' + items.map(card).join('') + '</div>' +
+        '<section class="also"><h2>Also try in ' + esc((CITIES.filter(function (c) { return c.id === sel; })[0] || {}).n || '') + '</h2><div class="also-row">' + (DISHES[sel] || []).map(function (d) {
+          return '<button type="button" class="also-d" data-show="' + esc(d[1]) + '" data-en="' + esc(d[0]) + '"><b>' + esc(d[1]) + '</b><span>' + esc(d[0]) + '</span>' + chilis(d[2]) + '</button>';
+        }).join('') + '</div></section>';
+    }
+    box.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-fc]'); if (!b) return;
+      sel = b.getAttribute('data-fc'); ls('china2026:food-city', sel); draw();
+    });
+    draw();
+  }
   // ---------- To do progress ----------
   function renderProgress() {
     var td = window.china2026Todo, head = document.querySelector('#book .large'); if (!td || !head) return;
@@ -4659,7 +4822,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   document.addEventListener('change', function (e) { if (e.target.closest && e.target.closest('#book')) setTimeout(renderProgress, 300); });
   window.china2026Hero = renderHero;
   function start() {
-    renderHero(); renderPlaces(); moneyTile(); renderProgress(); addShowButtons(); renderTips(); addDidiButtons();
+    renderHero(); renderPlaces(); moneyTile(); renderProgress(); addShowButtons(); renderTips(); addDidiButtons(); renderFood();
     setInterval(renderHero, 30000);
     document.addEventListener('visibilitychange', function () { if (!document.hidden) renderHero(); });
   }
