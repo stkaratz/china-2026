@@ -1156,6 +1156,37 @@ html.map-mode .sbar { display: none; }
 .todo-empty { background: var(--surface); border-radius: 16px; padding: 18px; text-align: center; color: var(--muted); }
 
 /* ---------- Train tickets ---------- */
+.hcs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); gap: 14px; }
+.hc { position: relative; background: var(--surface); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.05); scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 84px); }
+.hc-top { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 16px 18px 16px; color: #fff; background: linear-gradient(135deg, var(--h1), var(--h2)); overflow: hidden; }
+.hc-top::after { content: ""; position: absolute; right: -40px; top: -50px; width: 170px; height: 170px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 70%); pointer-events: none; }
+.hc-bj { --h1: #b3261e; --h2: #6e1430; }
+.hc-xa { --h1: #b7791f; --h2: #7a3e12; }
+.hc-cd { --h1: #2f8f4e; --h2: #1d5c3a; }
+.hc-ys { --h1: #1f7a63; --h2: #175f75; }
+.hc-sz { --h1: #2563eb; --h2: #1e3a8a; }
+.hc-hk { --h1: #6d28d9; --h2: #312e81; }
+.hc-row { display: flex; align-items: center; gap: 8px; }
+.hc-city { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.9; }
+.hc-now { padding: 2px 8px; border-radius: 99px; background: #fff; color: var(--h2); font-size: 0.66rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.hc-nts { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 99px; background: rgba(255, 255, 255, 0.18); font-size: 0.76rem; font-weight: 700; white-space: nowrap; }
+.hc-nts svg { width: 15px; height: 15px; fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.hc-name { position: relative; z-index: 1; margin-top: 4px; font: 800 1.22rem/1.2 var(--f-display); letter-spacing: -0.01em; }
+.hc-name a { color: #fff; text-decoration: none; }
+.hc-zh { font-size: 0.9rem; opacity: 0.88; }
+.hc-stay { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; padding: 14px 18px 6px; font-variant-numeric: tabular-nums; }
+.hc-d { display: flex; flex-direction: column; gap: 1px; }
+.hc-d.r { text-align: right; align-items: flex-end; }
+.hc-d span { font-size: 0.64rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.hc-d b { font: 700 1.1rem var(--f-display); }
+.hc-d i { font-style: normal; font-size: 0.78rem; color: var(--muted); }
+.hc .hc-addr { margin: 10px 18px 0; background: var(--bg); border: 0; }
+.hc-extra { padding: 8px 18px 0; font-size: 0.8rem; color: var(--muted); }
+.hc .tk-perf { margin-top: 14px; }
+.hc-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 12px 18px 16px; }
+.hc-trip { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; min-height: 36px; padding: 0 14px; border-radius: 99px; background: linear-gradient(135deg, var(--h1), var(--h2)); color: #fff; font: 700 0.82rem var(--f-body); text-decoration: none; }
+.hc-trip svg { width: 15px; height: 15px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.hc.here { box-shadow: 0 0 0 2px var(--h1), 0 8px 24px rgb(0 0 0 / 0.08); }
 .tks { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); gap: 14px; }
 .tk { position: relative; background: var(--surface); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.05); scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 84px); }
 .tk-top { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; padding: 16px 18px 14px; background: linear-gradient(135deg, #1f7a63, #175f75); color: #fff; }
@@ -1722,61 +1753,98 @@ html.map-mode .sbar { display: none; }
     <div class="pane-body">
 <section class="stop" aria-labelledby="hotels">
     <div class="stop-head"><h2 id="hotels">Hotels</h2><span class="nights">show the Chinese address to a taxi or paste it into DiDi</span></div>
-    <div class="hotels">
-      <div class="hotel">
-        <div class="where"><b>Beijing</b><span>16–20 Dec · 4 nts</span></div>
-        <div class="info">
-          <h3><a class="hotel-link" href="https://www.trip.com/hotels/detail/?hotelId=68529781&amp;checkIn=2026-12-16&amp;checkOut=2026-12-20&amp;locale=en-XX" target="_blank" rel="noopener">Manxin Mansion Beijing Houhai and Drum Tower Courtyard<span aria-hidden="true"> ↗</span></a></h3>
-          <span class="zh zh-name">北京后海鼓楼四合院漫心府</span>
-          <div class="addr"><span class="zh">北京市西城区旧鼓楼大街西绦胡同2号</span><button class="copy" type="button" id="copy-bj">Copy</button><span class="en">No. 2 West Tao Hutong, Jiugulou Street, Xicheng District, Beijing</span></div>
-          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=116.3928909,39.9478264&amp;name=北京后海鼓楼四合院漫心府&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=北京后海鼓楼四合院漫心府&amp;lat=39.9478264&amp;lon=116.3928909&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=116.3928909,39.9478264,北京后海鼓楼四合院漫心府&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=39.9478264&amp;dlon=116.3928909&amp;dname=北京后海鼓楼四合院漫心府&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
+    <div class="hcs">
+      <article class="hc hc-bj" id="hc-bj" data-in="2026-12-16" data-out="2026-12-20">
+        <div class="hc-top">
+          <div class="hc-row"><span class="hc-city">Beijing</span><span class="hc-now" hidden>You're here</span><span class="hc-nts"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.5v-11M3.5 14.5h17v4M20.5 14.5v-2a3 3 0 0 0-3-3h-6.5v5"/><circle cx="7.3" cy="11.3" r="1.8"/></svg>4 nights</span></div>
+          <h3 class="hc-name"><a href="https://www.trip.com/hotels/detail/?hotelId=68529781&amp;checkIn=2026-12-16&amp;checkOut=2026-12-20&amp;locale=en-XX" target="_blank" rel="noopener">Manxin Mansion Beijing Houhai and Drum Tower Courtyard</a></h3>
+          <span class="hc-zh zh">北京后海鼓楼四合院漫心府</span>
         </div>
-      </div>
-      <div class="hotel">
-        <div class="where"><b>Xi'an</b><span>20–22 Dec · 2 nts</span></div>
-        <div class="info">
-          <h3><a class="hotel-link" href="https://www.trip.com/hotels/detail/?hotelId=132499307&amp;checkIn=2026-12-20&amp;checkOut=2026-12-22&amp;locale=en-XX" target="_blank" rel="noopener">Four Points by Sheraton Xi'an Bell Tower<span aria-hidden="true"> ↗</span></a></h3>
-          <span class="zh zh-name">西安钟楼福朋喜来登酒店（回民街店）</span>
-          <div class="addr"><span class="zh">西安市莲湖区西大街79号</span><button class="copy" type="button" id="copy-xa">Copy</button><span class="en">No. 79 West Street, Lianhu District, Xi'an</span></div>
-          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=108.940698,34.260151&amp;name=西安钟楼福朋喜来登酒店(回民街店)&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=西安钟楼福朋喜来登酒店(回民街店)&amp;lat=34.260151&amp;lon=108.940698&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=108.940698,34.260151,西安钟楼福朋喜来登酒店(回民街店)&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=34.260151&amp;dlon=108.940698&amp;dname=西安钟楼福朋喜来登酒店(回民街店)&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
+        <div class="hc-stay">
+          <div class="hc-d"><span>Check-in</span><b>16 Dec</b><i>Wed</i></div>
+          <span class="tk-line"><i>4 nights</i></span>
+          <div class="hc-d r"><span>Check-out</span><b>20 Dec</b><i>Sun</i></div>
         </div>
-      </div>
-      <div class="hotel">
-        <div class="where"><b>Chengdu</b><span>22–24 Dec · 2 nts</span></div>
-        <div class="info">
-          <h3><a class="hotel-link" href="https://www.trip.com/hotels/detail/?hotelId=119474237&amp;checkIn=2026-12-22&amp;checkOut=2026-12-24&amp;locale=en-XX" target="_blank" rel="noopener">The Hidden House (Kuanzhai Alley · People's Park)<span aria-hidden="true"> ↗</span></a></h3>
-          <span class="zh zh-name">隐栖堂美学生活院子酒店（成都宽窄巷子人民公园地铁站店）</span>
-          <div class="addr"><span class="zh">成都市青羊区将军街5号</span><button class="copy" type="button" id="copy-cd">Copy</button><span class="en">No. 5 Jiangjun Street, Qingyang District, Chengdu</span></div>
-          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=104.05995,30.65928&amp;name=隐栖堂美学生活院子酒店&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=隐栖堂美学生活院子酒店&amp;lat=30.65928&amp;lon=104.05995&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=104.05995,30.65928,隐栖堂美学生活院子酒店&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=30.65928&amp;dlon=104.05995&amp;dname=隐栖堂美学生活院子酒店&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
+        <div class="addr hc-addr"><span class="zh">北京市西城区旧鼓楼大街西绦胡同2号</span><button class="copy" type="button" id="copy-bj">Copy</button><span class="en">No. 2 West Tao Hutong, Jiugulou Street, Xicheng District, Beijing</span></div>
+        <div class="tk-perf" aria-hidden="true"></div>
+        <div class="hc-actions"><a class="amap" href="https://uri.amap.com/marker?position=116.3928909,39.9478264&amp;name=北京后海鼓楼四合院漫心府&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=北京后海鼓楼四合院漫心府&amp;lat=39.9478264&amp;lon=116.3928909&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=116.3928909,39.9478264,北京后海鼓楼四合院漫心府&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=39.9478264&amp;dlon=116.3928909&amp;dname=北京后海鼓楼四合院漫心府&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a><a class="hc-trip" href="https://www.trip.com/hotels/detail/?hotelId=68529781&amp;checkIn=2026-12-16&amp;checkOut=2026-12-20&amp;locale=en-XX" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4.5h5.5V10M19.5 4.5 11 13M17.5 13.5v4a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h4"/></svg>Trip.com booking</a></div>
+      </article>
+      <article class="hc hc-xa" id="hc-xa" data-in="2026-12-20" data-out="2026-12-22">
+        <div class="hc-top">
+          <div class="hc-row"><span class="hc-city">Xi'an</span><span class="hc-now" hidden>You're here</span><span class="hc-nts"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.5v-11M3.5 14.5h17v4M20.5 14.5v-2a3 3 0 0 0-3-3h-6.5v5"/><circle cx="7.3" cy="11.3" r="1.8"/></svg>2 nights</span></div>
+          <h3 class="hc-name"><a href="https://www.trip.com/hotels/detail/?hotelId=132499307&amp;checkIn=2026-12-20&amp;checkOut=2026-12-22&amp;locale=en-XX" target="_blank" rel="noopener">Four Points by Sheraton Xi'an Bell Tower</a></h3>
+          <span class="hc-zh zh">西安钟楼福朋喜来登酒店（回民街店）</span>
         </div>
-      </div>
-      <div class="hotel">
-        <div class="where"><b>Yangshuo</b><span>24–27 Dec · 3 nts</span></div>
-        <div class="info">
-          <h3><a class="hotel-link" href="https://www.trip.com/hotels/detail/?hotelId=131705283&amp;checkIn=2026-12-24&amp;checkOut=2026-12-27&amp;locale=en-XX" target="_blank" rel="noopener">BO·HUI Hotel (West Street &amp; Lijiang River)<span aria-hidden="true"> ↗</span></a></h3>
-          <span class="zh zh-name">BO·洄酒店（阳朔西街漓江店）</span>
-          <div class="addr"><span class="zh">桂林市阳朔县阳朔镇滨江路11号</span><button class="copy" type="button" id="copy-ys">Copy</button><span class="en">No. 11 Binjiang Road, Yangshuo Town, Yangshuo, Guangxi</span></div>
-          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=110.497044,24.777584&amp;name=BO·洄酒店(阳朔西街漓江店)&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=BO·洄酒店(阳朔西街漓江店)&amp;lat=24.777584&amp;lon=110.497044&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=110.497044,24.777584,BO·洄酒店(阳朔西街漓江店)&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=24.777584&amp;dlon=110.497044&amp;dname=BO·洄酒店(阳朔西街漓江店)&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
+        <div class="hc-stay">
+          <div class="hc-d"><span>Check-in</span><b>20 Dec</b><i>Sun</i></div>
+          <span class="tk-line"><i>2 nights</i></span>
+          <div class="hc-d r"><span>Check-out</span><b>22 Dec</b><i>Tue</i></div>
         </div>
-      </div>
-      <div class="hotel">
-        <div class="where"><b>Shenzhen</b><span>27–29 Dec · 2 nts</span></div>
-        <div class="info">
-          <h3><a class="hotel-link" href="https://www.trip.com/hotels/detail/?hotelId=346480&amp;checkIn=2026-12-27&amp;checkOut=2026-12-29&amp;locale=en-XX" target="_blank" rel="noopener">Crowne Plaza Hotel &amp; Suites Landmark Shenzhen<span aria-hidden="true"> ↗</span></a></h3>
-          <span class="zh zh-name">深圳富苑皇冠假日套房酒店</span>
-          <div class="addr"><span class="zh">深圳市罗湖区南湖路3018号</span><button class="copy" type="button" id="copy-sz">Copy</button><span class="en">No. 3018 Nanhu Road, Luohu District, Shenzhen · 310 m from Guomao metro (国贸, Line 1) · 1.7 km from the Luohu border crossing</span></div>
-          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.120910,22.542282&amp;name=深圳富苑皇冠假日套房酒店&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=深圳富苑皇冠假日套房酒店&amp;lat=22.542282&amp;lon=114.120910&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=114.120910,22.542282,深圳富苑皇冠假日套房酒店&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=22.542282&amp;dlon=114.120910&amp;dname=深圳富苑皇冠假日套房酒店&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
+        <div class="addr hc-addr"><span class="zh">西安市莲湖区西大街79号</span><button class="copy" type="button" id="copy-xa">Copy</button><span class="en">No. 79 West Street, Lianhu District, Xi'an</span></div>
+        <div class="tk-perf" aria-hidden="true"></div>
+        <div class="hc-actions"><a class="amap" href="https://uri.amap.com/marker?position=108.940698,34.260151&amp;name=西安钟楼福朋喜来登酒店(回民街店)&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=西安钟楼福朋喜来登酒店(回民街店)&amp;lat=34.260151&amp;lon=108.940698&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=108.940698,34.260151,西安钟楼福朋喜来登酒店(回民街店)&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=34.260151&amp;dlon=108.940698&amp;dname=西安钟楼福朋喜来登酒店(回民街店)&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a><a class="hc-trip" href="https://www.trip.com/hotels/detail/?hotelId=132499307&amp;checkIn=2026-12-20&amp;checkOut=2026-12-22&amp;locale=en-XX" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4.5h5.5V10M19.5 4.5 11 13M17.5 13.5v4a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h4"/></svg>Trip.com booking</a></div>
+      </article>
+      <article class="hc hc-cd" id="hc-cd" data-in="2026-12-22" data-out="2026-12-24">
+        <div class="hc-top">
+          <div class="hc-row"><span class="hc-city">Chengdu</span><span class="hc-now" hidden>You're here</span><span class="hc-nts"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.5v-11M3.5 14.5h17v4M20.5 14.5v-2a3 3 0 0 0-3-3h-6.5v5"/><circle cx="7.3" cy="11.3" r="1.8"/></svg>2 nights</span></div>
+          <h3 class="hc-name"><a href="https://www.trip.com/hotels/detail/?hotelId=119474237&amp;checkIn=2026-12-22&amp;checkOut=2026-12-24&amp;locale=en-XX" target="_blank" rel="noopener">The Hidden House (Kuanzhai Alley · People's Park)</a></h3>
+          <span class="hc-zh zh">隐栖堂美学生活院子酒店（成都宽窄巷子人民公园地铁站店）</span>
         </div>
-      </div>
-      <div class="hotel">
-        <div class="where"><b>Hong Kong</b><span>29–31 Dec · 2 nts</span></div>
-        <div class="info">
-          <h3><a class="hotel-link" href="https://www.trip.com/hotels/detail/?hotelId=354026&amp;checkIn=2026-12-29&amp;checkOut=2026-12-31&amp;locale=en-XX" target="_blank" rel="noopener">Stanford Hillview Hotel<span aria-hidden="true"> ↗</span></a></h3>
-          <span class="zh zh-name">香港仕德福山景酒店</span>
-          <div class="addr"><span class="zh">香港九龍尖沙咀天文台道13-17號</span><button class="copy" type="button" id="copy-hk">Copy</button><span class="en">13–17 Observatory Road, Tsim Sha Tsui, Kowloon, Hong Kong</span></div>
-          <div class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.1744504,22.3014619&amp;name=香港仕德福山景酒店&amp;src=china2026&amp;coordinate=wgs84&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=香港仕德福山景酒店&amp;lat=22.3014619&amp;lon=114.1744504&amp;dev=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=114.1744504,22.3014619,香港仕德福山景酒店&amp;mode=car&amp;src=china2026&amp;coordinate=wgs84&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=22.3014619&amp;dlon=114.1744504&amp;dname=香港仕德福山景酒店&amp;dev=1&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a></div>
+        <div class="hc-stay">
+          <div class="hc-d"><span>Check-in</span><b>22 Dec</b><i>Tue</i></div>
+          <span class="tk-line"><i>2 nights</i></span>
+          <div class="hc-d r"><span>Check-out</span><b>24 Dec</b><i>Thu</i></div>
         </div>
-      </div>
+        <div class="addr hc-addr"><span class="zh">成都市青羊区将军街5号</span><button class="copy" type="button" id="copy-cd">Copy</button><span class="en">No. 5 Jiangjun Street, Qingyang District, Chengdu</span></div>
+        <div class="tk-perf" aria-hidden="true"></div>
+        <div class="hc-actions"><a class="amap" href="https://uri.amap.com/marker?position=104.05995,30.65928&amp;name=隐栖堂美学生活院子酒店&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=隐栖堂美学生活院子酒店&amp;lat=30.65928&amp;lon=104.05995&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=104.05995,30.65928,隐栖堂美学生活院子酒店&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=30.65928&amp;dlon=104.05995&amp;dname=隐栖堂美学生活院子酒店&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a><a class="hc-trip" href="https://www.trip.com/hotels/detail/?hotelId=119474237&amp;checkIn=2026-12-22&amp;checkOut=2026-12-24&amp;locale=en-XX" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4.5h5.5V10M19.5 4.5 11 13M17.5 13.5v4a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h4"/></svg>Trip.com booking</a></div>
+      </article>
+      <article class="hc hc-ys" id="hc-ys" data-in="2026-12-24" data-out="2026-12-27">
+        <div class="hc-top">
+          <div class="hc-row"><span class="hc-city">Yangshuo</span><span class="hc-now" hidden>You're here</span><span class="hc-nts"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.5v-11M3.5 14.5h17v4M20.5 14.5v-2a3 3 0 0 0-3-3h-6.5v5"/><circle cx="7.3" cy="11.3" r="1.8"/></svg>3 nights</span></div>
+          <h3 class="hc-name"><a href="https://www.trip.com/hotels/detail/?hotelId=131705283&amp;checkIn=2026-12-24&amp;checkOut=2026-12-27&amp;locale=en-XX" target="_blank" rel="noopener">BO·HUI Hotel (West Street &amp; Lijiang River)</a></h3>
+          <span class="hc-zh zh">BO·洄酒店（阳朔西街漓江店）</span>
+        </div>
+        <div class="hc-stay">
+          <div class="hc-d"><span>Check-in</span><b>24 Dec</b><i>Thu</i></div>
+          <span class="tk-line"><i>3 nights</i></span>
+          <div class="hc-d r"><span>Check-out</span><b>27 Dec</b><i>Sun</i></div>
+        </div>
+        <div class="addr hc-addr"><span class="zh">桂林市阳朔县阳朔镇滨江路11号</span><button class="copy" type="button" id="copy-ys">Copy</button><span class="en">No. 11 Binjiang Road, Yangshuo Town, Yangshuo, Guangxi</span></div>
+        <div class="tk-perf" aria-hidden="true"></div>
+        <div class="hc-actions"><a class="amap" href="https://uri.amap.com/marker?position=110.497044,24.777584&amp;name=BO·洄酒店(阳朔西街漓江店)&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=BO·洄酒店(阳朔西街漓江店)&amp;lat=24.777584&amp;lon=110.497044&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=110.497044,24.777584,BO·洄酒店(阳朔西街漓江店)&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=24.777584&amp;dlon=110.497044&amp;dname=BO·洄酒店(阳朔西街漓江店)&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a><a class="hc-trip" href="https://www.trip.com/hotels/detail/?hotelId=131705283&amp;checkIn=2026-12-24&amp;checkOut=2026-12-27&amp;locale=en-XX" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4.5h5.5V10M19.5 4.5 11 13M17.5 13.5v4a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h4"/></svg>Trip.com booking</a></div>
+      </article>
+      <article class="hc hc-sz" id="hc-sz" data-in="2026-12-27" data-out="2026-12-29">
+        <div class="hc-top">
+          <div class="hc-row"><span class="hc-city">Shenzhen</span><span class="hc-now" hidden>You're here</span><span class="hc-nts"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.5v-11M3.5 14.5h17v4M20.5 14.5v-2a3 3 0 0 0-3-3h-6.5v5"/><circle cx="7.3" cy="11.3" r="1.8"/></svg>2 nights</span></div>
+          <h3 class="hc-name"><a href="https://www.trip.com/hotels/detail/?hotelId=346480&amp;checkIn=2026-12-27&amp;checkOut=2026-12-29&amp;locale=en-XX" target="_blank" rel="noopener">Crowne Plaza Hotel &amp; Suites Landmark Shenzhen</a></h3>
+          <span class="hc-zh zh">深圳富苑皇冠假日套房酒店</span>
+        </div>
+        <div class="hc-stay">
+          <div class="hc-d"><span>Check-in</span><b>27 Dec</b><i>Sun</i></div>
+          <span class="tk-line"><i>2 nights</i></span>
+          <div class="hc-d r"><span>Check-out</span><b>29 Dec</b><i>Tue</i></div>
+        </div>
+        <div class="addr hc-addr"><span class="zh">深圳市罗湖区南湖路3018号</span><button class="copy" type="button" id="copy-sz">Copy</button><span class="en">No. 3018 Nanhu Road, Luohu District, Shenzhen</span></div>
+        <p class="hc-extra">310 m from Guomao metro (国贸, Line 1) · 1.7 km from the Luohu border crossing</p>
+        <div class="tk-perf" aria-hidden="true"></div>
+        <div class="hc-actions"><a class="amap" href="https://uri.amap.com/marker?position=114.120910,22.542282&amp;name=深圳富苑皇冠假日套房酒店&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=深圳富苑皇冠假日套房酒店&amp;lat=22.542282&amp;lon=114.120910&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=114.120910,22.542282,深圳富苑皇冠假日套房酒店&amp;mode=car&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=22.542282&amp;dlon=114.120910&amp;dname=深圳富苑皇冠假日套房酒店&amp;dev=0&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a><a class="hc-trip" href="https://www.trip.com/hotels/detail/?hotelId=346480&amp;checkIn=2026-12-27&amp;checkOut=2026-12-29&amp;locale=en-XX" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4.5h5.5V10M19.5 4.5 11 13M17.5 13.5v4a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h4"/></svg>Trip.com booking</a></div>
+      </article>
+      <article class="hc hc-hk" id="hc-hk" data-in="2026-12-29" data-out="2026-12-31">
+        <div class="hc-top">
+          <div class="hc-row"><span class="hc-city">Hong Kong</span><span class="hc-now" hidden>You're here</span><span class="hc-nts"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.5v-11M3.5 14.5h17v4M20.5 14.5v-2a3 3 0 0 0-3-3h-6.5v5"/><circle cx="7.3" cy="11.3" r="1.8"/></svg>2 nights</span></div>
+          <h3 class="hc-name"><a href="https://www.trip.com/hotels/detail/?hotelId=354026&amp;checkIn=2026-12-29&amp;checkOut=2026-12-31&amp;locale=en-XX" target="_blank" rel="noopener">Stanford Hillview Hotel</a></h3>
+          <span class="hc-zh zh">香港仕德福山景酒店</span>
+        </div>
+        <div class="hc-stay">
+          <div class="hc-d"><span>Check-in</span><b>29 Dec</b><i>Tue</i></div>
+          <span class="tk-line"><i>2 nights</i></span>
+          <div class="hc-d r"><span>Check-out</span><b>31 Dec</b><i>Thu</i></div>
+        </div>
+        <div class="addr hc-addr"><span class="zh">香港九龍尖沙咀天文台道13-17號</span><button class="copy" type="button" id="copy-hk">Copy</button><span class="en">13–17 Observatory Road, Tsim Sha Tsui, Kowloon, Hong Kong</span></div>
+        <div class="tk-perf" aria-hidden="true"></div>
+        <div class="hc-actions"><a class="amap" href="https://uri.amap.com/marker?position=114.1744504,22.3014619&amp;name=香港仕德福山景酒店&amp;src=china2026&amp;coordinate=wgs84&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=香港仕德福山景酒店&amp;lat=22.3014619&amp;lon=114.1744504&amp;dev=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a><a class="amap" href="https://uri.amap.com/navigation?to=114.1744504,22.3014619,香港仕德福山景酒店&amp;mode=car&amp;src=china2026&amp;coordinate=wgs84&amp;callnative=1" data-ios="iosamap://path?sourceApplication=china2026&amp;dlat=22.3014619&amp;dlon=114.1744504&amp;dname=香港仕德福山景酒店&amp;dev=1&amp;t=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>Directions</a><a class="hc-trip" href="https://www.trip.com/hotels/detail/?hotelId=354026&amp;checkIn=2026-12-29&amp;checkOut=2026-12-31&amp;locale=en-XX" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4.5h5.5V10M19.5 4.5 11 13M17.5 13.5v4a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h4"/></svg>Trip.com booking</a></div>
+      </article>
     </div>
   </section>
     </div>
@@ -1796,6 +1864,7 @@ html.map-mode .sbar { display: none; }
     <div class="howto">
       <ol>
         <li><b>Open 12306</b> copies the <b>From</b> station and opens the app. Tap From, paste, pick the station. Then come back, tap the <b>To</b> station name (it copies) and paste it in To. Pick the date.</li>
+        <li><b>12306 website, pre-filled</b> opens the search with From, To and the date already set. On iPhone it opens the Chinese desktop site in Safari (pinch to zoom). Log in with the same account; tickets bought there show up in the app too.</li>
         <li>Tap the train number, then the class: <b>second-class seat</b>, <b>first class seat</b> or <b>business class seat</b>. Use <b>Copy</b> to paste the train number into search.</li>
         <li>Window seats are <b>A</b> and <b>F</b>; pick D + F (or A + B) to sit together.</li>
         <li>Sold out? Tap <b>Waitlist</b> (候补) on the main train straight away, then book the backup.</li>
@@ -1815,7 +1884,7 @@ html.map-mode .sbar { display: none; }
       <div class="tk-fares"><span>2nd <b>¥618</b></span><span>1st <b>¥988</b></span><span>Business <b>¥1,945</b></span><button type="button" class="tk-copy" data-copy="G353">Copy G353</button></div>
       <div class="tk-perf" aria-hidden="true"></div>
       <div class="tk-maps"><a class="amap" href="https://uri.amap.com/marker?position=116.322033,39.894912&amp;name=%E5%8C%97%E4%BA%AC%E8%A5%BF%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E5%8C%97%E4%BA%AC%E8%A5%BF%E7%AB%99&amp;lat=39.894912&amp;lon=116.322033&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Beijing West</a><a class="amap" href="https://uri.amap.com/marker?position=108.938757,34.376660&amp;name=%E8%A5%BF%E5%AE%89%E5%8C%97%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E8%A5%BF%E5%AE%89%E5%8C%97%E7%AB%99&amp;lat=34.376660&amp;lon=108.938757&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Xi'an North</a></div>
-      <div class="tk-actions"><a class="tk-btn primary" data-from="北京西" href="https://www.12306.cn/en/left-ticket.html?fs=Beijingxi%28%u5317%u4EAC%u897F%29,BXP&amp;ts=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;date=2026-12-20" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Beijingxi%28%u5317%u4EAC%u897F%29,BXP&amp;ts=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;date=2026-12-20" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <div class="tk-actions"><a class="tk-btn primary" data-from="北京西" href="https://www.12306.cn/en/left-ticket.html?fs=Beijingxi%28%u5317%u4EAC%u897F%29,BXP&amp;ts=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;date=2026-12-20" data-ios-web="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E5%8C%97%E4%BA%AC%E8%A5%BF,BXP&amp;ts=%E8%A5%BF%E5%AE%89%E5%8C%97,EAY&amp;date=2026-12-20&amp;flag=N,N,Y" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Beijingxi%28%u5317%u4EAC%u897F%29,BXP&amp;ts=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;date=2026-12-20" data-ios-web="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E5%8C%97%E4%BA%AC%E8%A5%BF,BXP&amp;ts=%E8%A5%BF%E5%AE%89%E5%8C%97,EAY&amp;date=2026-12-20&amp;flag=N,N,Y" target="_blank" rel="noopener">12306 website, pre-filled ↗</a></div>
       <p class="tk-note">DiDi to <span class="zh">北京西站</span> · leave the hotel around 08:30</p>
     </article>
     <article class="tk" id="tk-xa">
@@ -1831,7 +1900,7 @@ html.map-mode .sbar { display: none; }
       <div class="tk-fares"><span>2nd <b>¥285</b></span><span>1st <b>¥455</b></span><span>Business <b>¥829</b></span><button type="button" class="tk-copy" data-copy="G1839">Copy G1839</button></div>
       <div class="tk-perf" aria-hidden="true"></div>
       <div class="tk-maps"><a class="amap" href="https://uri.amap.com/marker?position=108.938757,34.376660&amp;name=%E8%A5%BF%E5%AE%89%E5%8C%97%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E8%A5%BF%E5%AE%89%E5%8C%97%E7%AB%99&amp;lat=34.376660&amp;lon=108.938757&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Xi'an North</a><a class="amap" href="https://uri.amap.com/marker?position=104.140947,30.628779&amp;name=%E6%88%90%E9%83%BD%E4%B8%9C%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E6%88%90%E9%83%BD%E4%B8%9C%E7%AB%99&amp;lat=30.628779&amp;lon=104.140947&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Chengdu East</a></div>
-      <div class="tk-actions"><a class="tk-btn primary" data-from="西安北" href="https://www.12306.cn/en/left-ticket.html?fs=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;ts=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;date=2026-12-22" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;ts=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;date=2026-12-22" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <div class="tk-actions"><a class="tk-btn primary" data-from="西安北" href="https://www.12306.cn/en/left-ticket.html?fs=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;ts=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;date=2026-12-22" data-ios-web="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E8%A5%BF%E5%AE%89%E5%8C%97,EAY&amp;ts=%E6%88%90%E9%83%BD%E4%B8%9C,ICW&amp;date=2026-12-22&amp;flag=N,N,Y" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;ts=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;date=2026-12-22" data-ios-web="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E8%A5%BF%E5%AE%89%E5%8C%97,EAY&amp;ts=%E6%88%90%E9%83%BD%E4%B8%9C,ICW&amp;date=2026-12-22&amp;flag=N,N,Y" target="_blank" rel="noopener">12306 website, pre-filled ↗</a></div>
       <p class="tk-note">DiDi to <span class="zh">西安北站</span> · leave the hotel around 10:00</p>
     </article>
     <article class="tk" id="tk-cd">
@@ -1847,7 +1916,7 @@ html.map-mode .sbar { display: none; }
       <div class="tk-fares"><span>2nd <b>¥432</b></span><span>1st <b>¥691</b></span><button type="button" class="tk-copy" data-copy="D1822">Copy D1822</button></div>
       <div class="tk-perf" aria-hidden="true"></div>
       <div class="tk-maps"><a class="amap" href="https://uri.amap.com/marker?position=104.140947,30.628779&amp;name=%E6%88%90%E9%83%BD%E4%B8%9C%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E6%88%90%E9%83%BD%E4%B8%9C%E7%AB%99&amp;lat=30.628779&amp;lon=104.140947&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Chengdu East</a><a class="amap" href="https://uri.amap.com/marker?position=110.568081,24.960139&amp;name=%E9%98%B3%E6%9C%94%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E9%98%B3%E6%9C%94%E7%AB%99&amp;lat=24.960139&amp;lon=110.568081&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Yangshuo</a></div>
-      <div class="tk-actions"><a class="tk-btn primary" data-from="成都东" href="https://www.12306.cn/en/left-ticket.html?fs=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;ts=Yangshuo%28%u9633%u6714%29,YCZ&amp;date=2026-12-24" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;ts=Yangshuo%28%u9633%u6714%29,YCZ&amp;date=2026-12-24" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <div class="tk-actions"><a class="tk-btn primary" data-from="成都东" href="https://www.12306.cn/en/left-ticket.html?fs=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;ts=Yangshuo%28%u9633%u6714%29,YCZ&amp;date=2026-12-24" data-ios-web="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E6%88%90%E9%83%BD%E4%B8%9C,ICW&amp;ts=%E9%98%B3%E6%9C%94,YCZ&amp;date=2026-12-24&amp;flag=N,N,Y" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;ts=Yangshuo%28%u9633%u6714%29,YCZ&amp;date=2026-12-24" data-ios-web="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E6%88%90%E9%83%BD%E4%B8%9C,ICW&amp;ts=%E9%98%B3%E6%9C%94,YCZ&amp;date=2026-12-24&amp;flag=N,N,Y" target="_blank" rel="noopener">12306 website, pre-filled ↗</a></div>
       <p class="tk-note">Be online when sales open; if sold out, join the waitlist (候补) at once. DiDi to <span class="zh">成都东站</span> · leave around 08:45</p>
     </article>
     <article class="tk" id="tk-ys">
@@ -1863,7 +1932,7 @@ html.map-mode .sbar { display: none; }
       <div class="tk-fares"><span>2nd <b>¥263.5</b></span><span>1st <b>¥400.5</b></span><span>Business <b>¥756.5</b></span><button type="button" class="tk-copy" data-copy="G3741">Copy G3741</button></div>
       <div class="tk-perf" aria-hidden="true"></div>
       <div class="tk-maps"><a class="amap" href="https://uri.amap.com/marker?position=110.568081,24.960139&amp;name=%E9%98%B3%E6%9C%94%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E9%98%B3%E6%9C%94%E7%AB%99&amp;lat=24.960139&amp;lon=110.568081&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Yangshuo</a><a class="amap" href="https://uri.amap.com/marker?position=114.029506,22.609878&amp;name=%E6%B7%B1%E5%9C%B3%E5%8C%97%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E6%B7%B1%E5%9C%B3%E5%8C%97%E7%AB%99&amp;lat=22.609878&amp;lon=114.029506&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Shenzhen North</a></div>
-      <div class="tk-actions"><a class="tk-btn primary" data-from="阳朔" href="https://www.12306.cn/en/left-ticket.html?fs=Yangshuo%28%u9633%u6714%29,YCZ&amp;ts=Shenzhenbei%28%u6DF1%u5733%u5317%29,IOQ&amp;date=2026-12-27" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Yangshuo%28%u9633%u6714%29,YCZ&amp;ts=Shenzhenbei%28%u6DF1%u5733%u5317%29,IOQ&amp;date=2026-12-27" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <div class="tk-actions"><a class="tk-btn primary" data-from="阳朔" href="https://www.12306.cn/en/left-ticket.html?fs=Yangshuo%28%u9633%u6714%29,YCZ&amp;ts=Shenzhenbei%28%u6DF1%u5733%u5317%29,IOQ&amp;date=2026-12-27" data-ios-web="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E9%98%B3%E6%9C%94,YCZ&amp;ts=%E6%B7%B1%E5%9C%B3%E5%8C%97,IOQ&amp;date=2026-12-27&amp;flag=N,N,Y" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Yangshuo%28%u9633%u6714%29,YCZ&amp;ts=Shenzhenbei%28%u6DF1%u5733%u5317%29,IOQ&amp;date=2026-12-27" data-ios-web="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E9%98%B3%E6%9C%94,YCZ&amp;ts=%E6%B7%B1%E5%9C%B3%E5%8C%97,IOQ&amp;date=2026-12-27&amp;flag=N,N,Y" target="_blank" rel="noopener">12306 website, pre-filled ↗</a></div>
       <p class="tk-note">Car to <span class="zh">阳朔站</span> (55 min) · leave around 09:45 · last resort G2905 at 20:04</p>
     </article>
     <article class="tk tk-fallback" id="tk-hk">
@@ -1879,7 +1948,7 @@ html.map-mode .sbar { display: none; }
       <div class="tk-fares"><span>2nd <b>¥68</b></span><span>1st <b>¥109</b></span><button type="button" class="tk-copy" data-copy="G5621">Copy G5621</button></div>
       <div class="tk-perf" aria-hidden="true"></div>
       <div class="tk-maps"><a class="amap" href="https://uri.amap.com/marker?position=114.057201,22.538136&amp;name=%E7%A6%8F%E7%94%B0%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E7%A6%8F%E7%94%B0%E7%AB%99&amp;lat=22.538136&amp;lon=114.057201&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Futian</a><a class="amap" href="https://uri.amap.com/marker?position=114.1649207,22.304227&amp;name=%E9%A6%99%E6%B8%AF%E8%A5%BF%E4%B9%9D%E9%BE%99%E7%AB%99&amp;src=china2026&amp;coordinate=wgs84&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E9%A6%99%E6%B8%AF%E8%A5%BF%E4%B9%9D%E9%BE%99%E7%AB%99&amp;lat=22.304227&amp;lon=114.1649207&amp;dev=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>West Kowloon</a></div>
-      <div class="tk-actions"><a class="tk-btn primary" data-from="福田" href="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E7%A6%8F%E7%94%B0,NZQ&amp;ts=%E9%A6%99%E6%B8%AF%E8%A5%BF%E4%B9%9D%E9%BE%99,XJA&amp;date=2026-12-29&amp;flag=N,N,Y" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E7%A6%8F%E7%94%B0,NZQ&amp;ts=%E9%A6%99%E6%B8%AF%E8%A5%BF%E4%B9%9D%E9%BE%99,XJA&amp;date=2026-12-29&amp;flag=N,N,Y" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <div class="tk-actions"><a class="tk-btn primary" data-from="福田" href="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E7%A6%8F%E7%94%B0,NZQ&amp;ts=%E9%A6%99%E6%B8%AF%E8%A5%BF%E4%B9%9D%E9%BE%99,XJA&amp;date=2026-12-29&amp;flag=N,N,Y" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E7%A6%8F%E7%94%B0,NZQ&amp;ts=%E9%A6%99%E6%B8%AF%E8%A5%BF%E4%B9%9D%E9%BE%99,XJA&amp;date=2026-12-29&amp;flag=N,N,Y" target="_blank" rel="noopener">12306 website, pre-filled ↗</a></div>
       <p class="tk-note">Fallback only: the plan is to walk across at Luohu. If you need it, buy at the Futian ticket office or switch the app to Chinese.</p>
     </article>
     </div>
@@ -1976,7 +2045,7 @@ html.map-mode .sbar { display: none; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261153">26 Nov 2026, 11:53</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261201">26 Nov 2026, 12:01</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -2168,6 +2237,8 @@ html.map-mode .sbar { display: none; }
   });
   var ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   var appOk = ios && /github\.io$/.test(location.hostname);
+  // www.12306.cn links jump into the 12306 app on iPhone (which drops From/To), so use the kyfw site there: it stays in Safari, pre-filled.
+  if (ios) document.querySelectorAll('a[data-ios-web]').forEach(function (a) { a.href = a.getAttribute('data-ios-web'); });
   document.addEventListener('click', function (e) {
     var a = e.target.closest ? e.target.closest('a[data-app]') : null;
     if (!a) return;
@@ -2802,6 +2873,13 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
     });
   });
   refresh();
+})();
+(function () {
+  // Mark the hotel we're staying in tonight.
+  var d = new Date(), today = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  document.querySelectorAll('.hc[data-in]').forEach(function (c) {
+    if (today >= c.getAttribute('data-in') && today < c.getAttribute('data-out')) { c.classList.add('here'); c.querySelector('.hc-now').hidden = false; }
+  });
 })();
 document.querySelectorAll('.copy').forEach(function (btn) {
   btn.addEventListener('click', function () {
