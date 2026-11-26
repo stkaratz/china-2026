@@ -1068,6 +1068,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .map-off { position: absolute; z-index: 1000; left: 16px; right: 16px; top: 45%; text-align: center; padding: 14px 16px; border-radius: 14px; background: var(--surface); color: var(--ink); font-size: 0.92rem; box-shadow: 0 6px 20px rgb(0 0 0 / 0.12); }
 /* Map tab: full screen under the floating tab bar */
 html.map-mode, html.map-mode body { background: #f3f1ec; overscroll-behavior: none; }
+/* On iPhone home-screen apps, a page that can't scroll is laid out in the shorter 797pt root box and everything below it is cut off.
+   The other tabs scroll, so they get the full screen. Give the map tab a page taller than the screen too (everything on it is fixed, so nothing moves). */
+.map-pane { min-height: calc(var(--screen-h, 100vh) + 240px); }
 html.map-mode .sbar { display: none; }
 /* Fill the whole screen, including the strip behind the home indicator (iOS leaves a gap with inset: 0 in home-screen apps). */
 .map-pane .map { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: 100vh; height: calc(var(--screen-h, 100vh) + 160px); z-index: 5; }
@@ -1853,7 +1856,7 @@ html.map-mode .sbar { display: none; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260949">26 Nov 2026, 09:49</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261004">26 Nov 2026, 10:04</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -2384,6 +2387,7 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
     if (fab) fab.classList.toggle('low', hide);
   }
   function onScroll() {
+    if (active === 'map') { setBar(false); lastY = window.scrollY; return; }
     var y = window.scrollY, dy = y - lastY;
     var atEnd = window.innerHeight + y >= document.documentElement.scrollHeight - 40;
     if (y < 80 || atEnd) setBar(false);
