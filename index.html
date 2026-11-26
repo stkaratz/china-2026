@@ -121,9 +121,9 @@ p { margin: 0; }
 .hotel .info { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 .hotel h3 { font-size: 1rem; font-weight: 600; }
 .hotel .zh-name { font-size: 1.05rem; }
-.addr { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 6px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
-.addr .zh { font-size: 1.05rem; flex: 1 1 220px; min-width: 0; overflow-wrap: anywhere; }
-.addr .en { flex-basis: 100%; font-size: 0.85rem; color: var(--muted); }
+.addr { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px 12px; margin-top: 6px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.addr .zh { font-size: 1.05rem; min-width: 0; overflow-wrap: anywhere; }
+.addr .en { grid-column: 1 / -1; font-size: 0.85rem; color: var(--muted); }
 .copy { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.04em; padding: 4px 10px; border-radius: 99px; border: 1px solid var(--jade); background: transparent; color: var(--jade); cursor: pointer; }
 .copy:hover { background: var(--jade-soft); }
 .copy:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
@@ -1156,6 +1156,40 @@ html.map-mode .sbar { display: none; }
 .todo-empty { background: var(--surface); border-radius: 16px; padding: 18px; text-align: center; color: var(--muted); }
 
 /* ---------- Train tickets ---------- */
+/* Copy buttons keep their size; when copied they fill with the accent colour and show a tick for 3 s. */
+.copy, .tk-copy, .tk-st, .hc-zh, .sc-zh { position: relative; --tick: #fff; --fill: var(--jade); transition: background-color 0.18s, border-color 0.18s, color 0.18s; }
+.tk-copy { padding: 4px 10px; border-radius: 99px; }
+.copied { color: transparent !important; background: var(--fill) !important; border-color: var(--fill) !important; }
+.copied svg { visibility: hidden; }
+.copied::after { content: ""; position: absolute; inset: 0; background: var(--tick); -webkit-mask: center / 17px 17px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E"); mask: center / 17px 17px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E"); animation: tick-in 0.22s ease-out; }
+.tk-st, .hc-zh { --fill: #fff; --tick: #175f75; }
+.hc-zh { --tick: var(--h2); }
+@keyframes tick-in { from { transform: scale(0.5); opacity: 0; } to { transform: none; opacity: 1; } }
+.scs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); gap: 12px; }
+.sc { display: flex; flex-direction: column; gap: 12px; padding: 16px; background: var(--surface); border-radius: 20px; box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.05); }
+.sc-head { display: flex; align-items: center; gap: 12px; }
+.sc-ic { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 13px; background: linear-gradient(135deg, #1f7a63, #175f75); box-shadow: 0 3px 10px rgb(23 95 117 / 0.28); }
+.sc-ic svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sc-id { display: flex; flex-direction: column; min-width: 0; }
+.sc-city { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.sc-id b { font: 800 1.15rem/1.2 var(--f-display); letter-spacing: -0.01em; }
+.sc-role { margin-left: auto; white-space: nowrap; padding: 3px 9px; border-radius: 99px; background: var(--jade-soft); color: var(--jade); font-size: 0.7rem; font-weight: 700; text-align: right; }
+.sc.soft .sc-ic { background: var(--line); box-shadow: none; }
+.sc.soft .sc-ic svg { stroke: var(--ink); }
+.sc.soft .sc-role { background: var(--bg); color: var(--muted); }
+.sc-names { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.sc-zh { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border: 0; border-radius: 10px; background: var(--bg); color: var(--ink); font-size: 1.02rem; cursor: pointer; }
+.sc-zh svg { width: 14px; height: 14px; fill: none; stroke: var(--jade); stroke-width: 2; stroke-linejoin: round; }
+.sc-code { font: 600 0.76rem var(--f-mono); color: var(--muted); }
+.sc-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sc-tile { position: relative; display: flex; flex-direction: column; gap: 1px; min-width: 0; padding: 10px 12px; border-radius: 14px; background: var(--bg); }
+.sc-tile svg { position: absolute; top: 10px; right: 10px; width: 18px; height: 18px; fill: none; stroke: var(--jade); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.sc-tile .sc-l { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding-right: 22px; }
+.sc-tile b { font: 800 1.1rem/1.25 var(--f-display); font-variant-numeric: tabular-nums; }
+.sc-tile small { font-size: 0.76rem; line-height: 1.35; color: var(--muted); overflow-wrap: anywhere; }
+.sc-tile.none b, .sc-tile.none svg { opacity: 0.4; }
+.sc-note { font-size: 0.86rem; line-height: 1.45; color: var(--ink); }
+.sc-maps { display: flex; gap: 6px; }
 .hcs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); gap: 14px; }
 .hc { position: relative; background: var(--surface); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.05); scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 84px); }
 .hc-top { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 16px 18px 16px; color: #fff; background: linear-gradient(135deg, var(--h1), var(--h2)); overflow: hidden; }
@@ -1956,24 +1990,118 @@ html.map-mode .sbar { display: none; }
     <p class="foot">Times and prices from 12306 for the same weekday in late November (current timetable). Prices vary a little by demand. The app link is best-effort: if it doesn't open the 12306 app, the button falls back to the website.</p>
   </section>
 <section class="stop" aria-labelledby="stations">
-    <div class="stop-head"><h2 id="stations">Train stations</h2><span class="nights">“12306” is the spelling on the ticket and in the 12306 app</span></div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Station</th><th>12306</th><th>Chinese</th><th>DiDi from hotel</th><th>Metro from hotel</th><th>Notes</th></tr></thead>
-        <tbody>
-          <tr><td class="st"><b>Beijing West</b><span class="dir">Beijing · depart 20 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=116.322033,39.894912&amp;name=北京西站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=北京西站&amp;lat=39.894912&amp;lon=116.322033&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Beijingxi</td><td><span class="zh">北京西站</span></td><td class="num">12.2 km<br>32–62 min<br>≈ ¥40–55</td><td class="num"><b>48 min</b><br>Line 8 → Line 7<br>¥4</td><td>Almost all trains to Xi'an leave from here.</td></tr>
-          <tr><td class="st"><b>Xi'an North</b><span class="dir">Xi'an · arrive 20, depart 22 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=108.938757,34.376660&amp;name=西安北站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=西安北站&amp;lat=34.376660&amp;lon=108.938757&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Xianbei</td><td><span class="zh">西安北站</span></td><td class="num">15.8 km<br>34–55 min<br>≈ ¥35–45</td><td class="num"><b>43 min</b><br>Line 2 direct<br>¥4</td><td>Most high-speed trains to and from Beijing and Chengdu.</td></tr>
-          <tr class="alt"><td class="st"><b>Xi'an</b><span class="dir">Xi'an · some trains</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=108.962723,34.278498&amp;name=西安站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=西安站&amp;lat=34.278498&amp;lon=108.962723&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Xian</td><td><span class="zh">西安站</span></td><td class="num">7.1 km<br>~29 min<br>≈ ¥17–25</td><td class="num"><b>22 min</b><br>Line 6 → Line 4</td><td>Old central station, listed by Trip.com. A few G/D trains to Beijing and Chengdu use it. Prefer it when the times fit.</td></tr>
-          <tr><td class="st"><b>Chengdu East</b><span class="dir">Chengdu · arrive 22, depart 24 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=104.140947,30.628779&amp;name=成都东站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=成都东站&amp;lat=30.628779&amp;lon=104.140947&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Chengdudong</td><td><span class="zh">成都东站</span></td><td class="num">8.9 km<br>~37 min<br>≈ ¥22–30</td><td class="num"><b>31 min</b><br>Line 2 direct<br>¥4</td><td>Main high-speed station.</td></tr>
-          <tr class="alt"><td class="st"><b>Chengdu West</b><span class="dir">Chengdu · some trains</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=103.979102,30.685329&amp;name=成都西站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=成都西站&amp;lat=30.685329&amp;lon=103.979102&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Chengduxi</td><td><span class="zh">成都西站</span></td><td class="num">9.6 km<br>~36 min<br>≈ ¥23–30</td><td class="num">41–52 min<br>Line 4</td><td>About as far as Chengdu East. Fine if the ticket says this one.</td></tr>
-          <tr><td class="st"><b>Yangshuo</b><span class="dir">Yangshuo · arrive 24, depart 27 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=110.568081,24.960139&amp;name=阳朔站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=阳朔站&amp;lat=24.960139&amp;lon=110.568081&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Yangshuo</td><td><span class="zh">阳朔站</span></td><td class="num">34 km<br>~55 min<br>≈ ¥100–115</td><td class="num">—</td><td><span class="warn">The station is in Xingping, outside town.</span> Shuttle bus ¥20 with a change, about 1 h. Local taxis often skip the meter, so use DiDi or agree the price first.</td></tr>
-          <tr><td class="st"><b>Shenzhen North</b><span class="dir">Shenzhen · arrive 27 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.029506,22.609878&amp;name=深圳北站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=深圳北站&amp;lat=22.609878&amp;lon=114.029506&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Shenzhenbei</td><td><span class="zh">深圳北站</span></td><td class="num">16.8 km<br>~42 min<br>≈ ¥50–65</td><td class="num"><b>45 min</b><br>Line 5 direct<br>¥5</td><td>Trains from Yangshuo arrive here. Line 5 towards 大剧院 (Grand Theater), 14 stops to <b>Hubei 湖贝</b>, exit F, then 500 m on foot.</td></tr>
-          <tr><td class="st"><b>Luohu Port</b><span class="dir">Shenzhen · cross 29 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.118466,22.528730&amp;name=罗湖口岸(出境)&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=罗湖口岸(出境)&amp;lat=22.528730&amp;lon=114.118466&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">—</td><td><span class="zh">罗湖口岸</span></td><td class="num">2.7 km<br>~16 min<br>≈ ¥12–15</td><td class="num">walk 1.7 km<br>~23 min</td><td>Border crossing on foot. DiDi to <span class="zh">罗湖口岸(出境)</span>. On the Hong Kong side, MTR East Rail from Lo Wu to Hung Hom, about 40 min. No ticket to book.</td></tr>
-          <tr class="alt"><td class="st"><b>Futian</b><span class="dir">Shenzhen · fallback</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.057201,22.538136&amp;name=福田站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=福田站&amp;lat=22.538136&amp;lon=114.057201&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Futian</td><td><span class="zh">福田站</span></td><td class="num">8.6 km<br>~20 min<br>≈ ¥28–35</td><td class="num">36 min<br>Line 1, Guomao → Shopping Park<br>¥3</td><td>High-speed train to West Kowloon. The metro route has 1.1 km of walking, so take a DiDi with suitcases.</td></tr>
-          <tr><td class="st"><b>Hung Hom</b><span class="dir">Hong Kong · arrive 29 Dec</span><span class="maps"><a class="amap" href="https://uri.amap.com/search?keyword=红磡站&amp;city=香港&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=香港红磡站&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">—</td><td><span class="zh">紅磡</span></td><td class="num">~1 km<br>short taxi</td><td class="num">—</td><td>End of the East Rail ride from Lo Wu, 890 m from the hotel.</td></tr>
-          <tr class="alt"><td class="st"><b>Hong Kong West Kowloon</b><span class="dir">Hong Kong · fallback</span><span class="maps"><a class="amap" href="https://uri.amap.com/marker?position=114.1649207,22.304227&amp;name=香港西九龙站&amp;src=china2026&amp;coordinate=wgs84&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=香港西九龙站&amp;lat=22.304227&amp;lon=114.1649207&amp;dev=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></span></td><td class="code">Xianggang Xijiulong</td><td><span class="zh">香港西九龙站</span></td><td class="num">1.9 km<br>~10 min<br>≈ HK$30–50 (taxi)</td><td class="num">—</td><td>Immigration for both sides is inside the station.</td></tr>
-        </tbody>
-      </table>
+    <div class="stop-head"><h2 id="stations">Train stations</h2><span class="nights">Grey text is the 12306 spelling. DiDi and metro times are from that city’s hotel.</span></div>
+    <div class="scs">
+      <article class="sc">
+        <div class="sc-head">
+          <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
+          <div class="sc-id"><span class="sc-city">Beijing</span><b>Beijing West</b></div>
+        </div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="北京西站" aria-label="Copy 北京西站">北京西站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Beijingxi</span><span class="sc-role">Depart 20 Dec</span></div>
+        <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>32–62 min</b><small>12.2 km · ≈ ¥40–55</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>48 min</b><small>Line 8 → Line 7 · ¥4</small></div></div>
+        <p class="sc-note">Almost all trains to Xi'an leave from here.</p>
+        <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=116.322033,39.894912&amp;name=北京西站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=北京西站&amp;lat=39.894912&amp;lon=116.322033&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
+      </article>
+      <article class="sc">
+        <div class="sc-head">
+          <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
+          <div class="sc-id"><span class="sc-city">Xi'an</span><b>Xi'an North</b></div>
+        </div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="西安北站" aria-label="Copy 西安北站">西安北站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Xianbei</span><span class="sc-role">Arrive 20, depart 22 Dec</span></div>
+        <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>34–55 min</b><small>15.8 km · ≈ ¥35–45</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>43 min</b><small>Line 2 direct · ¥4</small></div></div>
+        <p class="sc-note">Most high-speed trains to and from Beijing and Chengdu.</p>
+        <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=108.938757,34.376660&amp;name=西安北站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=西安北站&amp;lat=34.376660&amp;lon=108.938757&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
+      </article>
+      <article class="sc soft">
+        <div class="sc-head">
+          <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
+          <div class="sc-id"><span class="sc-city">Xi'an</span><b>Xi'an</b></div>
+        </div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="西安站" aria-label="Copy 西安站">西安站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Xian</span><span class="sc-role">Some trains</span></div>
+        <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~29 min</b><small>7.1 km · ≈ ¥17–25</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>22 min</b><small>Line 6 → Line 4</small></div></div>
+        <p class="sc-note">Old central station, listed by Trip.com. A few G/D trains to Beijing and Chengdu use it. Prefer it when the times fit.</p>
+        <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=108.962723,34.278498&amp;name=西安站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=西安站&amp;lat=34.278498&amp;lon=108.962723&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
+      </article>
+      <article class="sc">
+        <div class="sc-head">
+          <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
+          <div class="sc-id"><span class="sc-city">Chengdu</span><b>Chengdu East</b></div>
+        </div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="成都东站" aria-label="Copy 成都东站">成都东站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Chengdudong</span><span class="sc-role">Arrive 22, depart 24 Dec</span></div>
+        <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~37 min</b><small>8.9 km · ≈ ¥22–30</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>31 min</b><small>Line 2 direct · ¥4</small></div></div>
+        <p class="sc-note">Main high-speed station.</p>
+        <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=104.140947,30.628779&amp;name=成都东站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=成都东站&amp;lat=30.628779&amp;lon=104.140947&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
+      </article>
+      <article class="sc soft">
+        <div class="sc-head">
+          <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
+          <div class="sc-id"><span class="sc-city">Chengdu</span><b>Chengdu West</b></div>
+        </div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="成都西站" aria-label="Copy 成都西站">成都西站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Chengduxi</span><span class="sc-role">Some trains</span></div>
+        <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~36 min</b><small>9.6 km · ≈ ¥23–30</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>41–52 min</b><small>Line 4</small></div></div>
+        <p class="sc-note">About as far as Chengdu East. Fine if the ticket says this one.</p>
+        <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=103.979102,30.685329&amp;name=成都西站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=成都西站&amp;lat=30.685329&amp;lon=103.979102&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
+      </article>
+      <article class="sc">
+        <div class="sc-head">
+          <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
+          <div class="sc-id"><span class="sc-city">Yangshuo</span><b>Yangshuo</b></div>
+        </div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="阳朔站" aria-label="Copy 阳朔站">阳朔站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Yangshuo</span><span class="sc-role">Arrive 24, depart 27 Dec</span></div>
+        <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~55 min</b><small>34 km · ≈ ¥100–115</small></div><div class="sc-tile metro none"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>—</b><small>no direct option</small></div></div>
+        <p class="sc-note"><span class="warn">The station is in Xingping, outside town.</span> Shuttle bus ¥20 with a change, about 1 h. Local taxis often skip the meter, so use DiDi or agree the price first.</p>
+        <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=110.568081,24.960139&amp;name=阳朔站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=阳朔站&amp;lat=24.960139&amp;lon=110.568081&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
+      </article>
+      <article class="sc">
+        <div class="sc-head">
+          <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
+          <div class="sc-id"><span class="sc-city">Shenzhen</span><b>Shenzhen North</b></div>
+        </div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="深圳北站" aria-label="Copy 深圳北站">深圳北站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Shenzhenbei</span><span class="sc-role">Arrive 27 Dec</span></div>
+        <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~42 min</b><small>16.8 km · ≈ ¥50–65</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>45 min</b><small>Line 5 direct · ¥5</small></div></div>
+        <p class="sc-note">Trains from Yangshuo arrive here. Line 5 towards 大剧院 (Grand Theater), 14 stops to <b>Hubei 湖贝</b>, exit F, then 500 m on foot.</p>
+        <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=114.029506,22.609878&amp;name=深圳北站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=深圳北站&amp;lat=22.609878&amp;lon=114.029506&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
+      </article>
+      <article class="sc">
+        <div class="sc-head">
+          <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
+          <div class="sc-id"><span class="sc-city">Shenzhen</span><b>Luohu Port</b></div>
+        </div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="罗湖口岸" aria-label="Copy 罗湖口岸">罗湖口岸<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-role">Cross 29 Dec</span></div>
+        <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~16 min</b><small>2.7 km · ≈ ¥12–15</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>~23 min</b><small>walk 1.7 km</small></div></div>
+        <p class="sc-note">Border crossing on foot. DiDi to <span class="zh">罗湖口岸(出境)</span>. On the Hong Kong side, MTR East Rail from Lo Wu to Hung Hom, about 40 min. No ticket to book.</p>
+        <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=114.118466,22.528730&amp;name=罗湖口岸(出境)&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=罗湖口岸(出境)&amp;lat=22.528730&amp;lon=114.118466&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
+      </article>
+      <article class="sc soft">
+        <div class="sc-head">
+          <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
+          <div class="sc-id"><span class="sc-city">Shenzhen</span><b>Futian</b></div>
+        </div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="福田站" aria-label="Copy 福田站">福田站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Futian</span><span class="sc-role">Fallback</span></div>
+        <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~20 min</b><small>8.6 km · ≈ ¥28–35</small></div><div class="sc-tile metro"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>36 min</b><small>Line 1, Guomao → Shopping Park · ¥3</small></div></div>
+        <p class="sc-note">High-speed train to West Kowloon. The metro route has 1.1 km of walking, so take a DiDi with suitcases.</p>
+        <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=114.057201,22.538136&amp;name=福田站&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=福田站&amp;lat=22.538136&amp;lon=114.057201&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
+      </article>
+      <article class="sc">
+        <div class="sc-head">
+          <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
+          <div class="sc-id"><span class="sc-city">Hong Kong</span><b>Hung Hom</b></div>
+        </div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="紅磡" aria-label="Copy 紅磡">紅磡<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-role">Arrive 29 Dec</span></div>
+        <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~1 km</b><small>short taxi</small></div><div class="sc-tile metro none"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>—</b><small>no direct option</small></div></div>
+        <p class="sc-note">End of the East Rail ride from Lo Wu, 890 m from the hotel.</p>
+        <div class="sc-maps"><a class="amap" href="https://uri.amap.com/search?keyword=红磡站&amp;city=香港&amp;src=china2026&amp;callnative=1" data-ios="iosamap://poi?sourceApplication=china2026&amp;name=香港红磡站&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
+      </article>
+      <article class="sc soft">
+        <div class="sc-head">
+          <span class="sc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg></span>
+          <div class="sc-id"><span class="sc-city">Hong Kong</span><b>Hong Kong West Kowloon</b></div>
+        </div>
+        <div class="sc-names"><button type="button" class="sc-zh zh" data-copy="香港西九龙站" aria-label="Copy 香港西九龙站">香港西九龙站<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="sc-code">Xianggang Xijiulong</span><span class="sc-role">Fallback</span></div>
+        <div class="sc-tiles"><div class="sc-tile didi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5v-4l1.8-4.6A2 2 0 0 1 8.7 6.5h6.6a2 2 0 0 1 1.9 1.4L19 12.5v4M4.5 12.5h15v4h-15zM6.5 16.5v2M17.5 16.5v2"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/></svg><span class="sc-l">DiDi</span><b>~10 min</b><small>1.9 km · ≈ HK$30–50 (taxi)</small></div><div class="sc-tile metro none"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="3.5" width="13" height="13" rx="3.5"/><path d="M5.5 11h13M8 20.5l2-4M16 20.5l-2-4"/><circle cx="9" cy="13.8" r=".6"/><circle cx="15" cy="13.8" r=".6"/></svg><span class="sc-l">Metro</span><b>—</b><small>no direct option</small></div></div>
+        <p class="sc-note">Immigration for both sides is inside the station.</p>
+        <div class="sc-maps"><a class="amap" href="https://uri.amap.com/marker?position=114.1649207,22.304227&amp;name=香港西九龙站&amp;src=china2026&amp;coordinate=wgs84&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=香港西九龙站&amp;lat=22.304227&amp;lon=114.1649207&amp;dev=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Map</a></div>
+      </article>
     </div>
   </section>
 <p class="foot">Distances and times from Amap (高德地图). DiDi times are the range Amap predicted for a weekday and a Sunday late morning; rush hour (07:30–09:30, 17:00–19:30) can be longer. Fares are estimates from local taxi rates: DiDi Express usually costs about the same or a little less, and the app shows the exact price before you book.</p>
@@ -2046,7 +2174,7 @@ html.map-mode .sbar { display: none; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261204">26 Nov 2026, 12:04</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261209">26 Nov 2026, 12:09</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -2229,12 +2357,23 @@ html.map-mode .sbar { display: none; }
     else if (d === 0) { el.textContent = 'opens today'; el.className = 'tk-count now'; }
     else { el.textContent = 'on sale'; el.className = 'tk-count open'; }
   });
+  window.copyText = function (txt) {
+    function legacy() {
+      var t = document.createElement('textarea'); t.value = txt; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+      document.body.appendChild(t); t.select(); t.setSelectionRange(0, txt.length);
+      var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(t); return ok ? Promise.resolve() : Promise.reject();
+    }
+    try { return navigator.clipboard.writeText(txt).catch(legacy); } catch (e) { return legacy(); }
+  };
+  window.flashCopied = function (b) {
+    clearTimeout(b._copyT); b.classList.add('copied');
+    b._copyT = setTimeout(function () { b.classList.remove('copied'); }, 3000);
+  };
   document.addEventListener('click', function (e) {
     var b = e.target.closest ? e.target.closest('[data-copy]') : null;
     if (!b) return;
-    var txt = b.getAttribute('data-copy'), label = b.innerHTML;
-    function done(t) { b.textContent = t; setTimeout(function () { b.innerHTML = label; }, 1500); }
-    try { navigator.clipboard.writeText(txt).then(function () { done('Copied'); }, function () { done(txt); }); } catch (err) { done(txt); }
+    copyText(b.getAttribute('data-copy')).then(function () { flashCopied(b); }, function () {});
   });
   var ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   var appOk = ios && /github\.io$/.test(location.hostname);
@@ -2884,15 +3023,12 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
 })();
 document.querySelectorAll('.copy').forEach(function (btn) {
   btn.addEventListener('click', function () {
-    var text = btn.parentElement.querySelector('.zh').textContent;
-    function done(label) { btn.textContent = label; setTimeout(function () { btn.textContent = 'Copy'; }, 1600); }
-    function fallback() {
-      var r = document.createRange(); r.selectNodeContents(btn.parentElement.querySelector('.zh'));
-      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); done('Selected');
-    }
-    try {
-      navigator.clipboard.writeText(text).then(function () { done('Copied'); }, fallback);
-    } catch (e) { fallback(); }
+    var zh = btn.parentElement.querySelector('.zh');
+    copyText(zh.textContent).then(function () { flashCopied(btn); }, function () {
+      // Couldn't copy: select the text so it can be copied by hand.
+      var r = document.createRange(); r.selectNodeContents(zh);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    });
   });
 });
 </script>
