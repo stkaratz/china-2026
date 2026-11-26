@@ -1067,7 +1067,7 @@ html.sheet-open, html.sheet-open body { overflow: hidden; }
 html.map-mode, html.map-mode body { overflow: hidden; background: #f3f1ec; }
 html.map-mode .sbar { display: none; }
 /* Fill the whole screen, including the strip behind the home indicator (iOS leaves a gap with inset: 0 in home-screen apps). */
-.map-pane .map { position: fixed; top: 0; left: 0; right: 0; bottom: calc(-1 * (var(--ios-gap, 0px) + 40px)); height: auto; z-index: 5; }
+.map-pane .map { position: fixed; top: 0; left: 0; right: 0; bottom: calc(-1 * (var(--ios-gap, 0px) + 140px)); height: auto; z-index: 5; }
 .map-pane .map-legend { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 26px); left: 12px; }
 .locate { position: fixed; z-index: 1000; top: calc(env(safe-area-inset-top, 0px) + 18px); right: 12px; width: 46px; height: 46px; border: 0; border-radius: 50%; display: grid; place-items: center; color: var(--jade); cursor: pointer; }
 .locate svg { position: relative; z-index: 1; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
@@ -1080,6 +1080,16 @@ html.map-mode .sbar { display: none; }
 @media (prefers-reduced-motion: reduce) { .me, .locate.busy svg { animation: none; } }
 .map-pane .map-chips { position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 84px - var(--ios-gap, 0px)); max-width: 520px; margin-inline: auto; }
 .map-pane .map-off { position: fixed; }
+/* City switcher: a small pill showing the current view; tap to open the full row, tap elsewhere to close. */
+.chips-toggle { position: relative; z-index: 1; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 12px 0 10px; border: 0; border-radius: 99px; background: transparent; color: var(--ink); font: 700 0.86rem var(--f-body); cursor: pointer; }
+.chips-toggle svg { width: 18px; height: 18px; fill: none; stroke: var(--jade); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.chips-toggle .chev { width: 14px; height: 14px; stroke: var(--muted); }
+.map-pane .map-chips.collapsed { right: auto; width: auto; max-width: none; margin-inline: 0; padding: 4px; overflow: visible; }
+.map-chips.collapsed button[data-fly] { display: none; }
+.map-chips:not(.collapsed) .chips-toggle { display: none; }
+.map-chips:not(.collapsed) { animation: chipsIn 0.28s cubic-bezier(0.2, 0.8, 0.2, 1); transform-origin: left bottom; }
+@keyframes chipsIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .map-chips:not(.collapsed) { animation: none; } }
 .map-pane .leaflet-bottom { bottom: calc(env(safe-area-inset-bottom, 0px) + 176px); }
 
 /* Title row with the About button; back link on About */
@@ -1840,8 +1850,9 @@ html.map-mode .sbar { display: none; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260854">26 Nov 2026, 08:54</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260859">26 Nov 2026, 08:59</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
+          <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
         </div>
         <p class="foot">The app keeps a saved copy on your phone, so it opens without internet. When you are online it looks for a newer version each time you open it.</p>
@@ -1861,7 +1872,8 @@ html.map-mode .sbar { display: none; }
     <div id="leafmap" class="map"></div>
     <button type="button" class="locate glass" id="locate-btn" aria-label="Show my location"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4 3.5 11.2l7 1.9 1.9 7z"/></svg></button>
     <div class="map-legend glass"><span><i class="c-hotel"></i>Hotel</span><span><i class="c-sight"></i>Sight</span><span><i class="c-station"></i>Station</span></div>
-    <div class="map-chips glass" id="map-chips">
+    <div class="map-chips glass collapsed" id="map-chips">
+    <button type="button" class="chips-toggle" id="chips-toggle" aria-expanded="false" aria-label="Choose a city"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg><span id="chips-current">All China</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
     <button type="button" data-fly="all" class="on">All China</button>
     <button type="button" data-fly="0">Beijing</button>
     <button type="button" data-fly="1">Xi'an</button>
@@ -1888,9 +1900,15 @@ html.map-mode .sbar { display: none; }
   // Measure it so the map and tab bar can reach the real bottom edge.
   function gap() {
     var standalone = window.navigator.standalone === true || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
-    var g = standalone ? Math.round(screen.height - window.innerHeight) : 0;
+    var portrait = screen.height > screen.width;
+    var vv = window.visualViewport ? Math.round(window.visualViewport.height) : window.innerHeight;
+    var ch = document.documentElement.clientHeight;
+    var g = (standalone && portrait) ? Math.round(screen.height - Math.min(window.innerHeight, vv, ch || window.innerHeight)) : 0;
     if (g < 10 || g > 120) g = 0;
     document.documentElement.style.setProperty('--ios-gap', g + 'px');
+    window.china2026Screen = screen.width + '×' + screen.height + ' · view ' + window.innerHeight + ' · vv ' + vv + ' · root ' + ch + ' · gap ' + g + ' · ' + (standalone ? 'app' : 'browser');
+    var out = document.getElementById('screen-info');
+    if (out) out.textContent = window.china2026Screen;
   }
   gap();
   window.addEventListener('resize', gap);
@@ -1981,15 +1999,23 @@ html.map-mode .sbar { display: none; }
       L.marker(c.ll, { icon: L.divIcon({ className: 'city-label', html: c.name, iconSize: null }), interactive: false, keyboard: false }).addTo(map);
     });
     fitAll();
+    map.on('click', function () { chipsOpen(false); });
     map.on('popupopen', function (e) {
       var b = e.popup.getElement().querySelector('[data-goto]');
       if (b) b.addEventListener('click', function () { location.hash = b.getAttribute('data-goto'); });
     });
   }
+  function flyVisible(ll, z) {
+    var extra = Math.max(0, (map.getSize().y - window.innerHeight) / 2);
+    var p = map.project(ll, z).add([0, extra]);
+    map.flyTo(map.unproject(p, z), z, { duration: 0.8 });
+  }
   function fitAll() {
+
     var L = window.L;
     var b = L.latLngBounds(P.filter(function (p) { return p.t === 'hotel'; }).map(function (p) { return p.ll; }));
-    map.fitBounds(b, { paddingTopLeft: [30, 90], paddingBottomRight: [30, 190], animate: false });
+    var extra = Math.max(0, map.getSize().y - window.innerHeight);
+    map.fitBounds(b, { paddingTopLeft: [30, 90], paddingBottomRight: [30, 190 + extra], animate: false });
     map.setZoom(map.getZoom() - 0.25, { animate: false });
   }
 
@@ -2025,7 +2051,7 @@ html.map-mode .sbar { display: none; }
         meRing = L.circle(ll, { radius: pos.coords.accuracy, color: '#0a84ff', weight: 1, fillOpacity: 0.12, interactive: false }).addTo(map);
         meDot = L.marker(ll, { icon: L.divIcon({ className: '', html: '<div class="me"></div>', iconSize: [18, 18], iconAnchor: [9, 9] }), zIndexOffset: 1000, interactive: false }).addTo(map);
       } else { meDot.setLatLng(ll); meRing.setLatLng(ll).setRadius(pos.coords.accuracy); }
-      map.flyTo(ll, Math.max(map.getZoom(), 14), { duration: 0.8 });
+      flyVisible(ll, Math.max(map.getZoom(), 14));
     }, function (err) {
       loc.classList.remove('busy');
       flash(err.code === 1 ? 'Location is off for this app. Turn it on in Settings › Privacy & Security › Location Services.' : 'Couldn\'t find your location. Try again outdoors or in a moment.');
@@ -2045,13 +2071,27 @@ html.map-mode .sbar { display: none; }
       setTimeout(function () { map.invalidateSize(); }, 50);
     });
   }
-  document.querySelectorAll('#map-chips button').forEach(function (b) {
+  var chips = document.getElementById('map-chips');
+  var chipsToggle = document.getElementById('chips-toggle');
+  var chipsCurrent = document.getElementById('chips-current');
+  function chipsOpen(open) {
+    if (!chips) return;
+    chips.classList.toggle('collapsed', !open);
+    if (chipsToggle) chipsToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  if (chipsToggle) chipsToggle.addEventListener('click', function (e) { e.stopPropagation(); chipsOpen(true); });
+  document.addEventListener('click', function (e) {
+    if (chips && !chips.classList.contains('collapsed') && !chips.contains(e.target)) chipsOpen(false);
+  });
+  document.querySelectorAll('#map-chips button[data-fly]').forEach(function (b) {
     b.addEventListener('click', function () {
       if (!map) return;
-      document.querySelectorAll('#map-chips button').forEach(function (x) { x.classList.toggle('on', x === b); });
+      document.querySelectorAll('#map-chips button[data-fly]').forEach(function (x) { x.classList.toggle('on', x === b); });
+      if (chipsCurrent) chipsCurrent.textContent = b.textContent;
+      chipsOpen(false);
       var v = b.getAttribute('data-fly');
       if (v === 'all') fitAll();
-      else { var c = CITIES[+v]; map.flyTo(c.ll, c.z, { duration: 0.8 }); }
+      else { var c = CITIES[+v]; flyVisible(c.ll, c.z); }
     });
   });
   window.china2026Map = { show: show };
