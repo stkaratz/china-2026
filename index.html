@@ -1055,9 +1055,20 @@ html.sheet-open, html.sheet-open body { overflow: hidden; }
 .map-legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
 .map-off { position: absolute; z-index: 1000; left: 16px; right: 16px; top: 45%; text-align: center; padding: 14px 16px; border-radius: 14px; background: var(--surface); color: var(--ink); font-size: 0.92rem; box-shadow: 0 6px 20px rgb(0 0 0 / 0.12); }
 /* Map tab: full screen under the floating tab bar */
-html.map-mode, html.map-mode body { overflow: hidden; }
-.map-pane .map { position: fixed; inset: 0; z-index: 5; }
-.map-pane .map-legend { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 10px); left: 12px; }
+html.map-mode, html.map-mode body { overflow: hidden; background: #f3f1ec; }
+html.map-mode .sbar { display: none; }
+/* Fill the whole screen, including the strip behind the home indicator (iOS leaves a gap with inset: 0 in home-screen apps). */
+.map-pane .map { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: 100vh; height: max(100lvh, calc(100% + env(safe-area-inset-bottom, 0px))); z-index: 5; }
+.map-pane .map-legend { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 26px); left: 12px; }
+.locate { position: fixed; z-index: 1000; top: calc(env(safe-area-inset-top, 0px) + 18px); right: 12px; width: 46px; height: 46px; border: 0; border-radius: 50%; display: grid; place-items: center; color: var(--jade); cursor: pointer; }
+.locate svg { position: relative; z-index: 1; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+.locate.on svg { fill: currentColor; }
+.locate.busy svg { animation: locpulse 1s ease-in-out infinite; }
+@keyframes locpulse { 50% { opacity: 0.35; } }
+.locate:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
+.me { width: 18px; height: 18px; border-radius: 50%; background: #0a84ff; border: 3px solid #fff; box-shadow: 0 0 0 0 rgb(10 132 255 / 0.5), 0 1px 4px rgb(0 0 0 / 0.3); animation: mepulse 2s ease-out infinite; }
+@keyframes mepulse { 70% { box-shadow: 0 0 0 14px rgb(10 132 255 / 0), 0 1px 4px rgb(0 0 0 / 0.3); } 100% { box-shadow: 0 0 0 0 rgb(10 132 255 / 0), 0 1px 4px rgb(0 0 0 / 0.3); } }
+@media (prefers-reduced-motion: reduce) { .me, .locate.busy svg { animation: none; } }
 .map-pane .map-chips { position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 84px); max-width: 520px; margin-inline: auto; }
 .map-pane .map-off { position: fixed; }
 .map-pane .leaflet-bottom { bottom: calc(env(safe-area-inset-bottom, 0px) + 136px); }
@@ -1819,7 +1830,7 @@ html.map-mode, html.map-mode body { overflow: hidden; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260842">26 Nov 2026, 08:42</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260848">26 Nov 2026, 08:48</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
         </div>
@@ -1838,6 +1849,7 @@ html.map-mode, html.map-mode body { overflow: hidden; }
   </section>
   <section class="pane map-pane" id="map" data-title="Map" aria-label="Trip map" hidden>
     <div id="leafmap" class="map"></div>
+    <button type="button" class="locate glass" id="locate-btn" aria-label="Show my location"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4 3.5 11.2l7 1.9 1.9 7z"/></svg></button>
     <div class="map-legend glass"><span><i class="c-hotel"></i>Hotel</span><span><i class="c-sight"></i>Sight</span><span><i class="c-station"></i>Station</span></div>
     <div class="map-chips glass" id="map-chips">
     <button type="button" data-fly="all" class="on">All China</button>
@@ -1953,9 +1965,50 @@ html.map-mode, html.map-mode body { overflow: hidden; }
     });
   }
   function fitAll() {
-    var b = window.L.latLngBounds(P.filter(function (p) { return p.t === 'hotel'; }).map(function (p) { return p.ll; }));
-    map.fitBounds(b, { paddingTopLeft: [30, 110], paddingBottomRight: [30, 90] });
+    var L = window.L;
+    var b = L.latLngBounds(P.filter(function (p) { return p.t === 'hotel'; }).map(function (p) { return p.ll; }));
+    var z = map.getBoundsZoom(b, false, L.point(60, 260));
+    map.setView(b.getCenter(), Math.max(z - 1, 3));
   }
+
+  // "Go to my location": GPS gives WGS-84; Amap tiles in mainland China use GCJ-02, so shift the dot there.
+  function outOfChina(lat, lon) {
+    if (lon < 72.004 || lon > 137.8347 || lat < 0.8293 || lat > 55.8271) return true;
+    return lon > 113.82 && lon < 114.45 && lat > 22.13 && lat < 22.53; // Hong Kong: no shift
+  }
+  function tLat(x, y) { var r = -100 + 2 * x + 3 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x)); r += (20 * Math.sin(6 * x * Math.PI) + 20 * Math.sin(2 * x * Math.PI)) * 2 / 3; r += (20 * Math.sin(y * Math.PI) + 40 * Math.sin(y / 3 * Math.PI)) * 2 / 3; r += (160 * Math.sin(y / 12 * Math.PI) + 320 * Math.sin(y * Math.PI / 30)) * 2 / 3; return r; }
+  function tLon(x, y) { var r = 300 + x + 2 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x)); r += (20 * Math.sin(6 * x * Math.PI) + 20 * Math.sin(2 * x * Math.PI)) * 2 / 3; r += (20 * Math.sin(x * Math.PI) + 40 * Math.sin(x / 3 * Math.PI)) * 2 / 3; r += (150 * Math.sin(x / 12 * Math.PI) + 300 * Math.sin(x / 30 * Math.PI)) * 2 / 3; return r; }
+  function toGcj(lat, lon) {
+    if (outOfChina(lat, lon)) return [lat, lon];
+    var a = 6378245.0, ee = 0.00669342162296594323;
+    var dLat = tLat(lon - 105, lat - 35), dLon = tLon(lon - 105, lat - 35);
+    var rad = lat / 180 * Math.PI, m = Math.sin(rad); m = 1 - ee * m * m;
+    var s = Math.sqrt(m);
+    dLat = (dLat * 180) / ((a * (1 - ee)) / (m * s) * Math.PI);
+    dLon = (dLon * 180) / (a / s * Math.cos(rad) * Math.PI);
+    return [lat + dLat, lon + dLon];
+  }
+  var meDot = null, meRing = null, msgTimer = null;
+  function flash(msg) { showOff(msg); clearTimeout(msgTimer); msgTimer = setTimeout(function () { showOff(''); }, 4500); }
+  var loc = document.getElementById('locate-btn');
+  if (loc) loc.addEventListener('click', function () {
+    if (!map) return;
+    if (!navigator.geolocation) { flash('Location is not available on this device.'); return; }
+    loc.classList.add('busy');
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      loc.classList.remove('busy');
+      loc.classList.add('on');
+      var L = window.L, ll = toGcj(pos.coords.latitude, pos.coords.longitude);
+      if (!meDot) {
+        meRing = L.circle(ll, { radius: pos.coords.accuracy, color: '#0a84ff', weight: 1, fillOpacity: 0.12, interactive: false }).addTo(map);
+        meDot = L.marker(ll, { icon: L.divIcon({ className: '', html: '<div class="me"></div>', iconSize: [18, 18], iconAnchor: [9, 9] }), zIndexOffset: 1000, interactive: false }).addTo(map);
+      } else { meDot.setLatLng(ll); meRing.setLatLng(ll).setRadius(pos.coords.accuracy); }
+      map.flyTo(ll, Math.max(map.getZoom(), 14), { duration: 0.8 });
+    }, function (err) {
+      loc.classList.remove('busy');
+      flash(err.code === 1 ? 'Location is off for this app. Turn it on in Settings › Privacy & Security › Location Services.' : 'Couldn\'t find your location. Try again outdoors or in a moment.');
+    }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 });
+  });
   function loadLeaflet(cb) {
     if (window.L) return cb();
     var s = document.createElement('script');
