@@ -1105,6 +1105,26 @@ html.map-mode .sbar { display: none; }
 .info-btn:focus-visible, .back:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 .back { align-self: flex-start; display: inline-flex; align-items: center; gap: 2px; margin-left: -6px; color: var(--jade); font-weight: 600; font-size: 1rem; text-decoration: none; }
 .back svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+/* Leaflet.markercluster 1.5.3 (MIT) */
+.leaflet-cluster-anim .leaflet-marker-icon, .leaflet-cluster-anim .leaflet-marker-shadow {
+	-webkit-transition: -webkit-transform 0.3s ease-out, opacity 0.3s ease-in;
+	-moz-transition: -moz-transform 0.3s ease-out, opacity 0.3s ease-in;
+	-o-transition: -o-transform 0.3s ease-out, opacity 0.3s ease-in;
+	transition: transform 0.3s ease-out, opacity 0.3s ease-in;
+}
+
+.leaflet-cluster-spider-leg {
+	/* stroke-dashoffset (duration and function) should match with leaflet-marker-icon transform in order to track it exactly */
+	-webkit-transition: -webkit-stroke-dashoffset 0.3s ease-out, -webkit-stroke-opacity 0.3s ease-in;
+	-moz-transition: -moz-stroke-dashoffset 0.3s ease-out, -moz-stroke-opacity 0.3s ease-in;
+	-o-transition: -o-stroke-dashoffset 0.3s ease-out, -o-stroke-opacity 0.3s ease-in;
+	transition: stroke-dashoffset 0.3s ease-out, stroke-opacity 0.3s ease-in;
+}
+.cluster { display: grid; place-items: center; align-content: center; gap: 1px; border-radius: 50%; background: rgba(28, 28, 30, 0.86); color: #fff; border: 2.5px solid #fff; box-shadow: 0 4px 12px rgb(0 0 0 / 0.3); font: 800 15px var(--f-body); }
+.cluster b { line-height: 1; }
+.cluster span { display: flex; gap: 2px; }
+.cluster i { width: 6px; height: 6px; border-radius: 50%; display: block; }
+.cd-hotel { background: #4fc3a1; } .cd-sight { background: #ff8a5c; } .cd-station { background: #c7c7cc; } .cd-idea { background: #9b9bff; }
 .c-hotel { background: var(--jade); } .c-sight { background: var(--seal); } .c-idea { background: #5b5bd6; } .c-station { background: #6c6c70; }
 
 /* Pins and popups */
@@ -1857,7 +1877,7 @@ html.map-mode .sbar { display: none; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261012">26 Nov 2026, 10:12</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261015">26 Nov 2026, 10:15</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -1927,6 +1947,7 @@ html.map-mode .sbar { display: none; }
 (function () {
   // Trip map: Leaflet + free Amap tiles (English labels, work inside China). Loaded only when opened.
   var LEAFLET = 'vendor/leaflet.js';
+  var CLUSTER = 'vendor/leaflet.markercluster.js';
   var off = document.getElementById('map-off');
   if (!document.getElementById('leafmap')) return;
   var map = null, cityView = [];
@@ -2029,10 +2050,26 @@ html.map-mode .sbar { display: none; }
     tiles.on('tileload', function () { loaded++; showOff(''); });
     var route = P.filter(function (p) { return p.t === 'hotel'; }).map(function (p) { return p.ll; });
     L.polyline(route, { color: '#1f7a63', weight: 3, opacity: 0.75, dashArray: '6 8' }).addTo(map);
+    // Pins group into numbered bubbles when zoomed out; tapping a bubble zooms into its area.
+    var group = L.markerClusterGroup({
+      maxClusterRadius: 48,
+      showCoverageOnHover: false,
+      spiderfyOnMaxZoom: true,
+      zoomToBoundsOnClick: true,
+      iconCreateFunction: function (cl) {
+        var kids = cl.getAllChildMarkers(), n = kids.length, has = {};
+        kids.forEach(function (m) { has[m.options.kind] = 1; });
+        var dots = ['hotel', 'sight', 'station', 'idea'].filter(function (k) { return has[k]; })
+          .map(function (k) { return '<i class="cd-' + k + '"></i>'; }).join('');
+        var size = n < 10 ? 40 : (n < 25 ? 46 : 52);
+        return L.divIcon({ className: '', html: '<div class="cluster" style="width:' + size + 'px;height:' + size + 'px"><b>' + n + '</b><span>' + dots + '</span></div>', iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
+      }
+    });
     P.forEach(function (p) {
       var icon = L.divIcon({ className: '', html: '<div class="pin pin-' + p.t + '">' + G[p.t] + '</div>', iconSize: [30, 30], iconAnchor: [15, 30], popupAnchor: [0, -30] });
-      L.marker(p.ll, { icon: icon, zIndexOffset: p.t === 'station' ? 0 : (p.t === 'idea' ? 200 : 500) }).addTo(map).bindPopup(popup(p), { maxWidth: 260 });
+      group.addLayer(L.marker(p.ll, { icon: icon, kind: p.t, zIndexOffset: p.t === 'station' ? 0 : (p.t === 'idea' ? 200 : 500) }).bindPopup(popup(p), { maxWidth: 260 }));
     });
+    map.addLayer(group);
     CITIES.forEach(function (c) {
       L.marker(c.ll, { icon: L.divIcon({ className: 'city-label', html: c.name, iconSize: null }), interactive: false, keyboard: false }).addTo(map);
     });
@@ -2095,13 +2132,16 @@ html.map-mode .sbar { display: none; }
       flash(err.code === 1 ? 'Location is off for this app. Turn it on in Settings › Privacy & Security › Location Services.' : 'Couldn\'t find your location. Try again outdoors or in a moment.');
     }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 });
   });
-  function loadLeaflet(cb) {
-    if (window.L) return cb();
+  function loadScript(src, ok) {
     var s = document.createElement('script');
-    s.src = LEAFLET;
-    s.onload = cb;
+    s.src = src;
+    s.onload = ok;
     s.onerror = function () { showOff('The map needs internet the first time you open it.'); };
     document.head.appendChild(s);
+  }
+  function loadLeaflet(cb) {
+    function withCluster() { if (window.L && window.L.markerClusterGroup) cb(); else loadScript(CLUSTER, cb); }
+    if (window.L) withCluster(); else loadScript(LEAFLET, withCluster);
   }
   function show() {
     loadLeaflet(function () {
