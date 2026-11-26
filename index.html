@@ -1138,7 +1138,7 @@ html.map-mode, html.map-mode body { background: #f3f1ec; overscroll-behavior: no
 .map-pane { min-height: calc(var(--screen-h, 100vh) + 240px); }
 /* iOS 26 draws a blur over the top of Home Screen apps unless a fixed, full-width box with a plain background colour sits at the top edge.
    This strip has that colour but clips it to (non-existent) text, so it paints nothing: iOS skips the blur and the map stays visible under the clock. */
-html.map-mode:not(.dt-open):not(.phv-open) .edge-strip { display: none; }
+html.map-mode:not(.dt-open):not(.phv-open):not(.bs-open) .edge-strip { display: none; }
 .edge-strip { position: fixed; z-index: 2000; top: 0; left: 0; right: 0; height: max(env(safe-area-inset-top, 0px), 11px); background-color: var(--bg); -webkit-background-clip: text; background-clip: text; color: transparent; pointer-events: none; }
 html.map-mode .sbar { display: none; }
 /* Fill the whole screen, including the strip behind the home indicator (iOS leaves a gap with inset: 0 in home-screen apps). */
@@ -1225,6 +1225,105 @@ html.map-mode .sbar { display: none; }
 .todo-empty { background: var(--surface); border-radius: 16px; padding: 18px; text-align: center; color: var(--muted); }
 
 /* ---------- Train tickets ---------- */
+/* Trip hero */
+.hero { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; padding: 20px 18px 16px; border-radius: 24px; color: #fff; background: radial-gradient(120% 140% at 100% 0%, #2f9a7c 0%, transparent 55%), linear-gradient(135deg, #1f7a63, #173f6b); box-shadow: 0 10px 30px rgb(23 63 107 / 0.25); }
+.hero::after { content: ""; position: absolute; right: -60px; bottom: -80px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgb(255 255 255 / 0.12), transparent 70%); pointer-events: none; }
+.hero-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.hero-big { display: flex; flex-direction: column; font: 800 3rem/0.95 var(--f-display); letter-spacing: -0.03em; }
+.hero-big small { margin-top: 6px; font: 600 0.9rem/1.2 var(--f-body); letter-spacing: 0; opacity: 0.85; }
+.hero-zh { opacity: 0.8; }
+.hero-route { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; font-weight: 700; font-size: 0.92rem; text-align: right; justify-content: flex-end; }
+.hero-route svg { width: 14px; height: 14px; fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: 0.8; }
+.hero-route em { flex-basis: 100%; font-style: normal; font-weight: 500; font-size: 0.8rem; opacity: 0.8; }
+.hero-next { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 1px 10px; padding: 11px 12px 11px 14px; border: 0; border-radius: 16px; background: rgb(255 255 255 / 0.14); color: #fff; text-align: left; text-decoration: none; font: inherit; cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: background-color 0.15s, transform 0.12s; }
+.hero-next:active { transform: scale(0.98); background: rgb(255 255 255 / 0.2); }
+.hero-next .hero-lbl { grid-column: 1; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; }
+.hero-next b { grid-column: 1; display: inline-flex; align-items: center; gap: 6px; font-size: 0.95rem; line-height: 1.3; }
+.hero-next b svg { width: 17px; height: 17px; fill: none; stroke: #fff; stroke-width: 1.9; }
+.hero-next > svg { grid-column: 2; grid-row: 1 / span 2; width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; opacity: 0.7; }
+.hero-clocks { position: relative; z-index: 1; display: flex; gap: 18px; font-size: 0.8rem; opacity: 0.85; }
+.hero-clocks b { font-variant-numeric: tabular-nums; font-size: 0.95rem; margin-right: 4px; }
+/* Places carousel */
+.places { display: flex; flex-direction: column; gap: 8px; }
+.places-head { display: flex; align-items: baseline; justify-content: space-between; padding: 0 2px; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.places-map { font-size: 0.8rem; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--jade); text-decoration: none; }
+.places-row { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: -16px; padding: 2px 16px 6px; scroll-padding-inline: 16px; }
+.places-row::-webkit-scrollbar { display: none; }
+.place { flex: 0 0 148px; scroll-snap-align: start; display: flex; flex-direction: column; gap: 2px; padding: 0 0 10px; border: 0; border-radius: 18px; background: var(--surface); color: var(--ink); text-align: left; cursor: pointer; overflow: hidden; box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 6px 16px rgb(0 0 0 / 0.05); transition: transform 0.14s; }
+.place:active { transform: scale(0.97); }
+.place-img { position: relative; display: block; height: 104px; margin-bottom: 6px; background: var(--bg); }
+.place-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.place-tag { position: absolute; left: 8px; top: 8px; padding: 2px 7px; border-radius: 99px; background: #c2410c; color: #fff; font: 700 0.6rem var(--f-body); letter-spacing: 0.04em; text-transform: uppercase; font-style: normal; }
+.place-n { padding: 0 11px; font: 700 0.86rem/1.25 var(--f-display); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.place-zh { padding: 0 11px; font-size: 0.74rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Handy tiles */
+.hd { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.hd-tile { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0; padding: 14px 12px 12px; border: 0; border-radius: 20px; background: var(--surface); color: var(--ink); text-align: left; font: inherit; cursor: pointer; box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 6px 16px rgb(0 0 0 / 0.05); transition: transform 0.14s; --c: #1f7a63; }
+.hd-tile:active { transform: scale(0.96); }
+.hd-money { --c: #b7791f; } .hd-sos { --c: #d92d20; }
+.hd-ic { display: grid; place-items: center; width: 36px; height: 36px; margin-bottom: 6px; border-radius: 12px; background: var(--c); }
+.hd-ic svg { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.hd-tile b { font: 700 0.92rem var(--f-display); }
+.hd-sub { font-size: 0.74rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+/* Bottom sheet */
+.bs { position: fixed; inset: 0; z-index: 2600; display: flex; align-items: flex-end; justify-content: center; background: rgb(0 0 0 / 0); transition: background-color 0.3s; }
+.bs.in { background: rgb(0 0 0 / 0.4); }
+.bs-sheet { position: relative; width: 100%; max-height: calc(100% - env(safe-area-inset-top, 0px) - 30px); display: flex; flex-direction: column; background: var(--bg); border-radius: 26px 26px 0 0; box-shadow: 0 -10px 40px rgb(0 0 0 / 0.2); transform: translate3d(0, 100%, 0); transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.25, 1); }
+.bs.in .bs-sheet { transform: none; }
+.bs-grab { position: absolute; left: 50%; top: 7px; width: 36px; height: 5px; margin-left: -18px; border-radius: 3px; background: var(--line); }
+.bs-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 18px 8px; }
+.bs-head h2 { margin: 0; font: 800 1.45rem var(--f-display); letter-spacing: -0.02em; }
+.bs-x { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; background: var(--surface); cursor: pointer; }
+.bs-x svg { width: 15px; height: 15px; fill: none; stroke: var(--muted); stroke-width: 2.6; stroke-linecap: round; }
+.bs-body { box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; padding: 4px 16px calc(env(safe-area-inset-bottom, 0px) + 28px); }
+.bs-lead { margin: 0 2px 12px; font-size: 0.86rem; color: var(--muted); }
+.bs-note { margin: 14px 4px 0; font-size: 0.78rem; color: var(--muted); }
+html.bs-open, html.bs-open body { overflow: hidden; }
+.ph-group { margin-top: 14px; background: var(--surface); border-radius: 18px; overflow: hidden; }
+.ph-group h3 { margin: 0; padding: 12px 14px 4px; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.ph-row { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 1px 10px; width: 100%; padding: 10px 14px; border: 0; background: none; color: var(--ink); text-align: left; font: inherit; cursor: pointer; }
+.ph-row + .ph-row { border-top: 0.5px solid var(--line); }
+.ph-row:active { background: var(--bg); }
+.ph-en { grid-column: 1; font-size: 0.8rem; color: var(--muted); }
+.ph-zh { grid-column: 1; font-size: 1.2rem; font-weight: 600; }
+.ph-zh.sm { font-size: 0.98rem; font-weight: 500; }
+.ph-py { grid-column: 1; font-size: 0.78rem; color: var(--jade); }
+.ph-row svg { grid-column: 2; grid-row: 1 / span 3; align-self: center; width: 18px; height: 18px; fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.fx { background: var(--surface); border-radius: 18px; padding: 14px; }
+.fx-in { display: flex; gap: 8px; }
+.fx-in input { flex: 1; min-width: 0; padding: 10px 12px; border: 0; border-radius: 12px; background: var(--bg); color: var(--ink); font: 700 1.5rem var(--f-display); }
+.fx-in select { flex: none; max-width: 46%; padding: 0 10px; border: 0; border-radius: 12px; background: var(--bg); color: var(--ink); font: 600 0.86rem var(--f-body); }
+.fx-out { margin-top: 8px; }
+.fx-row { display: flex; justify-content: space-between; align-items: baseline; padding: 9px 2px; border-bottom: 0.5px solid var(--line); }
+.fx-row:last-child { border-bottom: 0; }
+.fx-row span { font-size: 0.8rem; font-weight: 700; color: var(--muted); }
+.fx-row b { font: 700 1.2rem var(--f-display); font-variant-numeric: tabular-nums; }
+.fx-when { margin: 6px 2px 0; font-size: 0.72rem; color: var(--muted); }
+.tips { margin-top: 14px; background: var(--surface); border-radius: 18px; padding: 12px 14px 4px; }
+.tips h3 { margin: 0 0 4px; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.tips ul { margin: 0; padding-left: 18px; }
+.tips li { margin: 6px 0 10px; font-size: 0.88rem; line-height: 1.45; }
+.em-row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; color: var(--ink); text-decoration: none; }
+.em-row + .em-row { border-top: 0.5px solid var(--line); }
+.em-n { flex: none; min-width: 58px; padding: 6px 0; border-radius: 12px; background: #d92d20; color: #fff; text-align: center; font: 800 1.15rem var(--f-display); }
+.em-l { flex: 1; display: flex; flex-direction: column; }
+.em-l b { font-size: 0.95rem; }
+.em-l small { font-size: 0.76rem; color: var(--muted); }
+.em-row svg { width: 20px; height: 20px; fill: none; stroke: #d92d20; stroke-width: 1.9; stroke-linejoin: round; }
+/* Big text for showing people */
+.show { position: fixed; inset: 0; z-index: 3500; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: calc(env(safe-area-inset-top, 0px) + 20px) 22px calc(env(safe-area-inset-bottom, 0px) + 20px); background: #fff; color: #111; text-align: center; opacity: 0; transition: opacity 0.2s; cursor: pointer; }
+.show.in { opacity: 1; }
+.show-zh { font-size: clamp(2.2rem, 11vw, 5rem); font-weight: 700; line-height: 1.25; white-space: pre-line; overflow-wrap: anywhere; }
+.show-py { font-size: 1.1rem; color: #1f7a63; }
+.show-en { font-size: 1rem; color: #6c6c70; }
+.show-hint { position: absolute; bottom: calc(env(safe-area-inset-bottom, 0px) + 18px); font-size: 0.76rem; color: #9a9aa0; }
+@media (min-width: 700px) {
+  .bs { align-items: center; padding: 30px; }
+  .bs-sheet { width: min(520px, 94vw); max-height: min(86vh, 820px); border-radius: 26px; transform: translate3d(0, 40px, 0) scale(0.97); opacity: 0; transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.25, 1), opacity 0.2s; }
+  .bs.in .bs-sheet { transform: none; opacity: 1; }
+  .place { flex-basis: 170px; }
+}
+@media (prefers-reduced-motion: reduce) { .bs, .bs-sheet, .show { transition: none; } }
 /* Details page */
 .dt { position: fixed; inset: 0; z-index: 2500; display: flex; align-items: flex-end; justify-content: center; background: rgb(0 0 0 / 0); transition: background-color 0.3s; }
 .dt.in { background: rgb(0 0 0 / 0.4); }
@@ -1696,11 +1795,11 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <span><b>6</b> cities</span>
       <span><b>15</b> nights on the ground, 2 on planes</span>
       <span>All legs in China by <b>high-speed train</b></span>
-      <span>China &amp; Hong Kong are <b>UTC+8</b>, 7 h ahead of Copenhagen</span>
     </div></div>
     <nav class="seg" aria-label="Trip sections">
       <button type="button" data-go="today" class="hl" hidden>Today</button>
       <button type="button" data-go="weather">Weather</button>
+      <button type="button" data-go="handy">Handy</button>
       <button type="button" data-go="flights">Flights</button>
       <button type="button" data-go="s-bj">Beijing</button>
       <button type="button" data-go="s-xa">Xi'an</button>
@@ -1712,6 +1811,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <button type="button" data-go="wear">What to wear</button>
     </nav>
     <div class="pane-body">
+<div id="hero" class="hero" hidden></div>
 <nav class="route" aria-label="Route overview">
     <ol>
       <li class="air"><span class="city">Copenhagen</span><span class="sub">15 Dec</span></li>
@@ -1875,6 +1975,14 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
         <div class="date">1 Jan<span class="dow">Fri</span></div>
         <div class="body"><h3>Istanbul 06:10 → Copenhagen 09:40</h3><p class="muted">Home on New Year's morning.</p></div>
       </div>
+    </div>
+  </section>
+<section class="stop" aria-labelledby="handy">
+    <div class="stop-head"><h2 id="handy">Handy</h2><span class="nights">phrases, money and help, ready offline</span></div>
+    <div class="hd">
+      <button type="button" class="hd-tile hd-phr" data-handy="phrases"><span class="hd-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-7l-4.5 3.5V16.5H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z"/></svg></span><b>Phrases</b><span class="hd-sub zh">你好 · 谢谢</span></button>
+      <button type="button" class="hd-tile hd-money" data-handy="money"><span class="hd-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9 7.5l3 4.5 3-4.5M12 12v5M9.2 12.5h5.6M9.2 15h5.6"/></svg></span><b>Money</b><span class="hd-sub">¥100 ≈ 91 kr</span></button>
+      <button type="button" class="hd-tile hd-sos" data-handy="sos"><span class="hd-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 20.5 19h-17z"/><path d="M12 10v4M12 16.6v.1"/></svg></span><b>Emergency</b><span class="hd-sub">110 · 120 · 999</span></button>
     </div>
   </section>
 <section class="notes" aria-labelledby="open">
@@ -2338,7 +2446,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261513">26 Nov 2026, 15:13</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261518">26 Nov 2026, 15:18</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -2436,6 +2544,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
   }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   var showLater = false;
+  window.china2026Todo = { T: T, done: function (id) { return load(id); } };
 
   function render() {
     var now = new Date(), today = dayKey(now);
@@ -3358,6 +3467,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     });
   });
   window.china2026Map = { show: show };
+  window.china2026Places = { P: P, PH: PH, open: openDetails };
 })();
 (function () {
   // Weather: free Open-Meteo forecast (16 days, no key). Falls back to the last saved forecast, then to typical December values.
@@ -3862,6 +3972,286 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     });
   });
 });
+// ---- Extras: trip hero, places carousels, handy tools (phrases, money, emergency) ----
+(function () {
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  var I = {
+    chat: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-7l-4.5 3.5V16.5H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z"/></svg>',
+    coin: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9 7.5l3 4.5 3-4.5M12 12v5M9.2 12.5h5.6M9.2 15h5.6"/></svg>',
+    sos: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 20.5 19h-17z"/><path d="M12 10v4M12 16.6v.1"/></svg>',
+    phone: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h3l1.5 4-2 1.3a10 10 0 0 0 5.7 5.7l1.3-2 4 1.5v3a2 2 0 0 1-2 2A15.5 15.5 0 0 1 5 5.5a2 2 0 0 1 2-2z"/></svg>',
+    expand: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4.5h5.5V10M10 19.5H4.5V14M19.5 4.5 13.5 10.5M4.5 19.5l6-6"/></svg>',
+    x: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg>',
+    bed: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.5v-11M3.5 14h17v4.5M20.5 14v-2.5a3 3 0 0 0-3-3H11V14"/><circle cx="7.3" cy="11.3" r="1.8"/></svg>',
+    arrow: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6l6 6-6 6"/></svg>'
+  };
+
+  // ---------- Generic bottom sheet ----------
+  var sheet = null;
+  function openSheet(title, html, onOpen) {
+    if (!sheet) {
+      sheet = document.createElement('div');
+      sheet.className = 'bs'; sheet.hidden = true;
+      sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-modal', 'true');
+      sheet.innerHTML = '<div class="bs-sheet"><span class="bs-grab" aria-hidden="true"></span><div class="bs-head"><h2></h2><button type="button" class="bs-x" aria-label="Close">' + I.x + '</button></div><div class="bs-body"></div></div>';
+      document.body.appendChild(sheet);
+      sheet.addEventListener('click', function (e) { if (e.target === sheet || e.target.closest('.bs-x')) closeSheet(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !sheet.hidden && (!show || show.hidden)) closeSheet(); });
+      var sh = sheet.querySelector('.bs-sheet'), body = sheet.querySelector('.bs-body'), pull = null;
+      sh.addEventListener('touchstart', function (e) { pull = (e.touches.length === 1 && body.scrollTop <= 0) ? { y: e.touches[0].clientY, x: e.touches[0].clientX, t: Date.now(), dy: 0, lock: null } : null; }, { passive: true });
+      sh.addEventListener('touchmove', function (e) {
+        if (!pull) return;
+        var dy = e.touches[0].clientY - pull.y, dx = e.touches[0].clientX - pull.x;
+        if (!pull.lock) { if (Math.abs(dy) < 8 && Math.abs(dx) < 8) return; pull.lock = dy > 0 && Math.abs(dy) > Math.abs(dx) ? 'y' : 'n'; if (pull.lock === 'n') { pull = null; return; } sh.style.transition = 'none'; }
+        if (e.target.closest('input, select')) return;
+        e.preventDefault(); pull.dy = Math.max(0, dy); sh.style.transform = 'translate3d(0,' + pull.dy + 'px,0)';
+      }, { passive: false });
+      function letGo() {
+        if (!pull || pull.lock !== 'y') { pull = null; return; }
+        var v = pull.dy / Math.max(Date.now() - pull.t, 1), far = pull.dy > 110 || (v > 0.5 && pull.dy > 40);
+        pull = null; sh.style.transition = ''; sh.style.transform = '';
+        if (far) closeSheet();
+      }
+      sh.addEventListener('touchend', letGo); sh.addEventListener('touchcancel', letGo);
+    }
+    sheet.querySelector('.bs-head h2').textContent = title;
+    sheet.setAttribute('aria-label', title);
+    var body = sheet.querySelector('.bs-body');
+    body.innerHTML = html; body.scrollTop = 0;
+    sheet.hidden = false;
+    document.documentElement.classList.add('bs-open');
+    requestAnimationFrame(function () { sheet.classList.add('in'); });
+    if (onOpen) onOpen(body);
+  }
+  function closeSheet() {
+    if (!sheet || sheet.hidden) return;
+    sheet.classList.remove('in');
+    document.documentElement.classList.remove('bs-open');
+    setTimeout(function () { if (!sheet.classList.contains('in')) sheet.hidden = true; }, 320);
+  }
+
+  // ---------- Show-in-big-text overlay (for drivers, waiters, shop staff) ----------
+  var show = null;
+  function showBig(zh, py, en) {
+    if (!show) {
+      show = document.createElement('div');
+      show.className = 'show'; show.hidden = true;
+      show.setAttribute('role', 'dialog'); show.setAttribute('aria-modal', 'true');
+      document.body.appendChild(show);
+      show.addEventListener('click', function () { show.classList.remove('in'); setTimeout(function () { show.hidden = true; }, 200); });
+    }
+    show.innerHTML = '<div class="show-zh">' + esc(zh) + '</div>' + (py ? '<div class="show-py">' + esc(py) + '</div>' : '') + (en ? '<div class="show-en">' + esc(en) + '</div>' : '') + '<div class="show-hint">Tap anywhere to close</div>';
+    show.hidden = false;
+    requestAnimationFrame(function () { show.classList.add('in'); });
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-show]');
+    if (!b) return;
+    showBig(b.getAttribute('data-show'), b.getAttribute('data-py'), b.getAttribute('data-en'));
+  });
+
+  // ---------- Trip hero ----------
+  var CITIES = [
+    { id: 'bj', n: 'Beijing', zh: '北京', from: '2026-12-16', to: '2026-12-20', hotel: 'Manxin Mansion' },
+    { id: 'xa', n: "Xi'an", zh: '西安', from: '2026-12-20', to: '2026-12-22', hotel: 'Four Points by Sheraton' },
+    { id: 'cd', n: 'Chengdu', zh: '成都', from: '2026-12-22', to: '2026-12-24', hotel: 'The Hidden House' },
+    { id: 'ys', n: 'Yangshuo', zh: '阳朔', from: '2026-12-24', to: '2026-12-27', hotel: 'BO·HUI Hotel' },
+    { id: 'sz', n: 'Shenzhen', zh: '深圳', from: '2026-12-27', to: '2026-12-29', hotel: 'Crowne Plaza Landmark' },
+    { id: 'hk', n: 'Hong Kong', zh: '香港', from: '2026-12-29', to: '2026-12-31', hotel: 'Stanford Hillview Hotel' }
+  ];
+  var START = new Date('2026-12-15T18:00:00+01:00'), END = new Date('2027-01-01T09:40:00+01:00');
+  function ymd(d, tz) {
+    try { return new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' }).format(d); } catch (e) { return d.toISOString().slice(0, 10); }
+  }
+  function clock(tz) { try { return new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit' }).format(new Date()); } catch (e) { return ''; } }
+  function dayLabel(d) { try { return new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).format(d); } catch (e) { return d.toDateString(); } }
+  function nextTodo() {
+    var td = window.china2026Todo; if (!td) return null;
+    var now = Date.now(), best = null;
+    td.T.forEach(function (it) {
+      if (it.opt || td.done(it.id)) return;
+      var d = it.at.length === 10 ? new Date(it.at + 'T23:59:00+08:00') : new Date(it.at);
+      if (d.getTime() < now - 3600e3) return;
+      if (!best || d < best.d) best = { it: it, d: d };
+    });
+    return best;
+  }
+  function hotelPin(name) { var pl = window.china2026Places; if (!pl) return null; for (var i = 0; i < pl.P.length; i++) if (pl.P[i].n === name) return pl.P[i]; return null; }
+  function renderHero() {
+    var el = document.getElementById('hero'); if (!el) return;
+    var now = new Date(), html = '';
+    var clocks = '<div class="hero-clocks"><span><b>' + clock('Asia/Shanghai') + '</b> China</span><span><b>' + clock('Europe/Copenhagen') + '</b> Copenhagen</span></div>';
+    if (now < START) {
+      var days = Math.round((new Date(ymd(START, 'Europe/Copenhagen') + 'T12:00:00Z') - new Date(ymd(now, 'Europe/Copenhagen') + 'T12:00:00Z')) / 864e5), nx = nextTodo();
+      html = '<div class="hero-top"><div class="hero-big">' + days + '<small>' + (days === 1 ? 'day' : 'days') + ' to go</small></div>' +
+        '<div class="hero-route"><span>Copenhagen</span>' + I.arrow + '<span>Beijing</span><em>' + dayLabel(START) + ', 18:00</em></div></div>' +
+        (nx ? '<a class="hero-next" href="#todo"><span class="hero-lbl">Next up · ' + esc(dayLabel(nx.d)) + '</span><b>' + esc(nx.it.t) + '</b>' + I.arrow + '</a>' : '') + clocks;
+    } else if (now <= END) {
+      var today = ymd(now, 'Asia/Shanghai'), c = null;
+      CITIES.forEach(function (x) { if (today >= x.from && today < x.to) c = x; });
+      var dayN = Math.floor((new Date(today + 'T12:00:00+08:00') - new Date('2026-12-15T12:00:00+08:00')) / 864e5) + 1;
+      var todayEl = document.querySelector('.day.today h3');
+      var plan = todayEl ? todayEl.textContent.replace(/\s*Today\s*$/, '') : '';
+      html = '<div class="hero-top"><div class="hero-big">Day ' + Math.max(1, dayN) + '<small>of 18' + (c ? ' · ' + esc(c.n) + ' <span class="hero-zh">' + c.zh + '</span>' : '') + '</small></div></div>' +
+        (plan ? '<button type="button" class="hero-next" data-gotoday><span class="hero-lbl">Today</span><b>' + esc(plan) + '</b>' + I.arrow + '</button>' : '') +
+        (c ? '<button type="button" class="hero-next hero-hotel" data-hotel="' + esc(c.hotel) + '"><span class="hero-lbl">Tonight</span><b>' + I.bed + esc(c.hotel) + '</b>' + I.arrow + '</button>' : '') + clocks;
+    } else {
+      html = '<div class="hero-top"><div class="hero-big">Welcome home<small>China 2026 · 15 Dec – 1 Jan</small></div></div>' + clocks;
+    }
+    el.innerHTML = html;
+    el.hidden = false;
+  }
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('[data-gotoday]')) { var b = document.querySelector('.seg button[data-go="today"]'); if (b) b.click(); }
+  });
+  document.addEventListener('click', function (e) {
+    var h = e.target.closest && e.target.closest('[data-hotel]');
+    if (!h) return;
+    var p = hotelPin(h.getAttribute('data-hotel')), pl = window.china2026Places;
+    if (p && pl) pl.open(p);
+  });
+
+  // ---------- Places carousels in each city ----------
+  function thumb(u) { return u.replace(/\/1280px-/, '/500px-'); }
+  function renderPlaces() {
+    var pl = window.china2026Places; if (!pl) return;
+    CITIES.forEach(function (c) {
+      var sec = document.querySelector('section[aria-labelledby="s-' + c.id + '"]'); if (!sec) return;
+      var items = pl.P.filter(function (p) { return p.go === 's-' + c.id && (p.t === 'sight' || p.t === 'idea'); });
+      items.sort(function (a, b) { return (a.t === 'sight' ? 0 : 1) - (b.t === 'sight' ? 0 : 1); });
+      if (!items.length) return;
+      var box = document.createElement('div');
+      box.className = 'places';
+      box.innerHTML = '<div class="places-head"><span>Places to see</span><a href="#map" class="places-map">Map</a></div><div class="places-row">' + items.map(function (p, i) {
+        var ph = pl.PH[p.n];
+        return '<button type="button" class="place" data-place="' + esc(p.n) + '">' +
+          '<span class="place-img">' + (ph ? '<img src="' + esc(thumb(ph.ph[0])) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">' : '') + (p.t === 'sight' ? '<i class="place-tag">In the plan</i>' : '') + '</span>' +
+          '<span class="place-n">' + esc(p.n) + '</span><span class="place-zh">' + esc(p.zh) + '</span></button>';
+      }).join('') + '</div>';
+      var days = sec.querySelector('.days');
+      (days || sec.lastElementChild).insertAdjacentElement('afterend', box);
+    });
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-place]');
+    if (!b) return;
+    var pl = window.china2026Places; if (!pl) return;
+    var name = b.getAttribute('data-place');
+    for (var i = 0; i < pl.P.length; i++) if (pl.P[i].n === name) { pl.open(pl.P[i]); return; }
+  });
+
+  // ---------- Handy: phrases ----------
+  var PHRASES = [
+    ['Basics', [
+      ['Hello', '你好', 'nǐ hǎo'], ['Thank you', '谢谢', 'xièxie'], ['Excuse me / sorry', '不好意思', 'bù hǎo yìsi'],
+      ['I don\'t understand', '我听不懂', 'wǒ tīng bù dǒng'], ['Where is the toilet?', '洗手间在哪里？', 'xǐshǒujiān zài nǎlǐ?'],
+      ['How much is it?', '多少钱？', 'duōshao qián?'], ['Can you take a photo of us?', '可以帮我们拍张照吗？', 'kěyǐ bāng wǒmen pāi zhāng zhào ma?']
+    ]],
+    ['Taxi & DiDi', [
+      ['Please take me to this address', '请带我去这个地址', 'qǐng dài wǒ qù zhège dìzhǐ'], ['Please stop here', '请在这里停车', 'qǐng zài zhèlǐ tíngchē'],
+      ['We have two big suitcases. Please open the boot.', '我们有两个大行李箱，请打开后备箱。', 'wǒmen yǒu liǎng gè dà xínglixiāng, qǐng dǎkāi hòubèixiāng.'],
+      ['To the railway station, please', '请去火车站', 'qǐng qù huǒchēzhàn']
+    ]],
+    ['Food', [
+      ['Not spicy, please', '不要辣', 'bú yào là'], ['Just a little spicy', '微辣', 'wēi là'], ['No coriander', '不要香菜', 'bú yào xiāngcài'],
+      ['I\'m vegetarian', '我吃素', 'wǒ chī sù'], ['The bill, please', '买单', 'mǎidān'], ['Can I pay by card?', '可以刷卡吗？', 'kěyǐ shuākǎ ma?']
+    ]],
+    ['Help', [
+      ['Help!', '救命！', 'jiùmìng!'], ['I need a doctor', '我需要看医生', 'wǒ xūyào kàn yīshēng'], ['Please call the police', '请帮我报警', 'qǐng bāng wǒ bàojǐng'], ['I\'m lost', '我迷路了', 'wǒ mílù le']
+    ]]
+  ];
+  function phraseRow(p) {
+    return '<button type="button" class="ph-row" data-show="' + esc(p[1]) + '" data-py="' + esc(p[2]) + '" data-en="' + esc(p[0]) + '"><span class="ph-en">' + esc(p[0]) + '</span><span class="ph-zh">' + esc(p[1]) + '</span><span class="ph-py">' + esc(p[2]) + '</span>' + I.expand + '</button>';
+  }
+  function hotelsHtml() {
+    return CITIES.map(function (c) {
+      var a = document.querySelector('#hc-' + c.id + ' .hc-addr .zh'), n = document.querySelector('#hc-' + c.id + ' .hc-zh');
+      if (!a) return '';
+      var zhName = n ? (n.getAttribute('data-copy') || n.textContent) : '';
+      return '<button type="button" class="ph-row" data-show="' + esc(zhName + '\n' + a.textContent) + '" data-py="请带我去这里 · Please take me here" data-en="' + esc(c.hotel + ', ' + c.n) + '"><span class="ph-en">' + esc(c.n) + ' · ' + esc(c.hotel) + '</span><span class="ph-zh sm">' + esc(a.textContent) + '</span>' + I.expand + '</button>';
+    }).join('');
+  }
+  function openPhrases() {
+    var html = '<p class="bs-lead">Tap a phrase to show it full screen. Most people won\'t read pinyin, so show the characters.</p>' +
+      '<div class="ph-group"><h3>Take me to my hotel</h3>' + hotelsHtml() + '</div>' +
+      PHRASES.map(function (g) { return '<div class="ph-group"><h3>' + g[0] + '</h3>' + g[1].map(phraseRow).join('') + '</div>'; }).join('') +
+      '<p class="bs-note">Hong Kong speaks Cantonese, but written characters work and English is widely understood.</p>';
+    openSheet('Phrases', html);
+  }
+
+  // ---------- Handy: money ----------
+  var CUR = { CNY: ['¥', 'Chinese yuan'], HKD: ['HK$', 'Hong Kong dollar'], DKK: ['kr', 'Danish krone'], EUR: ['€', 'Euro'] };
+  var FALLBACK = { DKK: 1, EUR: 0.134, CNY: 1.1, HKD: 1.17 };
+  function rates() { try { var r = JSON.parse(ls('china2026:fx') || 'null'); return r && r.r ? r : null; } catch (e) { return null; } }
+  function loadRates(done) {
+    var cached = rates();
+    if (cached && Date.now() - cached.t < 12 * 3600e3) { done(cached); return; }
+    var ctl = window.AbortController ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 6000);
+    fetch('https://open.er-api.com/v6/latest/DKK', ctl ? { signal: ctl.signal } : undefined).then(function (r) { return r.json(); }).then(function (j) {
+      clearTimeout(timer);
+      if (!j || !j.rates || !j.rates.CNY) throw new Error('bad');
+      var o = { t: Date.now(), r: { DKK: 1, EUR: j.rates.EUR, CNY: j.rates.CNY, HKD: j.rates.HKD } };
+      ls('china2026:fx', JSON.stringify(o)); done(o);
+    }).catch(function () { clearTimeout(timer); done(cached || { t: 0, r: FALLBACK }); });
+  }
+  function fmtN(x) { return x >= 100 ? Math.round(x).toLocaleString('en-GB') : x >= 10 ? x.toFixed(1) : x.toFixed(2); }
+  function moneyTile() {
+    var el = document.querySelector('.hd-money .hd-sub'); if (!el) return;
+    loadRates(function (o) { el.textContent = '¥100 ≈ ' + fmtN(100 / o.r.CNY) + ' kr'; });
+  }
+  function openMoney() {
+    var from = ls('china2026:fx-from') || 'CNY';
+    var opts = Object.keys(CUR).map(function (k) { return '<option value="' + k + '"' + (k === from ? ' selected' : '') + '>' + k + ' ' + CUR[k][0] + '</option>'; }).join('');
+    var html = '<div class="fx"><div class="fx-in"><input type="number" inputmode="decimal" min="0" value="100" aria-label="Amount"><select aria-label="Currency">' + opts + '</select></div><div class="fx-out"></div><p class="fx-when"></p></div>' +
+      '<div class="tips"><h3>Paying in China</h3><ul>' +
+      '<li><b>Alipay and WeChat Pay</b> work with a foreign Visa or Mastercard; almost everything is paid by QR code. A small fee applies above ¥200.</li>' +
+      '<li>Keep <b>some cash</b> (about ¥500) for small stalls and as a backup.</li>' +
+      '<li><b>No tipping</b> in mainland China.</li>' +
+      '<li>In <b>Hong Kong</b>, tap a contactless Visa or Mastercard on the MTR, buses and the Star Ferry, or use an Octopus card. Cards are widely accepted.</li></ul></div>';
+    openSheet('Money', html, function (body) {
+      var inp = body.querySelector('input'), sel = body.querySelector('select'), out = body.querySelector('.fx-out'), when = body.querySelector('.fx-when');
+      loadRates(function (o) {
+        function calc() {
+          var a = parseFloat(inp.value) || 0, f = sel.value; ls('china2026:fx-from', f);
+          out.innerHTML = Object.keys(CUR).filter(function (k) { return k !== f; }).map(function (k) {
+            var v = a / o.r[f] * o.r[k];
+            return '<div class="fx-row"><span>' + k + '</span><b>' + CUR[k][0] + ' ' + fmtN(v) + '</b></div>';
+          }).join('');
+        }
+        inp.addEventListener('input', calc); sel.addEventListener('change', calc); calc();
+        when.textContent = o.t ? 'Rates from open.er-api.com · ' + new Date(o.t).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : 'Offline: approximate rates';
+      });
+    });
+  }
+
+  // ---------- Handy: emergency ----------
+  function call(n, label, sub) { return '<a class="em-row" href="tel:' + n + '"><span class="em-n">' + n + '</span><span class="em-l"><b>' + label + '</b>' + (sub ? '<small>' + sub + '</small>' : '') + '</span>' + I.phone + '</a>'; }
+  function openEmergency() {
+    var help = PHRASES[3][1];
+    var html = '<div class="ph-group"><h3>Mainland China</h3>' + call('110', 'Police') + call('120', 'Ambulance') + call('119', 'Fire') + '</div>' +
+      '<div class="ph-group"><h3>Hong Kong</h3>' + call('999', 'Police, ambulance, fire') + '</div>' +
+      '<div class="ph-group"><h3>Show this</h3>' + help.map(phraseRow).join('') + '</div>' +
+      '<p class="bs-note">Save your embassy and travel insurance numbers in your phone before you go. Keep a photo of your passport.</p>';
+    openSheet('Emergency', html);
+  }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('[data-handy]');
+    if (!t) return;
+    var k = t.getAttribute('data-handy');
+    if (k === 'phrases') openPhrases(); else if (k === 'money') openMoney(); else if (k === 'sos') openEmergency();
+  });
+
+  function start() {
+    renderHero(); renderPlaces(); moneyTile();
+    setInterval(renderHero, 30000);
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) renderHero(); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
 </script>
 
 </body>
