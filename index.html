@@ -1143,8 +1143,8 @@ html.map-mode:not(.dt-open):not(.phv-open) .edge-strip { display: none; }
 html.map-mode .sbar { display: none; }
 /* Fill the whole screen, including the strip behind the home indicator (iOS leaves a gap with inset: 0 in home-screen apps). */
 .map-pane .map { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: 100vh; height: calc(var(--screen-h, 100vh) + 160px); z-index: 5; }
-.map-pane .map-legend { position: fixed; z-index: 1003; top: calc(env(safe-area-inset-top, 0px) + 50px); left: 12px; }
-.locate { position: fixed; z-index: 1003; top: calc(env(safe-area-inset-top, 0px) + 42px); right: 12px; width: 46px; height: 46px; border: 0; border-radius: 50%; display: grid; place-items: center; color: var(--jade); cursor: pointer; }
+.map-pane .map-legend { position: fixed; z-index: 1003; top: calc(env(safe-area-inset-top, 0px) + 36px); left: 12px; }
+.locate { position: fixed; z-index: 1003; top: calc(env(safe-area-inset-top, 0px) + 28px); right: 12px; width: 46px; height: 46px; border: 0; border-radius: 50%; display: grid; place-items: center; color: var(--jade); cursor: pointer; }
 .locate svg { position: relative; z-index: 1; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
 .locate.on svg { fill: currentColor; }
 .locate.busy svg { animation: locpulse 1s ease-in-out infinite; }
@@ -2338,7 +2338,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261509">26 Nov 2026, 15:09</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261513">26 Nov 2026, 15:13</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
