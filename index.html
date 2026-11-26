@@ -1226,7 +1226,7 @@ html.map-mode .sbar { display: none; }
 .dt.in { background: rgb(0 0 0 / 0.4); }
 .dt-sheet { position: relative; width: 100%; height: calc(100% - env(safe-area-inset-top, 0px) - 10px); background: var(--bg); border-radius: 26px 26px 0 0; overflow: hidden; box-shadow: 0 -10px 40px rgb(0 0 0 / 0.2); transform: translate3d(0, 100%, 0); transition: transform 0.42s cubic-bezier(0.2, 0.9, 0.25, 1); }
 .dt.in .dt-sheet { transform: none; }
-.dt-scroll { height: 100%; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 28px); }
+.dt-scroll { box-sizing: border-box; height: 100%; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 120px); }
 .dt-hero { position: relative; height: 46vh; max-height: 420px; min-height: 240px; background: #0d0d0f; }
 .dt-hero.none { height: 160px; min-height: 0; display: grid; place-items: center; background: color-mix(in srgb, var(--pc) 16%, var(--bg)); }
 .dt-noimg svg { width: 44px; height: 44px; fill: none; stroke: var(--pc); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -1266,7 +1266,7 @@ html.map-mode .sbar { display: none; }
 .dt-copy { position: relative; display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; margin-left: -2px; border: 0; border-radius: 9px; background: var(--bg); color: var(--ink); font-size: 1rem; text-align: left; cursor: pointer; --fill: var(--pc); --tick: #fff; }
 .dt-copy svg { flex: none; width: 14px; height: 14px; fill: none; stroke: var(--pc); stroke-width: 2; }
 .dt-note { margin: 14px 4px 0; font-size: 0.76rem; color: var(--muted); }
-.dt-src { align-self: flex-start; margin: 10px 4px 0; font-size: 0.8rem; font-weight: 600; color: var(--pc); text-decoration: none; }
+.dt-src { align-self: flex-start; margin: 6px -4px 0; padding: 10px 8px; font-size: 0.8rem; font-weight: 600; color: var(--pc); text-decoration: none; }
 html.dt-open, html.dt-open body { overflow: hidden; }
 @media (min-width: 700px) {
   .dt { align-items: center; padding: 30px; }
@@ -2333,7 +2333,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261443">26 Nov 2026, 14:43</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261448">26 Nov 2026, 14:48</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -3012,7 +3012,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
     if (D.bk) rows.push([IC.cal, p.t === 'hotel' ? 'Booking' : 'Booking', esc(D.bk)]);
     if (D.hr) rows.push([IC.clock, 'Hours & time', esc(D.hr)]);
     getThere(p).forEach(function (r) { rows.push([r[0], r[1], esc(r[2])]); });
-    var src = ph ? '<a class="dt-src" href="' + esc(ph.src) + '" target="_blank" rel="noopener">Photos: ' + (/trip\.com/.test(ph.src) ? 'Trip.com' : (/wikipedia\.org/.test(ph.src) ? 'Wikipedia' : 'Wikimedia Commons')) + ' ↗</a>' : '';
+    var src = ph ? '<a class="dt-src" href="' + esc(ph.src) + '" target="_blank" rel="noopener">' + (/trip\.com/.test(ph.src) ? 'Trip.com' : (/wikipedia\.org/.test(ph.src) ? 'Wikipedia' : 'Wikimedia Commons')) + ' ↗</a>' : '';
     var acts = amapLinks(p, IC.nav).replace('class="amap pa"', 'class="amap pc-btn go" aria-label="Directions in Amap" title="Directions in Amap"') +
       '<button type="button" class="pc-btn" data-copy="' + esc(p.zh) + '" aria-label="Copy Chinese name" title="Copy Chinese name">' + IC.copy + '</button>';
     d.className = 'dt pc-' + p.t;
@@ -3126,7 +3126,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       '<span class="phv-kind' + (p && p.t === 'idea' ? ' idea' : '') + '">' + esc(kind) + '</span>' +
       '<h3>' + esc(name) + '</h3>' + (p ? '<span class="zh">' + esc(p.zh) + '</span>' : '') +
       '<p>' + esc(text) + '</p>' + (when ? '<p class="phv-when">' + esc(when) + '</p>' : '') +
-      '<a class="phv-src" href="' + esc(info.src) + '" target="_blank" rel="noopener">Photos: ' + srcName + ' ↗</a>';
+      '<a class="phv-src" href="' + esc(info.src) + '" target="_blank" rel="noopener">' + srcName + ' ↗</a>';
     viewer.setAttribute('aria-label', 'Photos of ' + name);
     var cd = viewer.querySelector(".phv-card"); cd.style.transition = ""; cd.style.transform = ""; viewer.style.backgroundColor = "";
     viewer.hidden = false;
