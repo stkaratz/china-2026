@@ -245,7 +245,7 @@ a:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
 body::before { content: none; }
 /* Solid band behind the status bar. iOS blurs the strip just under the clock, so everything that sits there is plain colour. */
 .sbar { position: fixed; top: 0; left: 0; right: 0; height: env(safe-area-inset-top, 0px); z-index: 50; background: var(--bg); pointer-events: none; }
-.toast { position: fixed; z-index: 45; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 88px); width: max-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 12px; padding: 7px 7px 7px 16px; border-radius: 99px; background: var(--ink); color: var(--bg); font-size: 0.88rem; font-weight: 600; box-shadow: 0 8px 24px rgb(0 0 0 / 0.22); }
+.toast { position: fixed; z-index: 45; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) * 0.5 + 83px); width: max-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 12px; padding: 7px 7px 7px 16px; border-radius: 99px; background: var(--ink); color: var(--bg); font-size: 0.88rem; font-weight: 600; box-shadow: 0 8px 24px rgb(0 0 0 / 0.22); }
 .toast button { flex: 0 0 auto; min-height: 34px; padding: 0 16px; border: 0; border-radius: 99px; background: var(--jade); color: var(--surface); font: 700 0.85rem var(--f-body); cursor: pointer; }
 
 .app { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px)); }
@@ -266,7 +266,7 @@ body::before { content: none; }
 h2[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 89px); }
 
 /* Floating, rounded tab bar (current iOS style) */
-.tabbar { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); width: min(calc(100% - 24px), 520px); display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 5px; border-radius: 34px; background: var(--glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border: 0.5px solid var(--glass-edge); box-shadow: 0 10px 30px rgb(0 0 0 / 0.14), 0 1px 3px rgb(0 0 0 / 0.08); }
+.tabbar { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) * 0.5 + 5px); width: min(calc(100% - 24px), 520px); display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 5px; border-radius: 34px; background: var(--glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border: 0.5px solid var(--glass-edge); box-shadow: 0 10px 30px rgb(0 0 0 / 0.14), 0 1px 3px rgb(0 0 0 / 0.08); }
 .tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; height: 54px; border-radius: 28px; color: var(--muted); text-decoration: none; font-size: 0.64rem; font-weight: 600; letter-spacing: 0.01em; transition: background-color 0.2s, color 0.2s; }
 .tab svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 /* Liquid-glass look: more see-through, stronger blur, a light top sheen and a bright rim. */
@@ -1044,7 +1044,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
  (prefers-reduced-motion: reduce) { .tabbar, .tab, .tab span, .tab svg { transition: none; } }
 
 /* Floating map button */
-.fab { position: fixed; z-index: 41; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 84px); display: inline-flex; align-items: center; gap: 7px; min-height: 42px; padding: 0 18px; border-radius: 99px; color: var(--ink); font: 700 0.9rem var(--f-body); cursor: pointer; transition: bottom 0.38s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.fab { position: fixed; z-index: 41; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) * 0.5 + 79px); display: inline-flex; align-items: center; gap: 7px; min-height: 42px; padding: 0 18px; border-radius: 99px; color: var(--ink); font: 700 0.9rem var(--f-body); cursor: pointer; transition: bottom 0.38s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .fab svg { width: 19px; height: 19px; fill: none; stroke: var(--jade); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; position: relative; z-index: 1; }
 .fab span { position: relative; z-index: 1; }
 .fab.low { bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); }
@@ -1081,7 +1081,7 @@ html.map-mode .sbar { display: none; }
 .me { width: 18px; height: 18px; border-radius: 50%; background: #0a84ff; border: 3px solid #fff; box-shadow: 0 0 0 0 rgb(10 132 255 / 0.5), 0 1px 4px rgb(0 0 0 / 0.3); animation: mepulse 2s ease-out infinite; }
 @keyframes mepulse { 70% { box-shadow: 0 0 0 14px rgb(10 132 255 / 0), 0 1px 4px rgb(0 0 0 / 0.3); } 100% { box-shadow: 0 0 0 0 rgb(10 132 255 / 0), 0 1px 4px rgb(0 0 0 / 0.3); } }
 @media (prefers-reduced-motion: reduce) { .me, .locate.busy svg { animation: none; } }
-.map-pane .map-chips { position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 84px); max-width: 520px; margin-inline: auto; }
+.map-pane .map-chips { position: fixed; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) * 0.5 + 79px); max-width: 520px; margin-inline: auto; }
 .map-pane .map-off { position: fixed; }
 /* City switcher: a small pill showing the current view; tap to open the full row, tap elsewhere to close. */
 .chips-toggle { position: relative; z-index: 1; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 12px 0 10px; border: 0; border-radius: 99px; background: transparent; color: var(--ink); font: 700 0.86rem var(--f-body); cursor: pointer; }
@@ -1853,7 +1853,7 @@ html.map-mode .sbar { display: none; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260918">26 Nov 2026, 09:18</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611260923">26 Nov 2026, 09:23</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
