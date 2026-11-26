@@ -1136,6 +1136,9 @@ html.map-mode, html.map-mode body { background: #f3f1ec; overscroll-behavior: no
 /* On iPhone home-screen apps, a page that can't scroll is laid out in the shorter 797pt root box and everything below it is cut off.
    The other tabs scroll, so they get the full screen. Give the map tab a page taller than the screen too (everything on it is fixed, so nothing moves). */
 .map-pane { min-height: calc(var(--screen-h, 100vh) + 240px); }
+/* iOS 26 draws a blur over the top of Home Screen apps unless a fixed, full-width box with a plain background colour sits at the top edge.
+   This strip has that colour but clips it to (non-existent) text, so it paints nothing: iOS skips the blur and the map stays visible under the clock. */
+.edge-strip { position: fixed; z-index: 2000; top: 0; left: 0; right: 0; height: max(env(safe-area-inset-top, 0px), 11px); background-color: var(--bg); -webkit-background-clip: text; background-clip: text; color: transparent; pointer-events: none; }
 html.map-mode .sbar { display: none; }
 /* Fill the whole screen, including the strip behind the home indicator (iOS leaves a gap with inset: 0 in home-screen apps). */
 .map-pane .map { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: 100vh; height: calc(var(--screen-h, 100vh) + 160px); z-index: 5; }
@@ -1449,7 +1452,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
 </head>
 <body>
 
-<div class="sbar" aria-hidden="true"></div>
+<div class="sbar" aria-hidden="true"></div><div class="edge-strip" aria-hidden="true"></div>
 
 <div class="toast" id="update-banner" role="status" hidden><span>New version of the plan</span><button type="button" id="reload-btn">Reload</button></div>
 
@@ -2333,7 +2336,7 @@ html.pc-open .map-chips { opacity: 0; transform: translateY(12px); pointer-event
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261500">26 Nov 2026, 15:00</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261503">26 Nov 2026, 15:03</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
