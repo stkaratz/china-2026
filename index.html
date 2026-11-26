@@ -1194,6 +1194,7 @@ html.map-mode .sbar { display: none; }
 .tk-perf { position: relative; height: 0; margin: 8px 0 0; border-top: 1.5px dashed var(--line); }
 .tk-perf::before, .tk-perf::after { content: ""; position: absolute; top: -9px; width: 18px; height: 18px; border-radius: 50%; background: var(--bg); }
 .tk-perf::before { left: -9px; } .tk-perf::after { right: -9px; }
+.tk-maps { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 18px 0; }
 .tk-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 14px 18px 6px; }
 .tk-btn.primary { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 18px; border-radius: 99px; background: linear-gradient(135deg, #1f7a63, #175f75); color: #fff; font: 700 0.92rem var(--f-body); text-decoration: none; box-shadow: 0 4px 12px rgb(23 95 117 / 0.3); }
 .tk-btn.primary svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -1235,7 +1236,6 @@ html.map-mode .sbar { display: none; }
       <button type="button" data-go="setup">Setup</button>
       <button type="button" data-go="booking">Dates</button>
       <button type="button" data-go="links">Sights</button>
-      <button type="button" data-go="trainguide">Trains</button>
     </nav>
     <div class="pane-body">
 <section class="stop" aria-labelledby="todo">
@@ -1456,95 +1456,7 @@ html.map-mode .sbar { display: none; }
     </div>
     <p class="foot">Step-by-step setup is in “Set up before the booking days” above.</p>
   </section>
-<section class="stop" aria-labelledby="trainguide">
-    <div class="stop-head"><h2 id="trainguide">Train tickets</h2><span class="nights">main + backup for each leg</span></div>
-    <div class="howto">
-      <ol>
-        <li><b>Open 12306</b> opens the app (or the 12306 website if the app doesn't open). Type the station names shown under each city, exactly as written, and pick the date.</li>
-        <li>Tap the train number, then the class: <b>second-class seat</b>, <b>first class seat</b> or <b>business class seat</b>. Use <b>Copy</b> to paste the train number into search.</li>
-        <li>Window seats are <b>A</b> and <b>F</b>; pick D + F (or A + B) to sit together.</li>
-        <li>Sold out? Tap <b>Waitlist</b> (候补) on the main train straight away, then book the backup.</li>
-      </ol>
-    </div>
-    <div class="tks">
-    <article class="tk" id="tk-bj">
-      <div class="tk-top">
-        <div class="tk-end"><b>Beijing</b><button type="button" class="tk-st zh" data-copy="北京西" aria-label="Copy 北京西">北京西<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Beijingxi</span></div>
-        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Sun 20 Dec</span></div>
-        <div class="tk-end r"><b>Xi'an</b><button type="button" class="tk-st zh" data-copy="西安北" aria-label="Copy 西安北">西安北<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Xianbei</span></div>
-      </div>
-      <div class="tk-sale"><span>Sale opens <b>Sun 6 Dec</b></span><span class="tk-count" data-open="2026-12-06"></span></div>
-      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G365</b><span class="tk-t">09:55</span><span class="tk-line"><i>4h 10m</i></span><span class="tk-t">14:05</span></div>
-      <div class="tk-fares"><span>2nd <b>¥587</b></span><span>1st <b>¥939</b></span><span>Business <b>¥1,945</b></span><button type="button" class="tk-copy" data-copy="G365">Copy G365</button></div>
-      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">G353</b><span class="tk-t">12:55</span><span class="tk-line"><i>4h 13m</i></span><span class="tk-t">17:08</span></div>
-      <div class="tk-fares"><span>2nd <b>¥618</b></span><span>1st <b>¥988</b></span><span>Business <b>¥1,945</b></span><button type="button" class="tk-copy" data-copy="G353">Copy G353</button></div>
-      <div class="tk-perf" aria-hidden="true"></div>
-      <div class="tk-actions"><a class="tk-btn primary" href="https://www.12306.cn/en/left-ticket.html?fs=Beijingxi%28%u5317%u4EAC%u897F%29,BXP&amp;ts=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;date=2026-12-20" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Beijingxi%28%u5317%u4EAC%u897F%29,BXP&amp;ts=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;date=2026-12-20" target="_blank" rel="noopener">12306 website ↗</a></div>
-      <p class="tk-note">DiDi to <span class="zh">北京西站</span> · leave the hotel around 08:30</p>
-    </article>
-    <article class="tk" id="tk-xa">
-      <div class="tk-top">
-        <div class="tk-end"><b>Xi'an</b><button type="button" class="tk-st zh" data-copy="西安北" aria-label="Copy 西安北">西安北<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Xianbei</span></div>
-        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Tue 22 Dec</span></div>
-        <div class="tk-end r"><b>Chengdu</b><button type="button" class="tk-st zh" data-copy="成都东" aria-label="Copy 成都东">成都东<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Chengdudong</span></div>
-      </div>
-      <div class="tk-sale"><span>Sale opens <b>Tue 8 Dec</b></span><span class="tk-count" data-open="2026-12-08"></span></div>
-      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G321</b><span class="tk-t">11:25</span><span class="tk-line"><i>3h 05m</i></span><span class="tk-t">14:30</span></div>
-      <div class="tk-fares"><span>2nd <b>¥300</b></span><span>1st <b>¥481</b></span><span>Business <b>¥940</b></span><button type="button" class="tk-copy" data-copy="G321">Copy G321</button></div>
-      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">G1839</b><span class="tk-t">11:30</span><span class="tk-line"><i>3h 28m</i></span><span class="tk-t">14:58</span></div>
-      <div class="tk-fares"><span>2nd <b>¥285</b></span><span>1st <b>¥455</b></span><span>Business <b>¥829</b></span><button type="button" class="tk-copy" data-copy="G1839">Copy G1839</button></div>
-      <div class="tk-perf" aria-hidden="true"></div>
-      <div class="tk-actions"><a class="tk-btn primary" href="https://www.12306.cn/en/left-ticket.html?fs=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;ts=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;date=2026-12-22" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;ts=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;date=2026-12-22" target="_blank" rel="noopener">12306 website ↗</a></div>
-      <p class="tk-note">DiDi to <span class="zh">西安北站</span> · leave the hotel around 10:00</p>
-    </article>
-    <article class="tk" id="tk-cd">
-      <div class="tk-top">
-        <div class="tk-end"><b>Chengdu</b><button type="button" class="tk-st zh" data-copy="成都东" aria-label="Copy 成都东">成都东<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Chengdudong</span></div>
-        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Thu 24 Dec</span></div>
-        <div class="tk-end r"><b>Yangshuo</b><button type="button" class="tk-st zh" data-copy="阳朔" aria-label="Copy 阳朔">阳朔<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Yangshuo</span></div>
-      </div>
-      <div class="tk-sale"><span>Sale opens <b>Thu 10 Dec</b></span><span class="tk-count" data-open="2026-12-10"></span><span class="tk-flag">Only 2 direct trains</span></div>
-      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">D1807</b><span class="tk-t">10:05</span><span class="tk-line"><i>6h 30m</i></span><span class="tk-t">16:35</span></div>
-      <div class="tk-fares"><span>2nd <b>¥479</b></span><span>1st <b>¥768</b></span><button type="button" class="tk-copy" data-copy="D1807">Copy D1807</button></div>
-      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">D1822</b><span class="tk-t">07:41</span><span class="tk-line"><i>7h 35m</i></span><span class="tk-t">15:16</span></div>
-      <div class="tk-fares"><span>2nd <b>¥432</b></span><span>1st <b>¥691</b></span><button type="button" class="tk-copy" data-copy="D1822">Copy D1822</button></div>
-      <div class="tk-perf" aria-hidden="true"></div>
-      <div class="tk-actions"><a class="tk-btn primary" href="https://www.12306.cn/en/left-ticket.html?fs=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;ts=Yangshuo%28%u9633%u6714%29,YCZ&amp;date=2026-12-24" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;ts=Yangshuo%28%u9633%u6714%29,YCZ&amp;date=2026-12-24" target="_blank" rel="noopener">12306 website ↗</a></div>
-      <p class="tk-note">Be online when sales open; if sold out, join the waitlist (候补) at once. DiDi to <span class="zh">成都东站</span> · leave around 08:45</p>
-    </article>
-    <article class="tk" id="tk-ys">
-      <div class="tk-top">
-        <div class="tk-end"><b>Yangshuo</b><button type="button" class="tk-st zh" data-copy="阳朔" aria-label="Copy 阳朔">阳朔<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Yangshuo</span></div>
-        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Sun 27 Dec</span></div>
-        <div class="tk-end r"><b>Shenzhen</b><button type="button" class="tk-st zh" data-copy="深圳北" aria-label="Copy 深圳北">深圳北<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Shenzhenbei</span></div>
-      </div>
-      <div class="tk-sale"><span>Sale opens <b>Sun 13 Dec</b></span><span class="tk-count" data-open="2026-12-13"></span><span class="tk-flag">3 trains a day</span></div>
-      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G2929</b><span class="tk-t">11:25</span><span class="tk-line"><i>2h 39m</i></span><span class="tk-t">14:04</span></div>
-      <div class="tk-fares"><span>2nd <b>¥235.5</b></span><span>1st <b>¥356.5</b></span><span>Premium <b>¥409.5</b></span><button type="button" class="tk-copy" data-copy="G2929">Copy G2929</button></div>
-      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">G3741</b><span class="tk-t">10:20</span><span class="tk-line"><i>3h 03m</i></span><span class="tk-t">13:23</span></div>
-      <div class="tk-fares"><span>2nd <b>¥263.5</b></span><span>1st <b>¥400.5</b></span><span>Business <b>¥756.5</b></span><button type="button" class="tk-copy" data-copy="G3741">Copy G3741</button></div>
-      <div class="tk-perf" aria-hidden="true"></div>
-      <div class="tk-actions"><a class="tk-btn primary" href="https://www.12306.cn/en/left-ticket.html?fs=Yangshuo%28%u9633%u6714%29,YCZ&amp;ts=Shenzhenbei%28%u6DF1%u5733%u5317%29,IOQ&amp;date=2026-12-27" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Yangshuo%28%u9633%u6714%29,YCZ&amp;ts=Shenzhenbei%28%u6DF1%u5733%u5317%29,IOQ&amp;date=2026-12-27" target="_blank" rel="noopener">12306 website ↗</a></div>
-      <p class="tk-note">Car to <span class="zh">阳朔站</span> (55 min) · leave around 09:45 · last resort G2905 at 20:04</p>
-    </article>
-    <article class="tk tk-fallback" id="tk-hk">
-      <div class="tk-top">
-        <div class="tk-end"><b>Shenzhen</b><button type="button" class="tk-st zh" data-copy="福田" aria-label="Copy 福田">福田<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Futian</span></div>
-        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Tue 29 Dec</span></div>
-        <div class="tk-end r"><b>Hong Kong</b><button type="button" class="tk-st zh" data-copy="香港西九龙" aria-label="Copy 香港西九龙">香港西九龙<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Chinese mode</span></div>
-      </div>
-      <div class="tk-sale"><span>Sale opens <b>Tue 15 Dec</b></span><span class="tk-count" data-open="2026-12-15"></span><span class="tk-flag fb">Fallback</span></div>
-      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G5807</b><span class="tk-t">13:54</span><span class="tk-line"><i>14m</i></span><span class="tk-t">14:08</span></div>
-      <div class="tk-fares"><span>2nd <b>¥68</b></span><span>1st <b>¥109</b></span><button type="button" class="tk-copy" data-copy="G5807">Copy G5807</button></div>
-      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">G5621</b><span class="tk-t">14:34</span><span class="tk-line"><i>14m</i></span><span class="tk-t">14:48</span></div>
-      <div class="tk-fares"><span>2nd <b>¥68</b></span><span>1st <b>¥109</b></span><button type="button" class="tk-copy" data-copy="G5621">Copy G5621</button></div>
-      <div class="tk-perf" aria-hidden="true"></div>
-      <div class="tk-actions"><a class="tk-btn primary" href="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E7%A6%8F%E7%94%B0,NZQ&amp;ts=%E9%A6%99%E6%B8%AF%E8%A5%BF%E4%B9%9D%E9%BE%99,XJA&amp;date=2026-12-29&amp;flag=N,N,Y" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E7%A6%8F%E7%94%B0,NZQ&amp;ts=%E9%A6%99%E6%B8%AF%E8%A5%BF%E4%B9%9D%E9%BE%99,XJA&amp;date=2026-12-29&amp;flag=N,N,Y" target="_blank" rel="noopener">12306 website ↗</a></div>
-      <p class="tk-note">Fallback only: the plan is to walk across at Luohu. If you need it, buy at the Futian ticket office or switch the app to Chinese.</p>
-    </article>
-    </div>
-    <p class="foot">Times and prices from 12306 for the same weekday in late November (current timetable). Prices vary a little by demand. The app link is best-effort: if it doesn't open the 12306 app, the button falls back to the website.</p>
-  </section>
+
     </div>
   </section>
 
@@ -1871,13 +1783,108 @@ html.map-mode .sbar { display: none; }
   </section>
 
   <section class="pane" id="move" data-title="Getting around" aria-label="Getting around" hidden>
-    <div class="large"><h1>Getting around</h1><p class="lead">Stations, traffic and DiDi</p></div>
+    <div class="large"><h1>Getting around</h1><p class="lead">Trains, stations, traffic and DiDi</p></div>
     <nav class="seg" aria-label="Getting around sections">
+      <button type="button" data-go="trainguide">Trains</button>
       <button type="button" data-go="stations">Stations</button>
       <button type="button" data-go="traffic">Traffic</button>
       <button type="button" data-go="didi">DiDi</button>
     </nav>
     <div class="pane-body">
+<section class="stop" aria-labelledby="trainguide">
+    <div class="stop-head"><h2 id="trainguide">Train tickets</h2><span class="nights">main + backup for each leg</span></div>
+    <div class="howto">
+      <ol>
+        <li><b>Open 12306</b> opens the app (or the 12306 website if the app doesn't open). Type the station names shown under each city, exactly as written, and pick the date.</li>
+        <li>Tap the train number, then the class: <b>second-class seat</b>, <b>first class seat</b> or <b>business class seat</b>. Use <b>Copy</b> to paste the train number into search.</li>
+        <li>Window seats are <b>A</b> and <b>F</b>; pick D + F (or A + B) to sit together.</li>
+        <li>Sold out? Tap <b>Waitlist</b> (候补) on the main train straight away, then book the backup.</li>
+      </ol>
+    </div>
+    <div class="tks">
+    <article class="tk" id="tk-bj">
+      <div class="tk-top">
+        <div class="tk-end"><b>Beijing</b><button type="button" class="tk-st zh" data-copy="北京西" aria-label="Copy 北京西">北京西<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Beijingxi</span></div>
+        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Sun 20 Dec</span></div>
+        <div class="tk-end r"><b>Xi'an</b><button type="button" class="tk-st zh" data-copy="西安北" aria-label="Copy 西安北">西安北<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Xianbei</span></div>
+      </div>
+      <div class="tk-sale"><span>Sale opens <b>Sun 6 Dec</b></span><span class="tk-count" data-open="2026-12-06"></span></div>
+      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G365</b><span class="tk-t">09:55</span><span class="tk-line"><i>4h 10m</i></span><span class="tk-t">14:05</span></div>
+      <div class="tk-fares"><span>2nd <b>¥587</b></span><span>1st <b>¥939</b></span><span>Business <b>¥1,945</b></span><button type="button" class="tk-copy" data-copy="G365">Copy G365</button></div>
+      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">G353</b><span class="tk-t">12:55</span><span class="tk-line"><i>4h 13m</i></span><span class="tk-t">17:08</span></div>
+      <div class="tk-fares"><span>2nd <b>¥618</b></span><span>1st <b>¥988</b></span><span>Business <b>¥1,945</b></span><button type="button" class="tk-copy" data-copy="G353">Copy G353</button></div>
+      <div class="tk-perf" aria-hidden="true"></div>
+      <div class="tk-maps"><a class="amap" href="https://uri.amap.com/marker?position=116.322033,39.894912&amp;name=%E5%8C%97%E4%BA%AC%E8%A5%BF%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E5%8C%97%E4%BA%AC%E8%A5%BF%E7%AB%99&amp;lat=39.894912&amp;lon=116.322033&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Beijing West</a><a class="amap" href="https://uri.amap.com/marker?position=108.938757,34.376660&amp;name=%E8%A5%BF%E5%AE%89%E5%8C%97%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E8%A5%BF%E5%AE%89%E5%8C%97%E7%AB%99&amp;lat=34.376660&amp;lon=108.938757&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Xi'an North</a></div>
+      <div class="tk-actions"><a class="tk-btn primary" href="https://www.12306.cn/en/left-ticket.html?fs=Beijingxi%28%u5317%u4EAC%u897F%29,BXP&amp;ts=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;date=2026-12-20" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Beijingxi%28%u5317%u4EAC%u897F%29,BXP&amp;ts=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;date=2026-12-20" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <p class="tk-note">DiDi to <span class="zh">北京西站</span> · leave the hotel around 08:30</p>
+    </article>
+    <article class="tk" id="tk-xa">
+      <div class="tk-top">
+        <div class="tk-end"><b>Xi'an</b><button type="button" class="tk-st zh" data-copy="西安北" aria-label="Copy 西安北">西安北<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Xianbei</span></div>
+        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Tue 22 Dec</span></div>
+        <div class="tk-end r"><b>Chengdu</b><button type="button" class="tk-st zh" data-copy="成都东" aria-label="Copy 成都东">成都东<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Chengdudong</span></div>
+      </div>
+      <div class="tk-sale"><span>Sale opens <b>Tue 8 Dec</b></span><span class="tk-count" data-open="2026-12-08"></span></div>
+      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G321</b><span class="tk-t">11:25</span><span class="tk-line"><i>3h 05m</i></span><span class="tk-t">14:30</span></div>
+      <div class="tk-fares"><span>2nd <b>¥300</b></span><span>1st <b>¥481</b></span><span>Business <b>¥940</b></span><button type="button" class="tk-copy" data-copy="G321">Copy G321</button></div>
+      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">G1839</b><span class="tk-t">11:30</span><span class="tk-line"><i>3h 28m</i></span><span class="tk-t">14:58</span></div>
+      <div class="tk-fares"><span>2nd <b>¥285</b></span><span>1st <b>¥455</b></span><span>Business <b>¥829</b></span><button type="button" class="tk-copy" data-copy="G1839">Copy G1839</button></div>
+      <div class="tk-perf" aria-hidden="true"></div>
+      <div class="tk-maps"><a class="amap" href="https://uri.amap.com/marker?position=108.938757,34.376660&amp;name=%E8%A5%BF%E5%AE%89%E5%8C%97%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E8%A5%BF%E5%AE%89%E5%8C%97%E7%AB%99&amp;lat=34.376660&amp;lon=108.938757&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Xi'an North</a><a class="amap" href="https://uri.amap.com/marker?position=104.140947,30.628779&amp;name=%E6%88%90%E9%83%BD%E4%B8%9C%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E6%88%90%E9%83%BD%E4%B8%9C%E7%AB%99&amp;lat=30.628779&amp;lon=104.140947&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Chengdu East</a></div>
+      <div class="tk-actions"><a class="tk-btn primary" href="https://www.12306.cn/en/left-ticket.html?fs=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;ts=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;date=2026-12-22" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Xianbei%28%u897F%u5B89%u5317%29,EAY&amp;ts=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;date=2026-12-22" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <p class="tk-note">DiDi to <span class="zh">西安北站</span> · leave the hotel around 10:00</p>
+    </article>
+    <article class="tk" id="tk-cd">
+      <div class="tk-top">
+        <div class="tk-end"><b>Chengdu</b><button type="button" class="tk-st zh" data-copy="成都东" aria-label="Copy 成都东">成都东<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Chengdudong</span></div>
+        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Thu 24 Dec</span></div>
+        <div class="tk-end r"><b>Yangshuo</b><button type="button" class="tk-st zh" data-copy="阳朔" aria-label="Copy 阳朔">阳朔<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Yangshuo</span></div>
+      </div>
+      <div class="tk-sale"><span>Sale opens <b>Thu 10 Dec</b></span><span class="tk-count" data-open="2026-12-10"></span><span class="tk-flag">Only 2 direct trains</span></div>
+      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">D1807</b><span class="tk-t">10:05</span><span class="tk-line"><i>6h 30m</i></span><span class="tk-t">16:35</span></div>
+      <div class="tk-fares"><span>2nd <b>¥479</b></span><span>1st <b>¥768</b></span><button type="button" class="tk-copy" data-copy="D1807">Copy D1807</button></div>
+      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">D1822</b><span class="tk-t">07:41</span><span class="tk-line"><i>7h 35m</i></span><span class="tk-t">15:16</span></div>
+      <div class="tk-fares"><span>2nd <b>¥432</b></span><span>1st <b>¥691</b></span><button type="button" class="tk-copy" data-copy="D1822">Copy D1822</button></div>
+      <div class="tk-perf" aria-hidden="true"></div>
+      <div class="tk-maps"><a class="amap" href="https://uri.amap.com/marker?position=104.140947,30.628779&amp;name=%E6%88%90%E9%83%BD%E4%B8%9C%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E6%88%90%E9%83%BD%E4%B8%9C%E7%AB%99&amp;lat=30.628779&amp;lon=104.140947&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Chengdu East</a><a class="amap" href="https://uri.amap.com/marker?position=110.568081,24.960139&amp;name=%E9%98%B3%E6%9C%94%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E9%98%B3%E6%9C%94%E7%AB%99&amp;lat=24.960139&amp;lon=110.568081&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Yangshuo</a></div>
+      <div class="tk-actions"><a class="tk-btn primary" href="https://www.12306.cn/en/left-ticket.html?fs=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;ts=Yangshuo%28%u9633%u6714%29,YCZ&amp;date=2026-12-24" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Chengdudong%28%u6210%u90FD%u4E1C%29,ICW&amp;ts=Yangshuo%28%u9633%u6714%29,YCZ&amp;date=2026-12-24" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <p class="tk-note">Be online when sales open; if sold out, join the waitlist (候补) at once. DiDi to <span class="zh">成都东站</span> · leave around 08:45</p>
+    </article>
+    <article class="tk" id="tk-ys">
+      <div class="tk-top">
+        <div class="tk-end"><b>Yangshuo</b><button type="button" class="tk-st zh" data-copy="阳朔" aria-label="Copy 阳朔">阳朔<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Yangshuo</span></div>
+        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Sun 27 Dec</span></div>
+        <div class="tk-end r"><b>Shenzhen</b><button type="button" class="tk-st zh" data-copy="深圳北" aria-label="Copy 深圳北">深圳北<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Shenzhenbei</span></div>
+      </div>
+      <div class="tk-sale"><span>Sale opens <b>Sun 13 Dec</b></span><span class="tk-count" data-open="2026-12-13"></span><span class="tk-flag">3 trains a day</span></div>
+      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G2929</b><span class="tk-t">11:25</span><span class="tk-line"><i>2h 39m</i></span><span class="tk-t">14:04</span></div>
+      <div class="tk-fares"><span>2nd <b>¥235.5</b></span><span>1st <b>¥356.5</b></span><span>Premium <b>¥409.5</b></span><button type="button" class="tk-copy" data-copy="G2929">Copy G2929</button></div>
+      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">G3741</b><span class="tk-t">10:20</span><span class="tk-line"><i>3h 03m</i></span><span class="tk-t">13:23</span></div>
+      <div class="tk-fares"><span>2nd <b>¥263.5</b></span><span>1st <b>¥400.5</b></span><span>Business <b>¥756.5</b></span><button type="button" class="tk-copy" data-copy="G3741">Copy G3741</button></div>
+      <div class="tk-perf" aria-hidden="true"></div>
+      <div class="tk-maps"><a class="amap" href="https://uri.amap.com/marker?position=110.568081,24.960139&amp;name=%E9%98%B3%E6%9C%94%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E9%98%B3%E6%9C%94%E7%AB%99&amp;lat=24.960139&amp;lon=110.568081&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Yangshuo</a><a class="amap" href="https://uri.amap.com/marker?position=114.029506,22.609878&amp;name=%E6%B7%B1%E5%9C%B3%E5%8C%97%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E6%B7%B1%E5%9C%B3%E5%8C%97%E7%AB%99&amp;lat=22.609878&amp;lon=114.029506&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Shenzhen North</a></div>
+      <div class="tk-actions"><a class="tk-btn primary" href="https://www.12306.cn/en/left-ticket.html?fs=Yangshuo%28%u9633%u6714%29,YCZ&amp;ts=Shenzhenbei%28%u6DF1%u5733%u5317%29,IOQ&amp;date=2026-12-27" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://www.12306.cn/en/left-ticket.html?fs=Yangshuo%28%u9633%u6714%29,YCZ&amp;ts=Shenzhenbei%28%u6DF1%u5733%u5317%29,IOQ&amp;date=2026-12-27" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <p class="tk-note">Car to <span class="zh">阳朔站</span> (55 min) · leave around 09:45 · last resort G2905 at 20:04</p>
+    </article>
+    <article class="tk tk-fallback" id="tk-hk">
+      <div class="tk-top">
+        <div class="tk-end"><b>Shenzhen</b><button type="button" class="tk-st zh" data-copy="福田" aria-label="Copy 福田">福田<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Futian</span></div>
+        <div class="tk-mid"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Tue 29 Dec</span></div>
+        <div class="tk-end r"><b>Hong Kong</b><button type="button" class="tk-st zh" data-copy="香港西九龙" aria-label="Copy 香港西九龙">香港西九龙<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button><span class="tk-code">Chinese mode</span></div>
+      </div>
+      <div class="tk-sale"><span>Sale opens <b>Tue 15 Dec</b></span><span class="tk-count" data-open="2026-12-15"></span><span class="tk-flag fb">Fallback</span></div>
+      <div class="tk-opt main"><span class="tk-role">Main</span><b class="tk-no">G5807</b><span class="tk-t">13:54</span><span class="tk-line"><i>14m</i></span><span class="tk-t">14:08</span></div>
+      <div class="tk-fares"><span>2nd <b>¥68</b></span><span>1st <b>¥109</b></span><button type="button" class="tk-copy" data-copy="G5807">Copy G5807</button></div>
+      <div class="tk-opt bk"><span class="tk-role">Backup</span><b class="tk-no">G5621</b><span class="tk-t">14:34</span><span class="tk-line"><i>14m</i></span><span class="tk-t">14:48</span></div>
+      <div class="tk-fares"><span>2nd <b>¥68</b></span><span>1st <b>¥109</b></span><button type="button" class="tk-copy" data-copy="G5621">Copy G5621</button></div>
+      <div class="tk-perf" aria-hidden="true"></div>
+      <div class="tk-maps"><a class="amap" href="https://uri.amap.com/marker?position=114.057201,22.538136&amp;name=%E7%A6%8F%E7%94%B0%E7%AB%99&amp;src=china2026&amp;coordinate=gaode&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E7%A6%8F%E7%94%B0%E7%AB%99&amp;lat=22.538136&amp;lon=114.057201&amp;dev=0" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Futian</a><a class="amap" href="https://uri.amap.com/marker?position=114.1649207,22.304227&amp;name=%E9%A6%99%E6%B8%AF%E8%A5%BF%E4%B9%9D%E9%BE%99%E7%AB%99&amp;src=china2026&amp;coordinate=wgs84&amp;callnative=1" data-ios="iosamap://viewMap?sourceApplication=china2026&amp;poiname=%E9%A6%99%E6%B8%AF%E8%A5%BF%E4%B9%9D%E9%BE%99%E7%AB%99&amp;lat=22.304227&amp;lon=114.1649207&amp;dev=1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>West Kowloon</a></div>
+      <div class="tk-actions"><a class="tk-btn primary" href="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E7%A6%8F%E7%94%B0,NZQ&amp;ts=%E9%A6%99%E6%B8%AF%E8%A5%BF%E4%B9%9D%E9%BE%99,XJA&amp;date=2026-12-29&amp;flag=N,N,Y" data-app="cn.12306://" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="12" rx="2.5"/><path d="M6.5 10h11M9.5 19.5l1.3-4M14.5 19.5l-1.3-4"/></svg><span>Open 12306</span></a><a class="tk-link" href="https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&amp;fs=%E7%A6%8F%E7%94%B0,NZQ&amp;ts=%E9%A6%99%E6%B8%AF%E8%A5%BF%E4%B9%9D%E9%BE%99,XJA&amp;date=2026-12-29&amp;flag=N,N,Y" target="_blank" rel="noopener">12306 website ↗</a></div>
+      <p class="tk-note">Fallback only: the plan is to walk across at Luohu. If you need it, buy at the Futian ticket office or switch the app to Chinese.</p>
+    </article>
+    </div>
+    <p class="foot">Times and prices from 12306 for the same weekday in late November (current timetable). Prices vary a little by demand. The app link is best-effort: if it doesn't open the 12306 app, the button falls back to the website.</p>
+  </section>
 <section class="stop" aria-labelledby="stations">
     <div class="stop-head"><h2 id="stations">Train stations</h2><span class="nights">“12306” is the spelling on the ticket and in the 12306 app</span></div>
     <div class="table-wrap">
@@ -1969,7 +1976,7 @@ html.map-mode .sbar { display: none; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261147">26 Nov 2026, 11:47</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261148">26 Nov 2026, 11:48</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
