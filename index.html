@@ -251,7 +251,7 @@ body::before { content: none; }
 .app { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px)); }
 .pane { display: flex; flex-direction: column; }
 html.swiping, html.swiping body { overflow-x: hidden; }
-html.swiping .pane { will-change: transform, opacity; }
+html.swiping .pane { will-change: transform; }
 .large { padding-block: 22px 4px; display: flex; flex-direction: column; gap: 6px; }
 .lead { color: var(--muted); font-size: 0.95rem; }
 .seg { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-inline: -16px; padding: 27px 16px 10px; background: var(--bg); }
@@ -1043,6 +1043,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .tabbar.compact .tab { height: 40px; gap: 0; }
 .tabbar.compact .tab span { opacity: 0; max-height: 0; }
 .tabbar.compact .tab svg { width: 20px; height: 20px; }
+.tab-ind { position: absolute; left: 0; top: 0; z-index: 0; width: 0; height: 0; border-radius: 28px; background: var(--tab-on); box-shadow: inset 0 0.5px 0 var(--glass-hi), 0 1px 6px rgb(0 0 0 / 0.08); pointer-events: none; opacity: 0; transition: transform 0.42s cubic-bezier(0.3, 1.3, 0.4, 1), width 0.42s cubic-bezier(0.3, 1.3, 0.4, 1), height 0.3s, background-color 0.35s, opacity 0.2s; will-change: transform; }
+.tabbar.compact .tab-ind { background: rgba(255, 255, 255, 0.35); }
+.tabbar .tab.on, .tabbar.compact .tab.on { background: transparent; box-shadow: none; }
+@media (prefers-reduced-motion: reduce) { .tab-ind { transition: none; } }
  (prefers-reduced-motion: reduce) { .tabbar, .tab, .tab span, .tab svg { transition: none; } }
 
 /* Floating map button */
@@ -2176,7 +2180,7 @@ html.map-mode .sbar { display: none; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261214">26 Nov 2026, 12:14</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611261220">26 Nov 2026, 12:20</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -2213,6 +2217,7 @@ html.map-mode .sbar { display: none; }
 </main>
 
 <nav class="tabbar" aria-label="Main">
+  <span class="tab-ind" aria-hidden="true"></span>
   <a href="#trip" class="tab" data-tab="trip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 3.5 6.8v12.7L9 17.2l6 2.3 5.5-2.3V4.5L15 6.8 9 4.5zM9 4.5v12.7M15 6.8v12.7"/></svg><span>Trip</span></a>
   <a href="#book" class="tab" data-tab="book"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3"/><path d="M8 9l1.6 1.6L12.5 7.7M8 15h8"/></svg><span>To do</span><i class="tab-badge" id="todo-badge" hidden></i></a>
   <a href="#stay" class="tab" data-tab="stay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 18.5v-11M3.5 14h17v4.5M20.5 14v-2.5a3 3 0 0 0-3-3H11V14"/><circle cx="7.2" cy="10.8" r="1.8"/></svg><span>Hotels</span></a>
@@ -2819,13 +2824,14 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
       if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
     if (title) title.textContent = panes[tab].getAttribute('data-title');
+    placeInd(tabIndex(tab), true);
     document.documentElement.classList.toggle('map-mode', tab === 'map');
     resetBar();
     if (tab === 'map' && window.china2026Map) window.china2026Map.show();
     var changed = active !== tab;
     active = tab;
     store('china2026:tab', tab);
-    if (changed && !keepScroll) window.scrollTo(0, scrollMem[tab] || 0);
+    if (changed && !keepScroll) { var de = document.documentElement; de.style.scrollBehavior = "auto"; window.scrollTo(0, scrollMem[tab] || 0); de.style.scrollBehavior = ""; } // jump, never animate, when switching tabs
     updateSeg();
   }
 
@@ -2888,10 +2894,37 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
       }
     });
   });
-  // Swipe left/right to change tabs (like Instagram). The map keeps its own pan gesture.
+  // Tab bar highlight: one pill that glides between tabs (and follows a swipe).
+  var indReady = false;
+  function placeInd(pos, anim) {
+    var el = document.querySelector('.tab-ind');
+    if (!el || !tabs.length) return;
+    if (pos == null || pos < 0) { el.style.opacity = '0'; return; }
+    pos = Math.max(0, Math.min(tabs.length - 1, pos));
+    var i = Math.floor(pos), j = Math.min(i + 1, tabs.length - 1), k = pos - i;
+    var A = tabs[i], B = tabs[j];
+    var x = A.offsetLeft + (B.offsetLeft - A.offsetLeft) * k;
+    var w = A.offsetWidth + (B.offsetWidth - A.offsetWidth) * k;
+    el.style.transition = anim && indReady ? '' : 'none';
+    el.style.width = w + 'px'; el.style.height = A.offsetHeight + 'px';
+    el.style.transform = 'translate3d(' + x + 'px,' + A.offsetTop + 'px,0)';
+    el.style.opacity = '1';
+    indReady = true;
+  }
+  function tabIndex(t) { for (var i = 0; i < tabs.length; i++) if (tabs[i].getAttribute('data-tab') === t) return i; return -1; }
+  // Keep the pill glued to its tab while the bar shrinks/grows on scroll.
+  if (window.ResizeObserver) {
+    var ro = new ResizeObserver(function () { if (!dragging) placeInd(tabIndex(active), false); });
+    tabs.forEach(function (t) { ro.observe(t); });
+  }
+  window.addEventListener('resize', function () { placeInd(tabIndex(active), false); });
+  var dragging = false;
+
+  // Swipe left/right to change tabs (like Instagram): the next page slides in beside this one. The map keeps its own pan gesture.
   (function () {
     var ORDER = ['trip', 'book', 'stay', 'move', 'map'];
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var EASE = 'cubic-bezier(.2,.8,.2,1)';
     var st = null;
     function scrollsSideways(el) {
       for (; el && el !== document.body; el = el.parentElement) {
@@ -2903,12 +2936,29 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
       return false;
     }
     function neighbour(dir) { var i = ORDER.indexOf(active); return i < 0 ? null : ORDER[i + dir] || null; }
-    function slide(el, x, ms, fade) {
-      el.style.transition = ms ? 'transform ' + ms + 'ms cubic-bezier(.2,.8,.2,1), opacity ' + ms + 'ms' : 'none';
-      el.style.transform = x ? 'translate3d(' + x + 'px,0,0)' : '';
-      el.style.opacity = fade == null ? '' : String(fade);
+    function move(el, x, ms, y) {
+      el.style.transition = ms ? 'transform ' + ms + 'ms ' + EASE : 'none';
+      el.style.transform = 'translate3d(' + x + 'px,' + (y || 0) + 'px,0)';
     }
-    function clear(el) { el.style.transition = ''; el.style.transform = ''; el.style.opacity = ''; }
+    function clear(el) { ['transition', 'transform', 'position', 'top', 'left', 'width', 'zIndex', 'pointerEvents'].forEach(function (p) { el.style[p] = ''; }); }
+    // Show a neighbouring page next to this one, at the scroll position it will open at.
+    function peek(t) {
+      var np = panes[t], r = st.pane.getBoundingClientRect();
+      var docTop = r.top + window.scrollY;
+      np.hidden = false;
+      np.style.position = 'fixed'; np.style.top = '0'; np.style.left = r.left + 'px'; np.style.width = r.width + 'px';
+      np.style.zIndex = '5'; np.style.pointerEvents = 'none';
+      if (t === "map") { np.style.left = "0"; np.style.width = "100%"; return { el: np, y: 0 }; } // the map is full-screen
+      return { el: np, y: docTop - (scrollMem[t] || 0) };
+    }
+    function unpeek() { if (st && st.peek) { clear(st.peek.el); st.peek.el.hidden = true; st.peek = null; st.peekTab = null; } }
+    function frame() {
+      var w = window.innerWidth, dx = st.dx, dir = st.dir;
+      move(st.pane, dx, 0);
+      if (st.peek) move(st.peek.el, dir * w + dx, 0, st.peek.y);
+      var p = Math.max(-1, Math.min(1, -dx / w));
+      placeInd(st.idx + p, false);
+    }
     document.addEventListener('touchstart', function (e) {
       st = null;
       if (e.touches.length !== 1 || active === 'map' || ORDER.indexOf(active) < 0) return;
@@ -2917,7 +2967,7 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
       var tgt = e.target;
       if (tgt.closest && tgt.closest('input, textarea, select, .leaflet-container, .tabbar')) return;
       if (scrollsSideways(tgt)) return;
-      st = { x: t.clientX, y: t.clientY, t: Date.now(), lock: null, dx: 0, pane: panes[active] };
+      st = { x: t.clientX, y: t.clientY, t: Date.now(), lock: null, dx: 0, dir: 0, pane: panes[active], idx: tabIndex(active), peek: null, peekTab: null };
     }, { passive: true });
     document.addEventListener('touchmove', function (e) {
       if (!st) return;
@@ -2927,38 +2977,43 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
         st.lock = Math.abs(dx) > Math.abs(dy) * 1.3 ? 'x' : 'y';
         if (st.lock === 'y') { st = null; return; }
         document.documentElement.classList.add('swiping');
+        dragging = true;
       }
       e.preventDefault();
-      var dir = dx < 0 ? 1 : -1;
-      st.dx = neighbour(dir) ? dx : dx / 3; // rubber-band at the ends
-      if (!reduce) slide(st.pane, st.dx, 0, 1 - Math.min(Math.abs(st.dx) / window.innerWidth, 1) * 0.35);
+      if (reduce) { st.dx = dx; return; }
+      var dir = dx < 0 ? 1 : -1, next = neighbour(dir);
+      if (dir !== st.dir) { unpeek(); st.dir = dir; if (next) { st.peek = peek(next); st.peekTab = next; } }
+      st.dx = next ? dx : dx / 3; // rubber-band at the ends
+      frame();
     }, { passive: false });
+    function done() { document.documentElement.classList.remove('swiping'); dragging = false; }
     function end() {
       if (!st || st.lock !== 'x') { st = null; return; }
-      var s = st; st = null;
+      var s = st;
       var w = window.innerWidth, v = Math.abs(s.dx) / Math.max(Date.now() - s.t, 1);
       var dir = s.dx < 0 ? 1 : -1, next = neighbour(dir);
-      var go = next && (Math.abs(s.dx) > w * 0.28 || (v > 0.45 && Math.abs(s.dx) > 40));
+      var go = next && (Math.abs(s.dx) > w * 0.25 || (v > 0.45 && Math.abs(s.dx) > 40));
+      if (reduce) { st = null; clear(s.pane); done(); if (go) { try { history.replaceState(null, '', '#' + next); } catch (err) {} show(next); } return; }
       if (!go) {
-        if (reduce) { clear(s.pane); document.documentElement.classList.remove('swiping'); return; }
-        slide(s.pane, 0, 220, 1);
-        setTimeout(function () { clear(s.pane); document.documentElement.classList.remove('swiping'); }, 230);
+        move(s.pane, 0, 240);
+        if (s.peek) move(s.peek.el, s.dir * w, 240, s.peek.y);
+        placeInd(s.idx, true);
+        setTimeout(function () { clear(s.pane); unpeek(); st = null; done(); }, 250);
         return;
       }
-      function swap() {
+      var ms = Math.max(160, Math.min(300, (w - Math.abs(s.dx)) / Math.max(v, 0.8)));
+      move(s.pane, -dir * w, ms);
+      if (s.peek) move(s.peek.el, 0, ms, s.peek.y);
+      placeInd(tabIndex(next), true);
+      setTimeout(function () {
+        var np = s.peek ? s.peek.el : null;
+        // All in one go (no paint in between): drop the overlay styles, then switch and scroll to where the page was.
         clear(s.pane);
+        if (np) clear(np);
         try { history.replaceState(null, '', '#' + next); } catch (err) {}
         show(next);
-        var np = panes[next];
-        if (reduce || next === 'map') { document.documentElement.classList.remove('swiping'); return; }
-        slide(np, dir * w * 0.35, 0, 0);
-        np.getBoundingClientRect();
-        slide(np, 0, 260, 1);
-        setTimeout(function () { clear(np); document.documentElement.classList.remove('swiping'); }, 270);
-      }
-      if (reduce) { swap(); return; }
-      slide(s.pane, -dir * w, 180, 0.3);
-      setTimeout(swap, 170);
+        st = null; done();
+      }, ms + 10);
     }
     document.addEventListener('touchend', end);
     document.addEventListener('touchcancel', function () { if (st && st.lock === 'x') { st.dx = 0; end(); } else st = null; });
