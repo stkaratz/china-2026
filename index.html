@@ -25,6 +25,9 @@ img { max-width: 100%; }
 (function () {
   var root = document.documentElement;
   window.china2026HostTheme = root.getAttribute('data-theme'); // whatever the page was given before we touch it
+  // Opening screen: the real title stays hidden while the copy in the middle of the screen is showing.
+  root.classList.add('splashing'); window.china2026T0 = window.performance ? performance.now() : 0;
+  setTimeout(function () { root.classList.remove('splashing'); var sp = document.getElementById('splash'); if (sp) sp.remove(); }, 6000); // never get stuck on it
   try { var t = localStorage.getItem('china2026:theme'); if (t === 'light' || t === 'dark') { root.setAttribute('data-theme', t); root.style.colorScheme = t; } } catch (e) {}
 })();
 </script>
@@ -1918,6 +1921,17 @@ html.map-mode .home-fab, html.bs-open .home-fab, html.dt-open .home-fab, html.sw
 .fd-wrap .fd-cities { background: transparent; transition: background-color 0.2s, box-shadow 0.2s; }
 .fd-wrap .fd-cities.stuck { background: var(--bg); box-shadow: 0 0.5px 0 var(--line); } /* solid once it is stuck to the top */
 .flag { box-shadow: 0 0 0 2.5px var(--surface), 0 0 0 3px var(--line), 0 5px 12px rgb(194 23 15 / 0.18); }
+/* ---- Opening screen: the title in the middle, then it glides up into the header ---- */
+.splash { position: fixed; inset: 0; z-index: 6000; display: grid; place-items: center; pointer-events: none; }
+.splash::before { content: ""; position: absolute; inset: 0; background: var(--bg); transition: opacity 0.5s ease 0.08s; }
+.splash.go::before { opacity: 0; }
+.splash-in { position: relative; animation: splash-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+@keyframes splash-in { from { opacity: 0; transform: translateY(10px) scale(0.96); } }
+.splash .brand { transition: transform 0.66s cubic-bezier(0.3, 1.02, 0.3, 1), opacity 0.35s ease; will-change: transform; }
+.splash.fade .brand { opacity: 0; transform: scale(1.05); }
+.splash-t { font-family: var(--f-display); font-weight: 800; font-size: 2.35rem; line-height: 1.1; letter-spacing: -0.035em; white-space: nowrap; color: var(--jade); background: linear-gradient(115deg, var(--jade) 20%, color-mix(in srgb, var(--jade) 55%, #86d9b9)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+html.splashing #trip .brand { visibility: hidden; } /* the copy on the opening screen stands in for it until it lands */
+@media (prefers-reduced-motion: reduce) { .splash-in { animation: none; } .splash .brand { transition: opacity 0.3s ease; } }
 /* ---- Small fixes ---- */
 button.amap { border: 0; cursor: pointer; }
 .day.today .amap { background: var(--surface); }
@@ -1998,12 +2012,13 @@ p.sug { margin-top: 8px; }
 </head>
 <body>
 
+<div id="splash" class="splash" aria-hidden="true"><div class="splash-in"><div class="brand"><div class="splash-t">China <span class="yr">2026</span></div><span class="flag"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="fl-g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0483c"/><stop offset="1" stop-color="#c2170f"/></linearGradient></defs><circle cx="12" cy="12" r="12" fill="url(#fl-g2)"/><g fill="#ffd84d"><path transform="translate(8.4 9.4) scale(4.1)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(14.6 5.4) rotate(21.2) scale(1.3)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(17.2 8) rotate(44.96) scale(1.3)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(17.2 11.6) rotate(68.04) scale(1.3)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(14.6 14.2) rotate(19.75) scale(1.3)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/></g></svg></span></div></div></div>
 <div class="sbar" aria-hidden="true"></div><div class="edge-strip" aria-hidden="true"></div>
 
 <div class="toast" id="update-banner" role="status" hidden><span>New version of the plan</span><button type="button" id="reload-btn">Reload</button></div>
 
 <main class="app">
-  <section class="pane" id="book" data-title="To do" aria-label="To do">
+  <section class="pane" id="book" data-title="To do" aria-label="To do" hidden>
     <div class="large"><h1>To do</h1><p class="lead">What's next, most urgent first</p></div>
     <nav class="seg" aria-label="Bookings sections">
       <button type="button" data-go="todo" class="hl">Up next</button>
@@ -2895,7 +2910,7 @@ p.sug { margin-top: 8px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271037">27 Nov 2026, 10:37</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271130">27 Nov 2026, 11:30</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -6114,6 +6129,25 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     window.addEventListener('resize', function () { pin = null; upd(); });
     upd();
   }
+  // ---------- Opening screen ----------
+  // The title has been waiting in the middle of the screen. Once the app is drawn it glides to its place in the Trip header
+  // while the screen fades in. On any other tab (or when the header is scrolled away) it simply fades out.
+  function endSplash() {
+    var sp = document.getElementById('splash'), root = document.documentElement;
+    if (!sp) { root.classList.remove('splashing'); return; }
+    var shown = window.performance ? performance.now() - (window.china2026T0 || 0) : 1e4;
+    setTimeout(function () {
+      var from = sp.querySelector('.brand'), to = document.querySelector('#trip .brand'), pane = document.getElementById('trip'), land = false;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduce && from && to && pane && !pane.hidden) {
+        var a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
+        if (b.width && b.top > -4 && b.bottom < window.innerHeight) { from.style.transform = 'translate3d(' + (b.left - a.left) + 'px,' + (b.top - a.top) + 'px,0)'; land = true; }
+      }
+      if (!land) root.classList.remove('splashing'); // nothing lands on it: show the real title straight away
+      sp.classList.add('go'); if (!land) sp.classList.add('fade');
+      setTimeout(function () { root.classList.remove('splashing'); sp.remove(); }, land ? 700 : 460);
+    }, Math.max(0, 450 - shown)); // long enough to be seen, short enough not to be in the way
+  }
   // The spice banner opens and closes, and remembers which.
   document.addEventListener('click', function (e) {
     var t = e.target.closest && e.target.closest('[data-spice-toggle]'); if (!t) return;
@@ -6138,6 +6172,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     [renderHero, renderPlaces, renderCityPages, renderTimelines, moneyTile, renderProgress, addShowButtons, addDidiButtons, renderFood, initPages, initSim, initFind, renderHotelList, renderRouteNow, initHome, decorate, importPicks, initSlides, initTheme, watchStuck].forEach(function (part) {
       try { part(); } catch (err) { setTimeout(function () { throw err; }, 0); }
     });
+    endSplash();
     setInterval(renderHero, 30000);
     document.addEventListener('visibilitychange', function () { if (!document.hidden) { renderHero(); renderRouteNow(); } });
   }
