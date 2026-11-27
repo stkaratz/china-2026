@@ -2917,7 +2917,7 @@ p.sug { margin-top: 8px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271217">27 Nov 2026, 12:17</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271614">27 Nov 2026, 16:14</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -2955,7 +2955,7 @@ p.sug { margin-top: 8px; }
   <section class="pane map-pane" id="map" data-title="Map" aria-label="Trip map" hidden>
     <div id="leafmap" class="map"></div>
     <button type="button" class="locate glass map-search" id="search-btn" aria-label="Search places"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5" stroke-linecap="round"/></svg></button>
-    <button type="button" class="locate glass map-offline" data-offline aria-label="Offline maps"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5v10M8 10.5l4 4 4-4M5.5 19.5h13"/></svg></button>
+    <button type="button" class="locate glass map-offline" data-offline aria-label="Offline maps and photos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5v10M8 10.5l4 4 4-4M5.5 19.5h13"/></svg></button>
     <button type="button" class="locate glass" id="locate-btn" aria-label="Show my location"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4 3.5 11.2l7 1.9 1.9 7z"/></svg></button>
     <div class="map-legend glass"><span><i class="c-hotel"></i>Hotel</span><span><i class="c-sight"></i>Sight</span><span><i class="c-station"></i>Station</span><span><i class="c-idea"></i>Idea</span><span><i class="c-food"></i>Food</span><span data-saved role="button" tabindex="0" aria-label="Show only saved places" title="Saved places" style="display:none"><b>♥</b></span></div>
     <div class="map-chips glass collapsed" id="map-chips">
@@ -3431,6 +3431,8 @@ document.addEventListener('click', function (e) {
     'Hung Hom': 'Kowloon station at the end of the East Rail line from Lo Wu, about 1 km from the hotel.'
   };
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  // Full-size photo views use the 960 px version: sharp on a phone, 40% lighter, and the size that is saved for offline use.
+  function big(u) { return String(u).replace(/\/1280px-/, '/960px-'); }
   function amapLinks(p, inner) {
     var src = '&src=china2026&callnative=1';
     var web, ios;
@@ -3538,7 +3540,7 @@ document.addEventListener('click', function (e) {
     var tag = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea', food: 'Food' }[p.t] || '';
     var text = (p.f && p.f.x) || (p.t !== 'idea' && ABOUT[p.n]) || p.d;
     var meta = p.t !== 'idea' ? p.d : '';
-    var thumb = ph ? '<button type="button" class="pc-thumb" data-ph="' + esc(p.n) + '" aria-label="Photos of ' + esc(p.n) + '"><img src="' + esc(ph.ph[0]) + '" alt="" referrerpolicy="no-referrer" onerror="this.remove()"><span class="pc-n">' + IC.photo + ph.ph.length + '</span></button>'
+    var thumb = ph ? '<button type="button" class="pc-thumb" data-ph="' + esc(p.n) + '" aria-label="Photos of ' + esc(p.n) + '"><img src="' + esc(big(ph.ph[0])) + '" alt="" referrerpolicy="no-referrer" onerror="this.remove()"><span class="pc-n">' + IC.photo + ph.ph.length + '</span></button>'
       : '<span class="pc-thumb none">' + (G[p.t] || '') + '</span>';
     c.className = 'pc pc-' + p.t;
     c.setAttribute('aria-label', p.n);
@@ -3662,7 +3664,7 @@ document.addEventListener('click', function (e) {
     var tag = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea', food: 'Food' }[p.t] || '';
     var meta = p.t !== 'idea' ? p.d : '';
     var slides = ph ? ph.ph.map(function (u, i) {
-      return '<figure class="dt-slide" data-i="' + i + '"><img src="' + esc(u) + '" alt="" referrerpolicy="no-referrer"' + (i > 1 ? ' loading="lazy"' : '') + ' onerror="this.parentNode.classList.add(\'bad\')"></figure>';
+      return '<figure class="dt-slide" data-i="' + i + '"><img src="' + esc(big(u)) + '" alt="" referrerpolicy="no-referrer"' + (i > 1 ? ' loading="lazy"' : '') + ' onerror="this.parentNode.classList.add(\'bad\')"></figure>';
     }).join('') : '';
     var hero = '<div class="dt-hero' + (ph ? '' : ' none') + '"><div class="dt-track">' + slides + '</div>' + (ph ? '<span class="dt-count">' + IC.photo + ph.ph.length + '</span><div class="dt-dots">' + ph.ph.map(function (_, i) { return '<i' + (i ? '' : ' class="on"') + '></i>'; }).join('') + '</div>' : '<span class="dt-noimg">' + (G[p.t] || '') + '</span>') + '</div>';
     var rows = [];
@@ -3765,7 +3767,7 @@ document.addEventListener('click', function (e) {
         '<button type="button" class="phv-nav prev" aria-label="Previous photo"><svg viewBox="0 0 24 24"><path d="M14.5 6 8.5 12l6 6"/></svg></button>' +
         '<button type="button" class="phv-nav next" aria-label="Next photo"><svg viewBox="0 0 24 24"><path d="M9.5 6l6 6-6 6"/></svg></button>' +
         '<span class="phv-count"></span><button type="button" class="phv-x" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></button>' +
-        '<div class="phv-dots"></div><p class="phv-off" hidden>Photos couldn\'t load. They come from the internet: check the connection (Wikipedia and Wikimedia are blocked on mainland networks without a VPN or roaming).</p></div>' +
+        '<div class="phv-dots"></div><p class="phv-off" hidden>Photos couldn\'t load. They come from the internet, and Wikipedia and Wikimedia are blocked on mainland networks without a VPN or roaming. Save them on the phone beforehand: Map, the download button.</p></div>' +
         '<div class="phv-info"></div><span class="phv-grab" aria-hidden="true"></span></div>';
       document.body.appendChild(viewer);
       viewer.addEventListener('click', function (e) { if (e.target === viewer || e.target.closest('.phv-x')) closePhotos(); });
@@ -3817,7 +3819,7 @@ document.addEventListener('click', function (e) {
     var track = viewer.querySelector('.phv-track'), dots = viewer.querySelector('.phv-dots');
     var failed = 0;
     track.innerHTML = info.ph.map(function (u, i) {
-      return '<figure class="phv-slide"><span class="phv-blur" style="background-image:url(&quot;' + esc(u) + '&quot;)"></span><img src="' + esc(u) + '" alt="' + esc(name) + ' photo ' + (i + 1) + '" referrerpolicy="no-referrer" decoding="async"' + (i > 1 ? ' loading="lazy"' : '') + '></figure>';
+      return '<figure class="phv-slide"><span class="phv-blur" style="background-image:url(&quot;' + esc(big(u)) + '&quot;)"></span><img src="' + esc(big(u)) + '" alt="' + esc(name) + ' photo ' + (i + 1) + '" referrerpolicy="no-referrer" decoding="async"' + (i > 1 ? ' loading="lazy"' : '') + '></figure>';
     }).join('');
     dots.innerHTML = info.ph.map(function () { return '<i></i>'; }).join('');
     viewer.querySelector('.phv-off').hidden = true;
@@ -5143,7 +5145,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     function add(g, key, html) { out.push({ g: g, key: key.toLowerCase(), html: html }); }
     [['Near me', 'data-near="all"', I.pin, 'nearby close around location', 'Places and food by distance'],
      ['My hotel', 'data-home', HOUSE, 'take me home hotel address tonight', 'Address in big text, DiDi, directions'],
-     ['Offline maps', 'data-offline', I.pin, 'download map no internet save', 'Save the city maps on this phone'],
+     ['Offline maps and photos', 'data-offline', I.pin, 'download map photos pictures no internet save', 'Save maps and photos on this phone'],
      ['Phrases', 'data-handy="phrases"', I.chat, 'translate chinese say words language essentials', 'Show Chinese in big text'],
      ['Money converter', 'data-handy="money"', I.coin, 'currency exchange yuan kroner euro rate', 'Yuan, HK dollars, kroner, euros'],
      ['Emergency numbers', 'data-handy="sos"', I.sos, 'police ambulance hospital help 110 120 999', 'Police, ambulance, fire'],
@@ -5231,7 +5233,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
         var noFav = '<div class="srch-list"><div class="srch-empty">Nothing saved yet. Tap the heart on a place to save it.</div></div>';
         if (!q0) {
           var sv = (pl.marks ? Object.keys(pl.marks.fav) : []).map(byName).filter(Boolean), rc = recent().map(byName).filter(Boolean);
-          var quick = '<div class="srch-quick">' + favChip + '<button type="button" data-near="all">' + I.pin + 'Near me</button><button type="button" data-home>' + HOUSE + 'My hotel</button><button type="button" data-offline>' + I.pin + 'Offline maps</button></div>';
+          var quick = '<div class="srch-quick">' + favChip + '<button type="button" data-near="all">' + I.pin + 'Near me</button><button type="button" data-home>' + HOUSE + 'My hotel</button><button type="button" data-offline>' + I.pin + 'Offline</button></div>';
           if (onlyFav) {
             list.innerHTML = quick + (favRows.length ? '<div class="srch-group"><h3>Saved<i>' + favRows.length + '</i><button type="button" class="srch-clear" data-share style="margin-left:8px">Send to partner</button></h3></div>' + groups(favRows) : noFav);
             return;
@@ -6041,7 +6043,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
 
   // ---------- Offline maps: save the map around each city's hotel and places on this phone ----------
   // Tiles go into the cache below; the service worker (sw.js) serves map tiles from it. About 14.5 KB per tile.
-  var TILE_CACHE = 'c26-tiles-v1', TILE_KEY = 'https://tiles.china2026/', TILE_KB = 14.5;
+  var TILE_CACHE = 'c26-tiles-v1', TILE_KEY = 'https://tiles.china2026/', TILE_KB = 10;
   function tileXY(lat, lon, z) { var n = Math.pow(2, z), r = lat * Math.PI / 180; return [Math.floor((lon + 180) / 360 * n), Math.floor((1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2 * n)]; }
   function addBox(set, ll, km, z) {
     var dLat = km / 111, dLon = km / (111 * Math.cos(ll[0] * Math.PI / 180));
@@ -6063,73 +6065,109 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   // The whole route at low zoom, shared by all cities and saved with the first one.
   function baseTiles() { var set = {}; [4, 5, 6, 7].forEach(function (z) { addBox(set, [31, 110], 1150, z); }); return Object.keys(set); }
   function tileUrl(k) { var p = k.split('/'); return 'https://webrd0' + (2 + (+p[1] + +p[2]) % 3) + '.is.autonavi.com/appmaptile?lang=en&size=1&scale=1&style=8&x=' + p[1] + '&y=' + p[2] + '&z=' + p[0]; }
-  function mb(n) { var v = n * TILE_KB / 1024; return 'about ' + (v < 10 ? v.toFixed(1) : Math.round(v)) + ' MB'; }
-  // Downloads the missing tiles, six at a time. step(done, total, failed) reports progress.
-  function saveTiles(keys, step) {
-    return caches.open(TILE_CACHE).then(function (cache) {
-      var i = 0, done = 0, failed = 0;
-      function next() {
-        if (i >= keys.length) return Promise.resolve();
-        var k = keys[i++];
-        return cache.match(TILE_KEY + k).then(function (hit) {
-          if (hit) return;
-          return fetch(tileUrl(k), { mode: 'cors' }).then(function (res) { if (!res.ok) throw new Error('tile'); return cache.put(TILE_KEY + k, res); });
-        }).catch(function () { failed++; }).then(function () { done++; if (step) step(done, keys.length, failed); return next(); });
+  // Photos: one copy of each, 960 px wide (the size the app shows full screen). Photos that only exist in one size are kept as they are.
+  var PHOTO_CACHE = 'c26-photos-v1';
+  function photoUrl(u) { return String(u).replace(/\/\d+px-/, '/960px-'); }
+  function photoKb(u) { return /\/960px-/.test(u) ? 215 : /tripcdn/.test(u) ? 150 : 330; }
+  function cityPhotos(c) {
+    var pl = window.china2026Places, set = {}; if (!pl) return [];
+    pl.P.forEach(function (p) { var ph = pl.PH[p.n]; if (ph && cityOf(p, pl) === c.n) ph.ph.forEach(function (u) { set[photoUrl(u)] = 1; }); });
+    return Object.keys(set);
+  }
+  // Dish photos and city covers: shared by all cities and saved with the first one.
+  function sharedPhotos() {
+    var set = {};
+    MUST.forEach(function (m) { var u = mustImg(m); if (u) set[photoUrl(u)] = 1; });
+    Object.keys(COVER).forEach(function (k) { if (typeof COVER[k] === 'string') set[photoUrl(COVER[k])] = 1; });
+    return Object.keys(set);
+  }
+  // One thing to save: which cache, under what name, from where, and roughly how big.
+  function tileItems(keys) { return keys.map(function (k) { return { c: TILE_CACHE, k: TILE_KEY + k, u: tileUrl(k), kb: TILE_KB }; }); }
+  function photoItems(urls) { return urls.map(function (u) { return { c: PHOTO_CACHE, k: u, u: u, kb: photoKb(u) }; }); }
+  function kbOf(items) { return items.reduce(function (a, it) { return a + it.kb; }, 0); }
+  function mbText(kb) { var v = kb / 1024; return (v < 10 ? v.toFixed(1) : Math.round(v)) + ' MB'; }
+  // Downloads whatever is missing, five at a time. step(doneKb, totalKb, failed) reports progress.
+  function saveItems(items, step) {
+    return Promise.all([caches.open(TILE_CACHE), caches.open(PHOTO_CACHE)]).then(function (cs) {
+      var by = {}, i = 0, doneKb = 0, totalKb = kbOf(items), failed = 0;
+      by[TILE_CACHE] = cs[0]; by[PHOTO_CACHE] = cs[1];
+      function get(it, again) {
+        return fetch(it.u, { mode: 'cors' }).then(function (res) {
+          // The photo server asks busy visitors to slow down: wait a little and try once more.
+          if (res.status === 429 && !again) return new Promise(function (r) { setTimeout(r, 2000); }).then(function () { return get(it, true); });
+          if (!res.ok) throw new Error('http ' + res.status);
+          return by[it.c].put(it.k, res);
+        });
       }
-      var pool = []; for (var w = 0; w < 6; w++) pool.push(next());
-      return Promise.all(pool).then(function () { return { total: keys.length, failed: failed }; });
+      function next() {
+        if (i >= items.length) return Promise.resolve();
+        var it = items[i++];
+        return by[it.c].match(it.k, { ignoreVary: true }).then(function (hit) { if (!hit) return get(it); })
+          .catch(function () { failed++; }).then(function () { doneKb += it.kb; if (step) step(doneKb, totalKb, failed); return next(); });
+      }
+      var pool = []; for (var w = 0; w < 5; w++) pool.push(next());
+      return Promise.all(pool).then(function () { return { total: items.length, failed: failed }; });
     });
   }
   var offBusy = {};
   function openOffline() {
     if (!('caches' in window) || window.isSecureContext === false) {
-      openSheet('Offline maps', '<p class="bs-lead">Offline maps work in the installed app (stkaratz.github.io/china-2026). This copy can\'t save files on the phone.</p>');
+      openSheet('Offline maps and photos', '<p class="bs-lead">Saving maps and photos works in the installed app (stkaratz.github.io/china-2026). This copy can\'t save files on the phone.</p>');
       return;
     }
-    var sets = CITIES.map(function (c) { return { c: c, keys: cityTiles(c) }; }), all = {}, base = baseTiles();
-    base.forEach(function (k) { all[k] = 1; });
-    sets.forEach(function (o) { o.keys.forEach(function (k) { all[k] = 1; }); });
-    var allKeys = Object.keys(all);
-    openSheet('Offline maps', '<p class="bs-lead">Save the map on this phone so it works without a connection: the area around your hotel, and street level around every place on the map. Best done on Wi-Fi before you leave.</p>' +
-      '<div class="off-list">' + sets.map(function (o) { return '<div class="off-row" data-oc="' + o.c.id + '"><div><b>' + esc(o.c.n) + '</b><span>' + mb(o.keys.length) + '</span></div><button type="button" class="off-b" data-dl="' + o.c.id + '">Download</button></div>'; }).join('') + '</div>' +
-      '<div class="off-all"><button type="button" class="btn" data-dl="all">Download all six · ' + mb(allKeys.length) + '</button><button type="button" class="btn plain" data-rm>Remove saved maps</button></div>' +
-      '<p class="bs-note off-note">Saved maps stay on this phone until you remove them. Without a connection the map zooms in to street level; photos still need internet.</p>', function (body) {
+    var shared = tileItems(baseTiles()).concat(photoItems(sharedPhotos())), all = {};
+    var sets = CITIES.map(function (c) {
+      var t = tileItems(cityTiles(c)), p = photoItems(cityPhotos(c));
+      return { c: c, tiles: t, photos: p, items: t.concat(p) };
+    });
+    shared.forEach(function (it) { all[it.k] = it; });
+    sets.forEach(function (o) { o.items.forEach(function (it) { all[it.k] = it; }); });
+    var allItems = Object.keys(all).map(function (k) { return all[k]; });
+    openSheet('Offline maps and photos', '<p class="bs-lead">Save the maps and photos on this phone so the app is complete without a connection. Photos come from Wikimedia, which is blocked on mainland networks, so do this on Wi-Fi before you leave. Keep the app open while it downloads.</p>' +
+      '<div class="off-list">' + sets.map(function (o) {
+        return '<div class="off-row" data-oc="' + o.c.id + '"><div><b>' + esc(o.c.n) + '</b><span>Map ' + mbText(kbOf(o.tiles)) + ' · ' + o.photos.length + ' photos ' + mbText(kbOf(o.photos)) + '</span></div><button type="button" class="off-b" data-dl="' + o.c.id + '">Download</button></div>';
+      }).join('') + '</div>' +
+      '<div class="off-all"><button type="button" class="btn" data-dl="all">Download everything · about ' + mbText(kbOf(allItems)) + '</button><button type="button" class="btn plain" data-rm>Remove saved maps and photos</button></div>' +
+      '<p class="bs-note off-note">Saved maps and photos stay on this phone until you remove them, or until the app is removed from the Home Screen.</p>', function (body) {
       function btn(id) { return body.querySelector('[data-dl="' + id + '"]'); }
       function show(id, text, cls) { var b = btn(id); if (!b) return; b.textContent = text; b.className = (id === 'all' ? 'btn' : 'off-b') + (cls ? ' ' + cls : ''); }
       function refresh() {
-        caches.open(TILE_CACHE).then(function (c) { return c.keys(); }).then(function (reqs) {
-          var have = {}; reqs.forEach(function (r) { have[r.url] = 1; });
+        Promise.all([caches.open(TILE_CACHE), caches.open(PHOTO_CACHE)]).then(function (cs) { return Promise.all([cs[0].keys(), cs[1].keys()]); }).then(function (lists) {
+          var have = {}, kb = 0; lists[0].concat(lists[1]).forEach(function (r) { have[r.url] = 1; });
+          allItems.forEach(function (it) { if (have[it.k]) kb += it.kb; });
           sets.forEach(function (o) {
-            if (offBusy[o.c.id]) return;
-            var n = o.keys.filter(function (k) { return have[TILE_KEY + k]; }).length;
-            if (n >= o.keys.length) show(o.c.id, 'Saved ✓', 'done'); else show(o.c.id, n ? 'Finish (' + Math.round(n / o.keys.length * 100) + '%)' : 'Download');
+            if (offBusy[o.c.id] || offBusy.all) return;
+            var n = o.items.filter(function (it) { return have[it.k]; }).length;
+            var pct = Math.round(n / o.items.length * 100);
+            if (n >= o.items.length) show(o.c.id, 'Saved ✓', 'done'); else show(o.c.id, pct >= 1 ? 'Finish (' + pct + '%)' : 'Download');
           });
+          if (!offBusy.all && allItems.every(function (it) { return have[it.k]; })) show('all', 'Everything is saved ✓');
           var note = body.querySelector('.off-note');
-          if (note && reqs.length) note.textContent = 'On this phone now: ' + mb(reqs.length) + ' of maps. They stay until you remove them. Photos still need internet.';
+          if (note && kb) note.textContent = 'On this phone now: about ' + mbText(kb) + ' of maps and photos. They stay until you remove them, or until the app is removed from the Home Screen.';
         }).catch(function () {});
       }
       function run(id) {
         if (offBusy[id]) return;
-        if (navigator.onLine === false) { toast('You are offline. Connect to download the maps.'); return; }
-        var keys = id === 'all' ? allKeys : (sets.filter(function (o) { return o.c.id === id; })[0] || {}).keys; if (!keys) return;
-        if (id !== 'all') keys = base.concat(keys);
+        if (navigator.onLine === false) { toast('You are offline. Connect to download.'); return; }
+        var set = sets.filter(function (o) { return o.c.id === id; })[0];
+        var items = id === 'all' ? allItems : set ? shared.concat(set.items) : null; if (!items) return;
         offBusy[id] = 1; show(id, '0%', 'busy');
         try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
-        saveTiles(keys, function (done, total) { if (done % 12 === 0 || done === total) show(id, Math.round(done / total * 100) + '%', 'busy'); }).then(function (r) {
+        var last = -1;
+        saveItems(items, function (done, total) { var pct = Math.floor(done / total * 100); if (pct !== last) { last = pct; show(id, pct + '%', 'busy'); } }).then(function (r) {
           delete offBusy[id];
-          if (r.failed) { show(id, 'Retry (' + r.failed + ' missing)'); toast(r.failed + ' map pieces did not download. Tap Retry on a better connection.'); }
-          else if (id === 'all') show(id, 'All six saved ✓');
+          if (r.failed) { show(id, 'Retry (' + r.failed + ' missing)'); toast(r.failed + ' pieces did not download. Tap Retry: it only fetches what is missing.'); }
           refresh();
-        }, function () { delete offBusy[id]; show(id, 'Retry'); toast('The maps could not be saved on this phone.'); });
+        }, function () { delete offBusy[id]; show(id, 'Retry'); toast('The maps and photos could not be saved on this phone.'); });
       }
       body.addEventListener('click', function (e) {
         var d = e.target.closest('[data-dl]'); if (d) { run(d.getAttribute('data-dl')); return; }
-        if (e.target.closest('[data-rm]')) caches.delete(TILE_CACHE).then(function () { toast('Saved maps removed.'); refresh(); });
+        if (e.target.closest('[data-rm]')) Promise.all([caches.delete(TILE_CACHE), caches.delete(PHOTO_CACHE)]).then(function () { toast('Saved maps and photos removed.'); show('all', 'Download everything · about ' + mbText(kbOf(allItems))); refresh(); });
       });
       refresh();
     }, true);
   }
-  window.china2026Offline = { tiles: cityTiles, base: baseTiles, save: saveTiles, cache: TILE_CACHE, key: TILE_KEY };
+  window.china2026Offline = { tiles: cityTiles, base: baseTiles, photos: cityPhotos, shared: sharedPhotos, photoUrl: photoUrl, save: saveItems, tileItems: tileItems, photoItems: photoItems, cache: TILE_CACHE, key: TILE_KEY, photoCache: PHOTO_CACHE };
   document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('[data-offline]')) openOffline(); });
 
   // The Food tab follows a city picked on the Trip tab or the map.

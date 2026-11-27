@@ -1,5 +1,6 @@
-const CACHE = 'china2026-202611271217';
+const CACHE = 'china2026-202611271614';
 const TILES = 'c26-tiles-v1'; // saved map tiles: kept across app updates
+const PHOTOS = 'c26-photos-v1'; // saved photos: kept across app updates
 const CORE = ['./', './apple-touch-icon.png', './manifest.webmanifest', './vendor/leaflet.js', './vendor/leaflet.markercluster.js'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
@@ -14,6 +15,7 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.hostname.endsWith('.is.autonavi.com') && url.pathname === '/appmaptile') { e.respondWith(tile(url)); return; }
+  if (url.hostname === 'thumb.wikimedia.org' || url.hostname === 'upload.wikimedia.org' || url.hostname.endsWith('.tripcdn.com')) { e.respondWith(photo(req, url)); return; }
   if (url.origin !== location.origin) return;
   if (url.pathname.endsWith('/version.json') || url.pathname.includes('/classic/')) return;
   if (req.mode === 'navigate' || url.pathname.endsWith('/') || url.pathname.endsWith('/index.html')) {
@@ -32,6 +34,11 @@ function tile(url) {
     if (res.ok) c.put(key, res.clone());
     return res;
   })));
+}
+// Photos: one saved copy, 960 px wide, answers a request for any width of the same photo. Not saved: straight to the network.
+function photo(req, url) {
+  const key = url.href.replace(/\/[0-9]+px-/, '/960px-');
+  return caches.open(PHOTOS).then(c => c.match(key, { ignoreVary: true })).then(hit => hit || fetch(req)).catch(() => fetch(req));
 }
 function networkFirst(url) {
   const page = new URL('./', self.registration.scope).href;
