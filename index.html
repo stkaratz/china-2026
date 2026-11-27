@@ -1841,6 +1841,9 @@ html.map-mode .home-fab, html.bs-open .home-fab, html.dt-open .home-fab, html.sw
 .srch-kind svg { width: 11px; height: 11px; transform: rotate(45deg); fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .srch-kind.k-station svg { width: 10px; height: 10px; }
 .srch-row[data-i] .srch-dot::after { display: none; } /* the pin replaces the little colour dot on the photo */
+/* ---- Food tab: the city chips stay in reach while you scroll the restaurants ---- */
+.fd-wrap { scroll-margin-top: env(safe-area-inset-top, 0px); }
+.fd-wrap .fd-cities { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; margin: 0 -16px; padding: 10px 16px; background: var(--bg); }
 /* ---- Small fixes ---- */
 button.amap { border: 0; cursor: pointer; }
 .day.today .amap { background: var(--surface); }
@@ -2823,7 +2826,7 @@ p.sug { margin-top: 8px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611270954">27 Nov 2026, 09:54</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611270956">27 Nov 2026, 09:56</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -5247,6 +5250,10 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     var n = e.target.closest('[data-near]'); if (n) { openNear(n.getAttribute('data-near')); return; }
     if (e.target.closest('[data-home]')) openHome();
   });
+  function jumpTo(el) {
+    if (!el) return;
+    var de = document.documentElement; de.style.scrollBehavior = 'auto'; el.scrollIntoView({ block: 'start' }); de.style.scrollBehavior = '';
+  }
   function selectChip(row, attr, val, smooth) {
     var on = null;
     row.querySelectorAll('[' + attr + ']').forEach(function (b) { var is = b.getAttribute(attr) === val; b.classList.toggle('on', is); b.setAttribute('aria-pressed', is); if (is) on = b; });
@@ -5548,6 +5555,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     box.addEventListener('click', function (e) {
       var b = e.target.closest('[data-fc]'); if (!b) return;
       sel = b.getAttribute('data-fc'); ls('china2026:food-city', sel); draw(true);
+      var wrap = box.querySelector('.fd-wrap'); if (wrap && wrap.getBoundingClientRect().top < 0) jumpTo(wrap);
     });
     draw(false);
     // the tab may be hidden on first draw (no layout yet): centre the chip when it's shown
@@ -5675,7 +5683,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     var t = e.target.closest && e.target.closest('[data-tips-more]');
     if (t) { var open = t.parentNode.classList.toggle('open'); t.textContent = open ? 'Show fewer' : 'Show all ' + t.getAttribute('data-tips-more') + ' tips'; return; }
     var fc = e.target.closest && e.target.closest('[data-food-city]');
-    if (fc) { var id = fc.getAttribute('data-food-city'); setTimeout(function () { var b = document.querySelector('#eat [data-fc="' + id + '"]'); if (b) b.click(); }, 60); return; }
+    if (fc) { var id = fc.getAttribute('data-food-city'); setTimeout(function () { var b = document.querySelector('#eat [data-fc="' + id + '"]'); if (b) b.click(); jumpTo(document.querySelector('#eat .fd-wrap')); }, 60); return; }
     var fly = e.target.closest && e.target.closest('[data-fly-city]');
     if (fly) {
       // The map loads on first use: keep trying until its city button takes.
