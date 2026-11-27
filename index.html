@@ -1880,7 +1880,8 @@ html.map-mode .home-fab, html.bs-open .home-fab, html.dt-open .home-fab, html.sw
 .also-d .chili b { font-size: 0.72rem; } /* the spice label, not the dish name */
 /* ---- Trip header: flag + title ---- */
 .brand { display: flex; align-items: center; gap: 13px; min-width: 0; }
-.flag { flex: none; display: block; width: 44px; height: 29.3px; border-radius: 7px; overflow: hidden; transform: rotate(-5deg); box-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.14), 0 8px 16px rgb(222 41 16 / 0.26), 0 2px 4px rgb(0 0 0 / 0.12); }
+.flag { position: relative; flex: none; display: block; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 2.5px var(--surface), 0 0 0 3px var(--line), 0 8px 18px rgb(194 23 15 / 0.24); }
+.flag::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: linear-gradient(160deg, rgb(255 255 255 / 0.34), transparent 46%); pointer-events: none; } /* the same soft shine as the glass buttons */
 .flag svg { display: block; width: 100%; height: 100%; }
 .brand h1 { font-size: 2.35rem; letter-spacing: -0.035em; white-space: nowrap; color: var(--jade); background: linear-gradient(115deg, var(--jade) 20%, color-mix(in srgb, var(--jade) 55%, #86d9b9)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .brand .yr { font-weight: 400; letter-spacing: -0.02em; }
@@ -1889,6 +1890,24 @@ html.map-mode .home-fab, html.bs-open .home-fab, html.dt-open .home-fab, html.sw
 .seg.scrub button.on, .tips-cities.scrub button.on, .segc.scrub button.on { color: var(--ink); }
 .seg.scrub button.cand, .tips-cities.scrub button.cand, .segc.scrub button.cand { color: var(--surface); }
 .scrub > .chip-ind { transition: width 0.15s, opacity 0.15s; box-shadow: 0 6px 16px color-mix(in srgb, var(--jade) 40%, transparent); }
+/* ---- Spice banner: one line until you open it ---- */
+.spice { gap: 0; padding: 0; border-radius: 20px; }
+.spice-h { width: 100%; padding: 12px 14px; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.spice-h > div { flex: 1; min-width: 0; }
+.spice-h b { font-size: 1.02rem; }
+.spice-h > svg.chev { flex: none; width: 22px; height: 22px; padding: 0; border-radius: 0; background: none; stroke-width: 2.3; opacity: 0.9; transition: transform 0.32s cubic-bezier(0.3, 1.2, 0.4, 1); }
+.spice.open .spice-h > svg.chev { transform: rotate(180deg); }
+.spice-more { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.32s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.spice.open .spice-more { grid-template-rows: 1fr; }
+.spice-in { min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 12px; padding: 0 14px; visibility: hidden; transition: visibility 0s 0.32s; }
+.spice.open .spice-in { visibility: visible; transition-delay: 0s; }
+.spice-in::before { content: ""; height: 0; margin-top: -8px; }
+.spice-in::after { content: ""; height: 4px; }
+@media (prefers-reduced-motion: reduce) { .spice-more, .spice-h > svg.chev { transition: none; } }
+/* ---- Search: the Saved filter ---- */
+.srch-quick .srch-fav { background: color-mix(in srgb, #ff2d55 11%, var(--surface)); color: #ff2d55; }
+.srch-quick .srch-fav.on { background: #ff2d55; color: #fff; }
+.srch-quick .srch-fav.on svg { fill: currentColor; }
 /* ---- Small fixes ---- */
 button.amap { border: 0; cursor: pointer; }
 .day.today .amap { background: var(--surface); }
@@ -2206,7 +2225,7 @@ p.sug { margin-top: 8px; }
   </section>
 
   <section class="pane" id="trip" data-title="Trip" aria-label="Trip" hidden>
-    <div class="large"><div class="title-row"><div class="brand"><span class="flag" role="img" aria-label="Flag of China"><svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#de2910"/><g fill="#ffde00"><path transform="translate(5 5) scale(3)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(10 2) rotate(23.04)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(12 4) rotate(45.87)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(12 7) rotate(69.95)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(10 9) rotate(20.66)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/></g></svg></span><h1>China <span class="yr">2026</span></h1></div><a href="#about" class="info-btn glass" aria-label="About this app"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".7"/></svg></a></div></div>
+    <div class="large"><div class="title-row"><div class="brand"><span class="flag" role="img" aria-label="Flag of China"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="fl-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0483c"/><stop offset="1" stop-color="#c2170f"/></linearGradient></defs><circle cx="12" cy="12" r="12" fill="url(#fl-g)"/><g fill="#ffd84d"><path transform="translate(8.4 9.4) scale(4.1)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(14.6 5.4) rotate(21.2) scale(1.3)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(17.2 8) rotate(44.96) scale(1.3)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(17.2 11.6) rotate(68.04) scale(1.3)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(14.6 14.2) rotate(19.75) scale(1.3)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/></g></svg></span><h1>China <span class="yr">2026</span></h1></div><a href="#about" class="info-btn glass" aria-label="About this app"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".7"/></svg></a></div></div>
     <nav class="seg" aria-label="Trip pages">
       <button type="button" data-go="today" class="hl" hidden>Today</button>
       <button type="button" data-page="over" class="on" aria-pressed="true">Overview</button>
@@ -2866,7 +2885,7 @@ p.sug { margin-top: 8px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271021">27 Nov 2026, 10:21</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271026">27 Nov 2026, 10:26</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -5040,6 +5059,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   }
   var SRCH = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>';
   var HOUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5 12 4.5l8 7M6.5 10v9.5h11V10M10 19.5v-5h4v5"/></svg>';
+  var HEART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10A4.2 4.2 0 0 1 12 7.9a4.2 4.2 0 0 1 7.5 2.6c0 5.4-7.5 10-7.5 10z"/></svg>';
   var CAL = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="3"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg>';
   var TICK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
   var KIND = { hotel: 'Hotel', sight: 'In the plan', station: 'Station', idea: 'Idea', food: 'Food' };
@@ -5142,31 +5162,43 @@ document.querySelectorAll('.copy').forEach(function (btn) {
           return '<div class="srch-group"><h3>' + esc(c.n) + ' <span class="zh">' + c.zh + '</span><i>' + g.length + '</i></h3><div class="srch-list">' + g.map(html).join('') + '</div></div>';
         }).join('');
       }
+      var onlyFav = false; // the Saved filter: only places with a heart
       var clr = body.querySelector('.srch-x');
       if (clr) clr.addEventListener('click', function () { inp.value = ''; draw(); try { inp.focus({ preventScroll: true }); } catch (ec) { inp.focus(); } });
       function draw() {
         var q0 = inp.value.trim();
         if (clr) clr.classList.toggle('on', !!inp.value); // the clear button shows only while there is text
+        var favRows = pl.marks ? rows.filter(function (r) { return pl.marks.fav[r.p.n]; }) : [];
+        var favChip = '<button type="button" class="srch-fav' + (onlyFav ? ' on' : '') + '" data-favfilter aria-pressed="' + onlyFav + '">' + HEART + (onlyFav ? 'Saved only' : 'Saved') + (favRows.length ? ' · ' + favRows.length : '') + '</button>';
+        var noFav = '<div class="srch-list"><div class="srch-empty">Nothing saved yet. Tap the heart on a place to save it.</div></div>';
         if (!q0) {
           var sv = (pl.marks ? Object.keys(pl.marks.fav) : []).map(byName).filter(Boolean), rc = recent().map(byName).filter(Boolean);
-          list.innerHTML = '<div class="srch-quick"><button type="button" data-near="all">' + I.pin + 'Near me</button><button type="button" data-home>' + HOUSE + 'My hotel</button><button type="button" data-offline>' + I.pin + 'Offline maps</button></div>' +
+          var quick = '<div class="srch-quick">' + favChip + '<button type="button" data-near="all">' + I.pin + 'Near me</button><button type="button" data-home>' + HOUSE + 'My hotel</button><button type="button" data-offline>' + I.pin + 'Offline maps</button></div>';
+          if (onlyFav) {
+            list.innerHTML = quick + (favRows.length ? '<div class="srch-group"><h3>Saved<i>' + favRows.length + '</i><button type="button" class="srch-clear" data-share style="margin-left:8px">Send to partner</button></h3></div>' + groups(favRows) : noFav);
+            return;
+          }
+          list.innerHTML = quick +
             (sv.length ? '<div class="srch-group"><h3>Saved<i>' + sv.length + '</i><button type="button" class="srch-clear" data-share style="margin-left:8px">Send to partner</button></h3><div class="srch-list">' + sv.map(html).join('') + '</div></div>' : '') +
             (rc.length ? '<div class="srch-group"><h3>Recent<button type="button" class="srch-clear">Clear</button></h3><div class="srch-list">' + rc.map(html).join('') + '</div></div>' : '') + groups(rows);
           return;
         }
         var words = q0.toLowerCase().split(/\s+/);
         function has(k) { return words.every(function (w) { return k.indexOf(w) >= 0; }); }
-        var hits = rows.filter(function (r) { return has(r.key); }), xh = extra.filter(function (x) { return has(x.key); });
+        var hits = (onlyFav ? favRows : rows).filter(function (r) { return has(r.key); }), xh = onlyFav ? [] : extra.filter(function (x) { return has(x.key); });
+        var favBar = onlyFav ? '<div class="srch-quick">' + favChip + '</div>' : '';
+        if (onlyFav && !hits.length) { list.innerHTML = favBar + (favRows.length ? '<div class="srch-list"><div class="srch-empty">Nothing found in your saved places</div></div>' : noFav); return; }
         if (!hits.length && !xh.length) { list.innerHTML = '<div class="srch-list"><div class="srch-empty">Nothing found</div></div>'; return; }
         function xg(name) {
           var g = xh.filter(function (x) { return x.g === name; }); if (!g.length) return '';
           return '<div class="srch-group"><h3>' + name + '<i>' + g.length + '</i></h3><div class="srch-list">' + g.slice(0, 6).map(function (x) { return x.html; }).join('') + '</div></div>';
         }
-        list.innerHTML = xg('Shortcuts') + xg('Dishes') + xg('Phrases') + groups(hits) + xg('Tips') + xg('Day plan') + xg('Trains') + xg('To do');
+        list.innerHTML = favBar + xg('Shortcuts') + xg('Dishes') + xg('Phrases') + groups(hits) + xg('Tips') + xg('Day plan') + xg('Trains') + xg('To do');
       }
       inp.addEventListener('input', draw); draw();
       list.addEventListener('click', function (e) {
         if (e.target.closest('button, a')) try { inp.blur(); } catch (eb) {}
+        if (e.target.closest('[data-favfilter]')) { onlyFav = !onlyFav; draw(); return; }
         if (e.target.closest('[data-share]')) { shareSaved(); return; }
         if (e.target.closest('.srch-clear')) { ls('china2026:recent', '[]'); draw(); return; }
         var g = e.target.closest('[data-goto]');
@@ -5616,7 +5648,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
         var city = ({ 's-bj': 'Beijing', 's-xa': "Xi'an", 's-cd': 'Chengdu', 's-ys': 'Yangshuo', 's-sz': 'Shenzhen', 's-hk': 'Hong Kong' })[pin.go] || '';
         var a = amapSearch(pin.q || pin.zh);
         return '<div class="must-where"><button type="button" class="must-place" data-place="' + esc(pin.n) + '"><b>' + esc(pin.n) + '</b><span>' + esc(city) + ' · ' + esc(pin.zh) + '</span>' + I.arrow + '</button>' +
-          '<div class="tip-go"><a class="amap" href="' + esc(a.web) + '" data-ios="' + esc(a.ios) + '" target="_blank" rel="noopener">' + I.pin + 'Map</a>' +
+          '<div class="tip-go"><a class="amap" href="' + esc(a.web) + '" data-ios="' + esc(a.ios) + '" target="_blank" rel="noopener">' + I.pin + 'Directions</a>' +
           '<button type="button" class="amap tip-cp" data-copy="' + esc(pin.q || pin.zh) + '" aria-label="Copy the Chinese name and branch" title="Copy the Chinese name and branch">' + I.copy + '</button>' +
           '<button type="button" class="amap tip-cp" data-didi="' + esc(pin.q || pin.zh) + '" aria-label="DiDi">' + I.car + '</button><button type="button" class="amap" data-focus="' + esc(pin.n) + '">Show on map</button></div></div>';
       }).join('') + (d.id === 'tomatoegg' || d.id === 'kungpao' ? '<p class="must-any">Also on menus almost everywhere.</p>' : '')
@@ -5672,10 +5704,11 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     var today = ymd(new Date(), 'Asia/Shanghai'), cur = 'bj';
     CITIES.forEach(function (c) { if (today >= c.from && today < c.to) cur = c.id; });
     var sel = ls('china2026:city') || ls('china2026:food-city') || cur;
-    var spice = '<section class="spice"><div class="spice-h">' + chili + '<div><b>Not a spice person?</b><span>Show these to the waiter</span></div></div><div class="spice-btns">' +
+    var spiceOpen = ls('china2026:spice-open') === '1';
+    var spice = '<section class="spice' + (spiceOpen ? ' open' : '') + '"><button type="button" class="spice-h" data-spice-toggle aria-expanded="' + spiceOpen + '">' + chili + '<div><b>Not a spice person?</b><span>Phrases to show the waiter</span></div><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg></button><div class="spice-more"><div class="spice-in"><div class="spice-btns">' +
       [['No chilli, please', '不要辣', 'bú yào là'], ['No chilli at all', '一点都不要辣', 'yìdiǎn dōu bú yào là'], ['Is this spicy?', '这个辣吗？', 'zhège là ma?'], ['Any non-spicy dishes?', '有不辣的菜吗？', 'yǒu bú là de cài ma?']].map(function (q) {
         return '<button type="button" class="spice-b" data-show="' + q[1] + '" data-py="' + q[2] + '" data-en="' + q[0] + '"><b>' + q[1] + '</b><span>' + q[0] + '</span></button>';
-      }).join('') + '</div><p>"微辣" (mild) in Sichuan is still hot. In Chengdu, go for clear-broth dishes and the Cantonese or non-Sichuan menus.</p></section>';
+      }).join('') + '</div><p>"微辣" (mild) in Sichuan is still hot. In Chengdu, go for clear-broth dishes and the Cantonese or non-Sichuan menus.</p></div></div></section>';
     function card(p) {
       var f = p.f, ph = pl.PH[p.n], a = amapSearch(p.q || p.zh);
       return '<article class="fd">' +
@@ -5686,7 +5719,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
         '<div class="fd-order"><span>Order this · tap to show</span><div>' + f.order.map(function (o) { return '<button type="button" class="dish" data-show="' + esc(o[1]) + '" data-en="' + esc(o[0]) + '"><b>' + esc(o[0]) + '</b><i>' + esc(o[1]) + '</i></button>'; }).join('') + '</div></div>' +
         '<p class="fd-meta">' + esc(f.hr) + ' · ' + esc(f.bk) + '</p>' +
         '<p class="fd-dist">' + I.pin + esc(fromHotel(p)) + '</p>' +
-        '<div class="fd-acts"><a class="amap" href="' + esc(a.web) + '" data-ios="' + esc(a.ios) + '" target="_blank" rel="noopener">' + I.pin + 'Map</a>' +
+        '<div class="fd-acts"><a class="amap" href="' + esc(a.web) + '" data-ios="' + esc(a.ios) + '" target="_blank" rel="noopener">' + I.pin + 'Directions</a>' +
         '<button type="button" class="amap tip-cp" data-copy="' + esc(p.q || p.zh) + '" aria-label="Copy the Chinese name and branch of ' + esc(p.n) + '" title="Copy the Chinese name and branch">' + I.copy + '</button>' +
         '<button type="button" class="amap didi didi-ic" data-didi="' + esc(p.q || p.zh) + '" aria-label="DiDi to ' + esc(p.n) + '">' + I.car + '</button>' +
         '<button type="button" class="amap fd-more" data-place="' + esc(p.n) + '">Details</button></div></article>';
@@ -6057,6 +6090,13 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     seg.addEventListener('click', function (e) { var b = e.target.closest('[data-theme-set]'); if (b) set(b.getAttribute('data-theme-set'), true); });
     set(ls('china2026:theme') || 'system', false);
   }
+
+  // The spice banner opens and closes, and remembers which.
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('[data-spice-toggle]'); if (!t) return;
+    var open = t.closest('.spice').classList.toggle('open');
+    t.setAttribute('aria-expanded', open); ls('china2026:spice-open', open ? '1' : '0');
+  });
 
   // ---------- To do progress ----------
   function renderProgress() {
