@@ -20,6 +20,14 @@ img { max-width: 100%; }
 [hidden] { display: none !important; }
 </style>
 <title>China 2026</title>
+<script>
+// Appearance (About > Appearance): "light" or "dark" forces that look; anything else follows the phone.
+(function () {
+  var root = document.documentElement;
+  window.china2026HostTheme = root.getAttribute('data-theme'); // whatever the page was given before we touch it
+  try { var t = localStorage.getItem('china2026:theme'); if (t === 'light' || t === 'dark') { root.setAttribute('data-theme', t); root.style.colorScheme = t; } } catch (e) {}
+})();
+</script>
 <style>
 /* Layout: an iOS-style app — sticky top bar, one pane per bottom tab, inset grouped cards on a grey ground, system fonts only (no web fonts, they are blocked in China). */
 :root {
@@ -1861,6 +1869,26 @@ html.map-mode .home-fab, html.bs-open .home-fab, html.dt-open .home-fab, html.sw
 .seg button.hl::after { background: none; box-shadow: inset 0 0 0 1.5px var(--jade); }
 .seg button.hl::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: var(--jade); vertical-align: 1px; }
 .map-chips button.on { background: var(--jade); color: var(--surface); }
+/* ---- A three-way switch (About > Appearance): same green sliding pill as the chip rows ---- */
+.segc { position: relative; isolation: isolate; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; padding: 3px; border-radius: 15px; background: var(--surface); box-shadow: inset 0 0 0 0.5px var(--line); }
+.segc button { position: relative; display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 0 6px; border: 0; border-radius: 12px; background: none; color: var(--ink); font: 600 0.9rem var(--f-body); cursor: pointer; transition: color 0.22s; }
+.segc button svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.segc button.on { color: var(--surface); }
+.segc:not(.has-ind) button.on { background: var(--jade); }
+.segc .chip-ind { border-radius: 12px; }
+.also { margin-top: 22px; }
+.also-d .chili b { font-size: 0.72rem; } /* the spice label, not the dish name */
+/* ---- Trip header: flag + title ---- */
+.brand { display: flex; align-items: center; gap: 13px; min-width: 0; }
+.flag { flex: none; display: block; width: 44px; height: 29.3px; border-radius: 7px; overflow: hidden; transform: rotate(-5deg); box-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.14), 0 8px 16px rgb(222 41 16 / 0.26), 0 2px 4px rgb(0 0 0 / 0.12); }
+.flag svg { display: block; width: 100%; height: 100%; }
+.brand h1 { font-size: 2.35rem; letter-spacing: -0.035em; white-space: nowrap; color: var(--jade); background: linear-gradient(115deg, var(--jade) 20%, color-mix(in srgb, var(--jade) 55%, #86d9b9)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.brand .yr { font-weight: 400; letter-spacing: -0.02em; }
+/* ---- Dragging the green pill along a chip row ---- */
+.seg button.on, .tips-cities button.on, .segc button.on { touch-action: pan-y; } /* sideways drags on the selected chip are ours */
+.seg.scrub button.on, .tips-cities.scrub button.on, .segc.scrub button.on { color: var(--ink); }
+.seg.scrub button.cand, .tips-cities.scrub button.cand, .segc.scrub button.cand { color: var(--surface); }
+.scrub > .chip-ind { transition: width 0.15s, opacity 0.15s; box-shadow: 0 6px 16px color-mix(in srgb, var(--jade) 40%, transparent); }
 /* ---- Small fixes ---- */
 button.amap { border: 0; cursor: pointer; }
 .day.today .amap { background: var(--surface); }
@@ -2178,12 +2206,7 @@ p.sug { margin-top: 8px; }
   </section>
 
   <section class="pane" id="trip" data-title="Trip" aria-label="Trip" hidden>
-    <div class="large"><div class="title-row"><h1>China 2026</h1><a href="#about" class="info-btn glass" aria-label="About this app"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".7"/></svg></a></div><div class="facts">
-      <span><b>15 Dec 2026 → 1 Jan 2027</b></span>
-      <span><b>6</b> cities</span>
-      <span><b>15</b> nights on the ground, 2 on planes</span>
-      <span>All legs in China by <b>high-speed train</b></span>
-    </div></div>
+    <div class="large"><div class="title-row"><div class="brand"><span class="flag" role="img" aria-label="Flag of China"><svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#de2910"/><g fill="#ffde00"><path transform="translate(5 5) scale(3)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(10 2) rotate(23.04)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(12 4) rotate(45.87)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(12 7) rotate(69.95)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/><path transform="translate(10 9) rotate(20.66)" d="M0-1 .2245-.309 .9511-.309 .3633.118 .5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309z"/></g></svg></span><h1>China <span class="yr">2026</span></h1></div><a href="#about" class="info-btn glass" aria-label="About this app"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".7"/></svg></a></div></div>
     <nav class="seg" aria-label="Trip pages">
       <button type="button" data-go="today" class="hl" hidden>Today</button>
       <button type="button" data-page="over" class="on" aria-pressed="true">Overview</button>
@@ -2843,12 +2866,20 @@ p.sug { margin-top: 8px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271008">27 Nov 2026, 10:08</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271021">27 Nov 2026, 10:21</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
         </div>
         <p class="foot">The app keeps a saved copy on your phone, so it opens without internet. When you are online it looks for a newer version each time you open it.</p>
+      </section>
+      <section class="stop" aria-labelledby="about-look">
+        <div class="stop-head"><h2 id="about-look">Appearance</h2><span class="nights" id="theme-note">follows your phone</span></div>
+        <div class="segc" id="theme-seg" role="group" aria-label="Appearance">
+          <button type="button" data-theme-set="system" class="on" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" stroke="none"/></svg>System</button>
+          <button type="button" data-theme-set="light" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.8"/><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6 18 18M6 18l1.4-1.4M16.6 7.4 18 6"/></svg>Light</button>
+          <button type="button" data-theme-set="dark" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 14.2A8 8 0 0 1 9.8 4.5a8 8 0 1 0 9.7 9.7z"/></svg>Dark</button>
+        </div>
       </section>
       <section class="stop" aria-labelledby="about-sim">
         <div class="stop-head"><h2 id="about-sim">Try a trip day</h2><span class="nights">see the app as it will look in China</span></div>
@@ -5295,7 +5326,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   }
   // ---------- Selected chips: one green pill that slides to the chip you pick ----------
   function slideInd(row) {
-    if (!row) return;
+    if (!row || row._drag) return; // while the pill is being dragged it follows the finger, not the selection
     var ind = null, on = null, fresh = false;
     [].forEach.call(row.children, function (b) {
       if (b.classList.contains('chip-ind')) ind = b;
@@ -5318,6 +5349,56 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     }).observe(row, { attributes: true, attributeFilter: ['class', 'hidden'], subtree: true });
     if (window.ResizeObserver) new ResizeObserver(function () { slideInd(row); }).observe(row);
     slideInd(row);
+    dragSelect(row);
+  }
+  // Drag the green pill: put a finger on the selected chip and slide. The pill follows, the chip under it lights up,
+  // and that chip is picked when you let go. Near the ends of a long row it scrolls the row along.
+  function dragSelect(row) {
+    var g = null, skip = 0, raf = 0;
+    function chips() { return [].filter.call(row.children, function (b) { return b.tagName === 'BUTTON' && !b.hidden && b.offsetWidth && !b.classList.contains('hl') && !b.classList.contains('near-chip'); }); }
+    function place() {
+      if (!g || !g.on || !g.list.length) return;
+      var r = row.getBoundingClientRect(), fx = g.cx - r.left + row.scrollLeft, best = g.list[0], bd = 1e9;
+      g.list.forEach(function (b) { var d = Math.abs(b.offsetLeft + b.offsetWidth / 2 - fx); if (d < bd) { bd = d; best = b; } });
+      if (best !== g.cand) { if (g.cand) g.cand.classList.remove('cand'); g.cand = best; best.classList.add('cand'); }
+      var w = best.offsetWidth, first = g.list[0], last = g.list[g.list.length - 1];
+      var x = Math.max(first.offsetLeft, Math.min(last.offsetLeft + last.offsetWidth - w, fx - w / 2));
+      g.ind.style.width = w + 'px'; g.ind.style.transform = 'translate3d(' + x + 'px,' + best.offsetTop + 'px,0)';
+    }
+    function loop() {
+      if (!g || !g.on) return;
+      var r = row.getBoundingClientRect(), edge = 44, v = g.cx < r.left + edge ? g.cx - (r.left + edge) : g.cx > r.right - edge ? g.cx - (r.right - edge) : 0;
+      if (v) { row.scrollLeft += Math.max(-10, Math.min(10, v / 4)); place(); }
+      raf = requestAnimationFrame(loop);
+    }
+    row.addEventListener('touchstart', function (e) {
+      g = null;
+      var b = e.touches.length === 1 && e.target.closest && e.target.closest('button'), ind = row.querySelector('.chip-ind');
+      if (!b || !ind || b.parentNode !== row || !b.classList.contains('on')) return;
+      g = { x: e.touches[0].clientX, y: e.touches[0].clientY, cx: e.touches[0].clientX, on: false, from: b, cand: null, ind: ind, list: chips() };
+      e.stopPropagation(); // the page's own left/right swipe must not start from here
+    }, { passive: true });
+    row.addEventListener('touchmove', function (e) {
+      if (!g) return;
+      var t = e.touches[0], dx = t.clientX - g.x, dy = t.clientY - g.y; g.cx = t.clientX;
+      if (!g.on) {
+        if (Math.abs(dx) < 8) return;
+        if (Math.abs(dy) > Math.abs(dx)) { g = null; return; }
+        g.on = true; row._drag = 1; row.classList.add('scrub'); raf = requestAnimationFrame(loop);
+      }
+      e.preventDefault(); e.stopPropagation(); place();
+    }, { passive: false });
+    function end() {
+      var d = g; g = null; cancelAnimationFrame(raf);
+      if (!d || !d.on) return;
+      row._drag = 0; row.classList.remove('scrub'); skip = Date.now();
+      if (d.cand) d.cand.classList.remove('cand');
+      if (d.cand && d.cand !== d.from) d.cand.click(); // same as tapping that chip
+      slideInd(row);
+    }
+    row.addEventListener('touchend', end); row.addEventListener('touchcancel', end);
+    // Letting go must not also count as a tap on the chip the drag started from.
+    row.addEventListener('click', function (e) { if (e.isTrusted && Date.now() - skip < 350) { e.preventDefault(); e.stopPropagation(); } }, true);
   }
   function initSlides() { document.querySelectorAll('.seg, .tips-cities').forEach(watchSlide); }
   function selectChip(row, attr, val, smooth) {
@@ -5953,6 +6034,30 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     b.dispatchEvent(new CustomEvent('china2026:pick', { bubbles: true }));
   });
 
+  // ---------- Appearance: follow the phone (default), or always light / always dark ----------
+  function applyTheme(mode) {
+    var root = document.documentElement, host = window.china2026HostTheme;
+    if (mode === 'light' || mode === 'dark') { root.setAttribute('data-theme', mode); root.style.colorScheme = mode; }
+    else { mode = 'system'; if (host) root.setAttribute('data-theme', host); else root.removeAttribute('data-theme'); root.style.colorScheme = ''; }
+    // The colour of the phone's status bar area follows the same choice.
+    document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) {
+      if (!m.hasAttribute('data-auto')) m.setAttribute('data-auto', m.getAttribute('content'));
+      m.setAttribute('content', mode === 'light' ? '#f2f2f7' : mode === 'dark' ? '#000000' : m.getAttribute('data-auto'));
+    });
+    return mode;
+  }
+  function initTheme() {
+    var seg = document.getElementById('theme-seg'), note = document.getElementById('theme-note'); if (!seg) return;
+    function set(mode, save) {
+      mode = applyTheme(mode);
+      if (save) ls('china2026:theme', mode);
+      selectChip(seg, 'data-theme-set', mode, false);
+      if (note) note.textContent = mode === 'light' ? 'always light' : mode === 'dark' ? 'always dark' : 'follows your phone';
+    }
+    seg.addEventListener('click', function (e) { var b = e.target.closest('[data-theme-set]'); if (b) set(b.getAttribute('data-theme-set'), true); });
+    set(ls('china2026:theme') || 'system', false);
+  }
+
   // ---------- To do progress ----------
   function renderProgress() {
     var td = window.china2026Todo, head = document.querySelector('#book .large'); if (!td || !head) return;
@@ -5967,7 +6072,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   window.china2026Data = { MUST: MUST, TIPS: TIPS, CITIES: CITIES }; // read by tools/selftest.js
   function start() {
     // Each part draws on its own: if one fails, the rest still appear (the error is still reported).
-    [renderHero, renderPlaces, renderCityPages, renderTimelines, moneyTile, renderProgress, addShowButtons, addDidiButtons, renderFood, initPages, initSim, initFind, renderHotelList, renderRouteNow, initHome, decorate, importPicks, initSlides].forEach(function (part) {
+    [renderHero, renderPlaces, renderCityPages, renderTimelines, moneyTile, renderProgress, addShowButtons, addDidiButtons, renderFood, initPages, initSim, initFind, renderHotelList, renderRouteNow, initHome, decorate, importPicks, initSlides, initTheme].forEach(function (part) {
       try { part(); } catch (err) { setTimeout(function () { throw err; }, 0); }
     });
     setInterval(renderHero, 30000);
