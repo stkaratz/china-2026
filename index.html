@@ -1826,6 +1826,21 @@ html.map-mode .home-fab, html.bs-open .home-fab, html.dt-open .home-fab, html.sw
 .tabbar.scrub .tab { transition: none; }
 .tabbar.scrub .tab-ind { transform-origin: center; filter: brightness(1.04); }
 .tab-badge.soon { background: #ff9500; }
+/* ---- Search box: a clear button while there is text ---- */
+.srch-box { position: relative; }
+.srch-in input { padding-right: 44px; }
+.srch-in input::-webkit-search-cancel-button, .srch-in input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; display: none; }
+.srch-x { position: absolute; right: 6px; top: 50%; width: 34px; height: 34px; margin-top: -17px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; opacity: 0; transform: scale(0.5); pointer-events: none; -webkit-tap-highlight-color: transparent; transition: opacity 0.15s, transform 0.2s cubic-bezier(0.3, 1.5, 0.5, 1); }
+.srch-x::before { content: ""; position: absolute; inset: 8px; border-radius: 50%; background: var(--muted); opacity: 0.55; transition: opacity 0.15s; }
+.srch-x::after { content: ""; position: absolute; inset: 8px; background: center / 9px 9px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M2 2l8 8M10 2l-8 8'/%3E%3C/svg%3E"); }
+.srch-x.on { opacity: 1; transform: none; pointer-events: auto; }
+.srch-x:active::before { opacity: 0.85; }
+@media (prefers-reduced-motion: reduce) { .srch-x { transition: none; } }
+/* ---- Search results: a small map-pin on the right says what the place is ---- */
+.srch-kind { flex: none; display: grid; place-items: center; width: 22px; height: 22px; margin: 0 3px 3px 6px; border-radius: 50% 50% 50% 3px; transform: rotate(-45deg); background: var(--dc); color: #fff; opacity: 0.85; }
+.srch-kind svg { width: 11px; height: 11px; transform: rotate(45deg); fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.srch-kind.k-station svg { width: 10px; height: 10px; }
+.srch-row[data-i] .srch-dot::after { display: none; } /* the pin replaces the little colour dot on the photo */
 /* ---- Small fixes ---- */
 button.amap { border: 0; cursor: pointer; }
 .day.today .amap { background: var(--surface); }
@@ -2808,7 +2823,7 @@ p.sug { margin-top: 8px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611270934">27 Nov 2026, 09:34</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611270954">27 Nov 2026, 09:54</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -2859,8 +2874,8 @@ p.sug { margin-top: 8px; }
   <span class="tab-ind" aria-hidden="true"></span>
   <a href="#trip" class="tab" data-tab="trip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 3.5 6.8v12.7L9 17.2l6 2.3 5.5-2.3V4.5L15 6.8 9 4.5zM9 4.5v12.7M15 6.8v12.7"/></svg><span>Trip</span></a>
   <a href="#book" class="tab" data-tab="book"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="3"/><path d="M8 9l1.6 1.6L12.5 7.7M8 15h8"/></svg><span>To do</span><i class="tab-badge" id="todo-badge" hidden></i></a>
-  <a href="#find" class="tab" data-tab="find"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><span>Search</span></a>
   <a href="#eat" class="tab" data-tab="eat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5v7a2 2 0 0 0 2 2v8M5 3.5v5M9 3.5v5M16.5 20.5v-17c-2.2 1-3.5 3.6-3.5 7v3h3.5"/></svg><span>Food</span></a>
+  <a href="#find" class="tab" data-tab="find"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><span>Search</span></a>
   <a href="#move" class="tab" data-tab="move"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3.5" width="12" height="13" rx="3"/><path d="M6 11h12M9 20.5l1.5-4M15 20.5l-1.5-4"/><circle cx="9.3" cy="13.7" r=".6"/><circle cx="14.7" cy="13.7" r=".6"/></svg><span>Transit</span></a>
   <a href="#map" class="tab" data-tab="map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11a6.5 6.5 0 0 1 13 0c0 4.9-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg><span>Map</span></a>
 </nav>
@@ -4047,7 +4062,7 @@ document.addEventListener('click', function (e) {
     D.x = fd.f.x; D.tk = 'Price ' + fd.f.p + ' · ' + ['not spicy', 'mild', 'some heat', 'hot'][fd.f.s]; D.bk = fd.f.bk; D.hr = fd.f.hr;
     D.order = fd.f.order;
   });
-  window.china2026Places = { P: P, PH: PH, DET: DET, ABOUT: ABOUT, open: openDetails, focus: focusPin, toGcj: toGcj,
+  window.china2026Places = { P: P, PH: PH, DET: DET, ABOUT: ABOUT, G: G, open: openDetails, focus: focusPin, toGcj: toGcj,
     marks: { fav: favs, been: been, set: setMark, only: function (v) { onlySaved = !!v && Object.keys(favs).length > 0; applyKinds(); } } };
 })();
 (function () {
@@ -4214,7 +4229,7 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
   });
 });
 (function () {
-  var TABS = ['trip', 'book', 'find', 'eat', 'move', 'map', 'stay', 'about']; // stay (Hotels) and about are pages without a tab
+  var TABS = ['trip', 'book', 'eat', 'find', 'move', 'map', 'stay', 'about']; // stay (Hotels) and about are pages without a tab
   var panes = {};
   TABS.forEach(function (t) { panes[t] = document.getElementById(t); });
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabbar .tab'));
@@ -4336,7 +4351,7 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
 
   // Swipe left/right to change tabs (like Instagram): the next page slides in beside this one. The map keeps its own pan gesture.
   (function () {
-    var ORDER = ['trip', 'book', 'find', 'eat', 'move', 'map'];
+    var ORDER = ['trip', 'book', 'eat', 'find', 'move', 'map'];
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var EASE = 'cubic-bezier(.2,.8,.2,1)';
     var st = null;
@@ -4969,7 +4984,8 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   }
   function placeRow(p, i, sub, right) {
     var pl = window.china2026Places, ph = pl.PH[p.n], img = ph ? thumb(ph.ph[0]).replace(/\/500px-/, '/120px-') : '';
-    return '<button type="button" class="srch-row' + (pl.marks && pl.marks.fav[p.n] ? ' is-fav' : '') + '" data-i="' + i + '"><span class="srch-dot" style="--dc:' + DOT[p.t] + (img ? ';background-image:url(&quot;' + esc(img) + '&quot;)' : '') + '"></span><span class="srch-t"><b>' + esc(p.n) + '</b><span>' + esc(sub || (KIND[p.t] + ' · ' + p.zh)) + '</span></span>' + (right ? '<span class="srch-km">' + esc(right) + '</span>' : '') + '</button>';
+    return '<button type="button" class="srch-row' + (pl.marks && pl.marks.fav[p.n] ? ' is-fav' : '') + '" data-i="' + i + '"><span class="srch-dot" style="--dc:' + DOT[p.t] + (img ? ';background-image:url(&quot;' + esc(img) + '&quot;)' : '') + '"></span><span class="srch-t"><b>' + esc(p.n) + '</b><span>' + esc(sub || (KIND[p.t] + ' · ' + p.zh)) + '</span></span>' + (right ? '<span class="srch-km">' + esc(right) + '</span>' : '') +
+      '<span class="srch-kind k-' + p.t + '" style="--dc:' + DOT[p.t] + '" title="' + KIND[p.t] + '" aria-hidden="true">' + ((pl.G && pl.G[p.t]) || '') + '</span></button>';
   }
   function xrow(icon, title, sub, attrs) {
     return '<button type="button" class="srch-row" ' + attrs + '><span class="srch-dot srch-ic">' + icon + '</span><span class="srch-t"><b>' + esc(title) + '</b><span>' + esc(sub) + '</span></span></button>';
@@ -5036,7 +5052,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     goHash('#map'); pl.marks.only(true);
     toast(n ? 'Added ' + n + ' saved place' + (n === 1 ? '' : 's') + ' from the link.' : 'You already had all of those places saved.');
   }
-  var SEARCH_HTML = '<div class="srch-in"><input type="search" placeholder="Places, food, phrases, trains…" aria-label="Search" autocomplete="off"></div><div class="srch-groups"></div>';
+  var SEARCH_HTML = '<div class="srch-in"><div class="srch-box"><input type="search" placeholder="Places, food, phrases, trains…" aria-label="Search" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search"><button type="button" class="srch-x" aria-label="Clear search" tabindex="-1"></button></div></div><div class="srch-groups"></div>';
   // Wires a search box + results inside "body". Returns the function that redraws the results.
   function wireSearch(body) {
     var pl = window.china2026Places; if (!pl) return function () {};
@@ -5059,8 +5075,11 @@ document.querySelectorAll('.copy').forEach(function (btn) {
           return '<div class="srch-group"><h3>' + esc(c.n) + ' <span class="zh">' + c.zh + '</span><i>' + g.length + '</i></h3><div class="srch-list">' + g.map(html).join('') + '</div></div>';
         }).join('');
       }
+      var clr = body.querySelector('.srch-x');
+      if (clr) clr.addEventListener('click', function () { inp.value = ''; draw(); try { inp.focus({ preventScroll: true }); } catch (ec) { inp.focus(); } });
       function draw() {
         var q0 = inp.value.trim();
+        if (clr) clr.classList.toggle('on', !!inp.value); // the clear button shows only while there is text
         if (!q0) {
           var sv = (pl.marks ? Object.keys(pl.marks.fav) : []).map(byName).filter(Boolean), rc = recent().map(byName).filter(Boolean);
           list.innerHTML = '<div class="srch-quick"><button type="button" data-near="all">' + I.pin + 'Near me</button><button type="button" data-home>' + HOUSE + 'My hotel</button><button type="button" data-offline>' + I.pin + 'Offline maps</button></div>' +
