@@ -1932,6 +1932,11 @@ html.map-mode .home-fab, html.bs-open .home-fab, html.dt-open .home-fab, html.sw
 .splash-t { font-family: var(--f-display); font-weight: 800; font-size: 2.35rem; line-height: 1.1; letter-spacing: -0.035em; white-space: nowrap; color: var(--jade); background: linear-gradient(115deg, var(--jade) 20%, color-mix(in srgb, var(--jade) 55%, #86d9b9)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 html.splashing #trip .brand { visibility: hidden; } /* the copy on the opening screen stands in for it until it lands */
 @media (prefers-reduced-motion: reduce) { .splash-in { animation: none; } .splash .brand { transition: opacity 0.3s ease; } }
+/* ---- Dragged highlights stretch like a drop of liquid, and spring back when let go ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .tab-ind { transition: transform 0.42s cubic-bezier(0.3, 1.3, 0.4, 1), width 0.42s cubic-bezier(0.3, 1.3, 0.4, 1), height 0.3s, background-color 0.35s, opacity 0.2s, scale 0.55s cubic-bezier(0.3, 1.9, 0.4, 1); }
+  .chip-ind { transition: transform 0.34s cubic-bezier(0.3, 1.25, 0.4, 1), width 0.34s cubic-bezier(0.3, 1.25, 0.4, 1), opacity 0.15s, scale 0.5s cubic-bezier(0.3, 1.9, 0.4, 1); }
+}
 /* ---- Small fixes ---- */
 button.amap { border: 0; cursor: pointer; }
 .day.today .amap { background: var(--surface); }
@@ -2621,9 +2626,9 @@ p.sug { margin-top: 8px; }
     <div class="large"><h1>Food</h1><p class="lead">Mild-friendly places travellers love, near your hotels</p></div>
     <div class="pane-body" id="food-body"></div>
   </section>
-  <section class="pane" id="move" data-title="Getting around" aria-label="Getting around" hidden>
-    <div class="large"><h1>Getting around</h1><p class="lead">Trains, stations, traffic and DiDi</p></div>
-    <nav class="seg" aria-label="Getting around sections">
+  <section class="pane" id="move" data-title="Transit" aria-label="Transit" hidden>
+    <div class="large"><h1>Transit</h1><p class="lead">Trains, stations, traffic and DiDi</p></div>
+    <nav class="seg" aria-label="Transit sections">
       <button type="button" data-go="trainguide">Trains</button>
       <button type="button" data-go="stations">Stations</button>
       <button type="button" data-go="traffic">Traffic</button>
@@ -2910,7 +2915,7 @@ p.sug { margin-top: 8px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271130">27 Nov 2026, 11:30</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271141">27 Nov 2026, 11:41</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -4571,8 +4576,23 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
     }
     function mark(i) { tabs.forEach(function (t, k) { t.classList.toggle('on', k === i); }); }
     barEl.addEventListener('touchstart', function (e) {
-      g = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY, on: false, pos: tabIndex(active) } : null;
+      cancelAnimationFrame(raf);
+      g = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY, on: false, pos: tabIndex(active), cur: tabIndex(active) } : null;
     }, { passive: true });
+    // The highlight trails the finger a little and stretches towards it: the further behind, the longer and flatter it gets.
+    var raf = 0, calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function flow() {
+      if (!g || !g.on) return;
+      var el = document.querySelector('.tab-ind'), lag = g.pos - g.cur;
+      g.cur = Math.abs(lag) < 0.004 ? g.pos : g.cur + lag * 0.3;
+      placeInd(Math.max(0, g.cur), false);
+      if (el) {
+        var pitch = tabs.length > 1 ? Math.abs(tabs[1].offsetLeft - tabs[0].offsetLeft) : 60;
+        var st = Math.min(0.45, Math.abs(g.pos - g.cur) * pitch / ((el.offsetWidth || 60) * 1.5));
+        el.style.scale = (1 + st).toFixed(3) + ' ' + (1 - st * 0.3).toFixed(3);
+      }
+      raf = requestAnimationFrame(flow);
+    }
     barEl.addEventListener('touchmove', function (e) {
       if (!g) return;
       var t = e.touches[0], dx = t.clientX - g.x, dy = t.clientY - g.y;
@@ -4582,15 +4602,18 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
         g.on = true; dragging = true; barEl.classList.add('scrub');
       }
       e.preventDefault();
-      g.pos = posAt(t.clientX); placeInd(g.pos, false); mark(Math.round(g.pos));
+      g.pos = posAt(t.clientX); mark(Math.round(g.pos));
+      if (calm) placeInd(g.pos, false); else if (!g.flowing) { g.flowing = 1; if (g.cur < 0) g.cur = g.pos; raf = requestAnimationFrame(flow); }
     }, { passive: false });
     function end() {
       var d = g; g = null;
       if (!d || !d.on) return;
       dragging = false; barEl.classList.remove('scrub'); skipClick = Date.now();
+      cancelAnimationFrame(raf);
       var tab = tabs[Math.round(d.pos)].getAttribute('data-tab');
       if (tab === active) { mark(tabIndex(active)); placeInd(tabIndex(active), true); }
       else window.goHash('#' + tab);
+      var el = document.querySelector('.tab-ind'); if (el) el.style.scale = ''; // springs back to its shape as it settles
     }
     barEl.addEventListener('touchend', end); barEl.addEventListener('touchcancel', end);
     // Letting go must not also count as a tap on the tab where the drag started.
@@ -5411,39 +5434,49 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   // Drag the green pill: put a finger on the selected chip and slide. The pill follows, the chip under it lights up,
   // and that chip is picked when you let go. Near the ends of a long row it scrolls the row along.
   function dragSelect(row) {
-    var g = null, skip = 0, raf = 0;
+    var g = null, skip = 0, raf = 0, calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     function chips() { return [].filter.call(row.children, function (b) { return b.tagName === 'BUTTON' && !b.hidden && b.offsetWidth && !/^(today|next)$/.test(b.getAttribute('data-go') || '') && !b.classList.contains('near-chip'); }); }
-    function place() {
+    // Where the pill should be for the finger's position, and which chip that is.
+    function aim() {
       if (!g || !g.on || !g.list.length) return;
       var r = row.getBoundingClientRect(), fx = g.cx - r.left + row.scrollLeft, best = g.list[0], bd = 1e9;
       g.list.forEach(function (b) { var d = Math.abs(b.offsetLeft + b.offsetWidth / 2 - fx); if (d < bd) { bd = d; best = b; } });
       if (best !== g.cand) { if (g.cand) g.cand.classList.remove('cand'); g.cand = best; best.classList.add('cand'); }
       var w = best.offsetWidth, first = g.list[0], last = g.list[g.list.length - 1];
-      var x = Math.max(first.offsetLeft, Math.min(last.offsetLeft + last.offsetWidth - w, fx - w / 2));
-      g.ind.style.width = w + 'px'; g.ind.style.transform = 'translate3d(' + x + 'px,' + best.offsetTop + 'px,0)';
+      g.tx = Math.max(first.offsetLeft, Math.min(last.offsetLeft + last.offsetWidth - w, fx - w / 2)); g.tw = w; g.ty = best.offsetTop;
     }
-    function loop() {
+    function paint(x, stretch) {
+      g.ind.style.width = g.tw + 'px'; g.ind.style.transform = 'translate3d(' + x + 'px,' + g.ty + 'px,0)';
+      g.ind.style.scale = stretch ? (1 + stretch).toFixed(3) + ' ' + (1 - stretch * 0.3).toFixed(3) : '';
+    }
+    // Every frame: scroll a long row along near its ends, and let the pill trail the finger and stretch towards it.
+    function flow() {
       if (!g || !g.on) return;
       var r = row.getBoundingClientRect(), edge = 44, v = g.cx < r.left + edge ? g.cx - (r.left + edge) : g.cx > r.right - edge ? g.cx - (r.right - edge) : 0;
-      if (v) { row.scrollLeft += Math.max(-10, Math.min(10, v / 4)); place(); }
-      raf = requestAnimationFrame(loop);
+      if (v) { row.scrollLeft += Math.max(-10, Math.min(10, v / 4)); aim(); }
+      var lag = g.tx - g.x;
+      g.x = Math.abs(lag) < 0.4 ? g.tx : g.x + lag * 0.3;
+      paint(g.x, Math.min(0.45, Math.abs(g.tx - g.x) / ((g.tw || 60) * 1.5)));
+      raf = requestAnimationFrame(flow);
     }
     row.addEventListener('touchstart', function (e) {
-      g = null;
+      cancelAnimationFrame(raf); g = null;
       var b = e.touches.length === 1 && e.target.closest && e.target.closest('button'), ind = row.querySelector('.chip-ind');
       if (!b || !ind || b.parentNode !== row || !b.classList.contains('on')) return;
-      g = { x: e.touches[0].clientX, y: e.touches[0].clientY, cx: e.touches[0].clientX, on: false, from: b, cand: null, ind: ind, list: chips() };
+      g = { x0: e.touches[0].clientX, y0: e.touches[0].clientY, cx: e.touches[0].clientX, on: false, from: b, cand: null, ind: ind, list: chips(), x: b.offsetLeft, tx: b.offsetLeft, tw: b.offsetWidth, ty: b.offsetTop };
       e.stopPropagation(); // the page's own left/right swipe must not start from here
     }, { passive: true });
     row.addEventListener('touchmove', function (e) {
       if (!g) return;
-      var t = e.touches[0], dx = t.clientX - g.x, dy = t.clientY - g.y; g.cx = t.clientX;
+      var t = e.touches[0], dx = t.clientX - g.x0, dy = t.clientY - g.y0; g.cx = t.clientX;
       if (!g.on) {
         if (Math.abs(dx) < 8) return;
         if (Math.abs(dy) > Math.abs(dx)) { g = null; return; }
-        g.on = true; row._drag = 1; row.classList.add('scrub'); raf = requestAnimationFrame(loop);
+        g.on = true; row._drag = 1; row.classList.add('scrub');
+        if (!calm) raf = requestAnimationFrame(flow);
       }
-      e.preventDefault(); e.stopPropagation(); place();
+      e.preventDefault(); e.stopPropagation(); aim();
+      if (calm) { g.x = g.tx; paint(g.x, 0); }
     }, { passive: false });
     function end() {
       var d = g; g = null; cancelAnimationFrame(raf);
@@ -5452,6 +5485,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       if (d.cand) d.cand.classList.remove('cand');
       if (d.cand && d.cand !== d.from) d.cand.click(); // same as tapping that chip
       slideInd(row);
+      d.ind.style.scale = ''; // springs back to its shape as it settles
     }
     row.addEventListener('touchend', end); row.addEventListener('touchcancel', end);
     // Letting go must not also count as a tap on the chip the drag started from.
