@@ -1844,6 +1844,23 @@ html.map-mode .home-fab, html.bs-open .home-fab, html.dt-open .home-fab, html.sw
 /* ---- Food tab: the city chips stay in reach while you scroll the restaurants ---- */
 .fd-wrap { scroll-margin-top: env(safe-area-inset-top, 0px); }
 .fd-wrap .fd-cities { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; margin: 0 -16px; padding: 10px 16px; background: var(--bg); }
+/* ---- Chip rows: the selected chip is solid green, and one green pill slides from chip to chip ---- */
+/* Layers inside a row, back to front: each chip's own background (::after), the sliding pill (.chip-ind), the chip text. */
+.seg, .tips-cities { isolation: isolate; }
+.tips-cities { position: relative; }
+.seg button, .tips-cities button { position: relative; background: none; box-shadow: none; transition: color 0.22s; }
+.seg.stuck button { box-shadow: none; }
+.seg button::after, .tips-cities button::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: var(--surface); box-shadow: inset 0 0 0 0.5px var(--line); pointer-events: none; }
+.seg button.on, .tips-cities button.on { background: none; color: var(--surface); box-shadow: none; }
+.seg:not(.has-ind) button.on::after, .tips-cities:not(.has-ind) button.on::after { background: var(--jade); box-shadow: none; } /* before the pill exists */
+.chip-ind { position: absolute; left: 0; top: 0; z-index: 0; border-radius: 99px; background: var(--jade); box-shadow: 0 4px 12px color-mix(in srgb, var(--jade) 30%, transparent); pointer-events: none; opacity: 0; transition: transform 0.34s cubic-bezier(0.3, 1.25, 0.4, 1), width 0.34s cubic-bezier(0.3, 1.25, 0.4, 1), opacity 0.15s; }
+@media (prefers-reduced-motion: reduce) { .chip-ind, .seg button, .tips-cities button { transition: none; } }
+.seg button.on.now::before { background: var(--surface); }
+/* Today is a shortcut, not a selection: an outlined chip with the "you are here" dot. */
+.seg button.hl { background: none; color: var(--jade); }
+.seg button.hl::after { background: none; box-shadow: inset 0 0 0 1.5px var(--jade); }
+.seg button.hl::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: var(--jade); vertical-align: 1px; }
+.map-chips button.on { background: var(--jade); color: var(--surface); }
 /* ---- Small fixes ---- */
 button.amap { border: 0; cursor: pointer; }
 .day.today .amap { background: var(--surface); }
@@ -2826,7 +2843,7 @@ p.sug { margin-top: 8px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611270956">27 Nov 2026, 09:56</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271008">27 Nov 2026, 10:08</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -3911,6 +3928,7 @@ document.addEventListener('click', function (e) {
   function show() {
     loadLeaflet(function () {
       if (!map) build();
+      clearTimeout(pendingT); if (pendingCity != null) pendingT = setTimeout(applyPendingCity, 700);
       setTimeout(function () {
         map.invalidateSize();
         var r = document.getElementById('leafmap').getBoundingClientRect();
@@ -3938,6 +3956,10 @@ document.addEventListener('click', function (e) {
       if (chipsCurrent) chipsCurrent.textContent = b.textContent;
       chipsOpen(false);
       var v = b.getAttribute('data-fly');
+      if (v !== 'all' && CITY_IDS[+v]) {
+        clearTimeout(pendingT); pendingCity = null;
+        try { localStorage.setItem('china2026:city', CITY_IDS[+v]); document.dispatchEvent(new CustomEvent('china2026:city', { detail: { id: CITY_IDS[+v], source: 'map' } })); } catch (err) {}
+      }
       if (v === 'all') fitAll();
       else { var c = CITIES[+v]; flyVisible(c.ll, c.z); }
     });
@@ -3992,7 +4014,18 @@ document.addEventListener('click', function (e) {
     if (add.length) group.addLayers(add);
     if (cardMarker && cardMarker.options && hiddenKinds[cardMarker.options.kind]) hideCard();
   }
+  // The shared "current city" (also used by the Trip pages and the Food tab). Picking a city elsewhere makes the map go there
+  // the next time it is opened, unless something asks for a specific pin first.
+  var CITY_IDS = ['bj', 'xa', 'cd', 'ys', 'sz', 'hk'], pendingCity = null, pendingT = null;
+  document.addEventListener('china2026:city', function (e) { if (e.detail && e.detail.source !== 'map') pendingCity = e.detail.id; });
+  function applyPendingCity() {
+    if (pendingCity == null || !map) return;
+    var b = document.querySelector('#map-chips button[data-fly="' + CITY_IDS.indexOf(pendingCity) + '"]');
+    pendingCity = null;
+    if (b && !b.classList.contains('on')) b.click();
+  }
   function focusPin(p) {
+    clearTimeout(pendingT); pendingCity = null;
     if (p && (hiddenKinds[p.t] || (onlySaved && !favs[p.n]))) { delete hiddenKinds[p.t]; if (!favs[p.n]) onlySaved = false; applyKinds(); }
     if (!map || !p || !p._m || !group) return;
     map.setView(p.ll, Math.max(map.getZoom(), 15), { animate: false });
@@ -5254,12 +5287,46 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     if (!el) return;
     var de = document.documentElement; de.style.scrollBehavior = 'auto'; el.scrollIntoView({ block: 'start' }); de.style.scrollBehavior = '';
   }
+  // ---------- One "current city" shared by the Trip pages, the Food tab and the map ----------
+  function setCity(id, source) {
+    var known = false; CITIES.forEach(function (c) { if (c.id === id) known = true; }); if (!known) return;
+    ls('china2026:city', id);
+    try { document.dispatchEvent(new CustomEvent('china2026:city', { detail: { id: id, source: source } })); } catch (e) {}
+  }
+  // ---------- Selected chips: one green pill that slides to the chip you pick ----------
+  function slideInd(row) {
+    if (!row) return;
+    var ind = null, on = null, fresh = false;
+    [].forEach.call(row.children, function (b) {
+      if (b.classList.contains('chip-ind')) ind = b;
+      else if (!on && b.classList.contains('on') && !b.hidden && b.offsetWidth) on = b;
+    });
+    if (!ind) { ind = document.createElement('span'); ind.className = 'chip-ind'; ind.setAttribute('aria-hidden', 'true'); row.insertBefore(ind, row.firstChild); fresh = true; }
+    row.classList.add('has-ind');
+    if (!on) { ind.style.opacity = '0'; ind._was = false; return; }
+    var jump = fresh || !ind._was; // appear in place; only slide from chip to chip
+    if (jump) ind.style.transition = 'none';
+    ind.style.width = on.offsetWidth + 'px'; ind.style.height = on.offsetHeight + 'px';
+    ind.style.transform = 'translate3d(' + on.offsetLeft + 'px,' + on.offsetTop + 'px,0)'; ind.style.opacity = '1';
+    if (jump) { void ind.offsetWidth; ind.style.transition = ''; }
+    ind._was = true;
+  }
+  function watchSlide(row) {
+    if (!row || row._slide) return; row._slide = 1;
+    if (window.MutationObserver) new MutationObserver(function (ms) {
+      if (ms.some(function (m) { return m.target.parentNode === row && !m.target.classList.contains('chip-ind'); })) slideInd(row);
+    }).observe(row, { attributes: true, attributeFilter: ['class', 'hidden'], subtree: true });
+    if (window.ResizeObserver) new ResizeObserver(function () { slideInd(row); }).observe(row);
+    slideInd(row);
+  }
+  function initSlides() { document.querySelectorAll('.seg, .tips-cities').forEach(watchSlide); }
   function selectChip(row, attr, val, smooth) {
     var on = null;
     row.querySelectorAll('[' + attr + ']').forEach(function (b) { var is = b.getAttribute(attr) === val; b.classList.toggle('on', is); b.setAttribute('aria-pressed', is); if (is) on = b; });
-    if (!on) return;
+    if (!on) { watchSlide(row); slideInd(row); return; }
     var left = on.offsetLeft - (row.clientWidth - on.offsetWidth) / 2;
     try { row.scrollTo({ left: Math.max(0, left), behavior: smooth ? 'smooth' : 'auto' }); } catch (e) { row.scrollLeft = left; }
+    watchSlide(row); slideInd(row);
   }
   // ---------- Tips: timing, tricks and things not to miss ----------
   // [badge, place (opens its details), text, Chinese place/address for Amap + copy (optional), label for that spot]
@@ -5468,7 +5535,8 @@ document.querySelectorAll('.copy').forEach(function (btn) {
         var city = ({ 's-bj': 'Beijing', 's-xa': "Xi'an", 's-cd': 'Chengdu', 's-ys': 'Yangshuo', 's-sz': 'Shenzhen', 's-hk': 'Hong Kong' })[pin.go] || '';
         var a = amapSearch(pin.q || pin.zh);
         return '<div class="must-where"><button type="button" class="must-place" data-place="' + esc(pin.n) + '"><b>' + esc(pin.n) + '</b><span>' + esc(city) + ' · ' + esc(pin.zh) + '</span>' + I.arrow + '</button>' +
-          '<div class="tip-go"><a class="amap" href="' + esc(a.web) + '" data-ios="' + esc(a.ios) + '" target="_blank" rel="noopener">' + I.pin + 'Amap</a>' +
+          '<div class="tip-go"><a class="amap" href="' + esc(a.web) + '" data-ios="' + esc(a.ios) + '" target="_blank" rel="noopener">' + I.pin + 'Map</a>' +
+          '<button type="button" class="amap tip-cp" data-copy="' + esc(pin.q || pin.zh) + '" aria-label="Copy the Chinese name and branch" title="Copy the Chinese name and branch">' + I.copy + '</button>' +
           '<button type="button" class="amap tip-cp" data-didi="' + esc(pin.q || pin.zh) + '" aria-label="DiDi">' + I.car + '</button><button type="button" class="amap" data-focus="' + esc(pin.n) + '">Show on map</button></div></div>';
       }).join('') + (d.id === 'tomatoegg' || d.id === 'kungpao' ? '<p class="must-any">Also on menus almost everywhere.</p>' : '')
         : '<p class="must-any">' + esc(d.city) + ': on menus all over, no need to hunt for one place.</p>') +
@@ -5522,7 +5590,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     var box = document.getElementById('food-body'), pl = window.china2026Places; if (!box || !pl) return;
     var today = ymd(new Date(), 'Asia/Shanghai'), cur = 'bj';
     CITIES.forEach(function (c) { if (today >= c.from && today < c.to) cur = c.id; });
-    var sel = ls('china2026:food-city') || cur;
+    var sel = ls('china2026:city') || ls('china2026:food-city') || cur;
     var spice = '<section class="spice"><div class="spice-h">' + chili + '<div><b>Not a spice person?</b><span>Show these to the waiter</span></div></div><div class="spice-btns">' +
       [['No chilli, please', '不要辣', 'bú yào là'], ['No chilli at all', '一点都不要辣', 'yìdiǎn dōu bú yào là'], ['Is this spicy?', '这个辣吗？', 'zhège là ma?'], ['Any non-spicy dishes?', '有不辣的菜吗？', 'yǒu bú là de cài ma?']].map(function (q) {
         return '<button type="button" class="spice-b" data-show="' + q[1] + '" data-py="' + q[2] + '" data-en="' + q[0] + '"><b>' + q[1] + '</b><span>' + q[0] + '</span></button>';
@@ -5537,7 +5605,8 @@ document.querySelectorAll('.copy').forEach(function (btn) {
         '<div class="fd-order"><span>Order this · tap to show</span><div>' + f.order.map(function (o) { return '<button type="button" class="dish" data-show="' + esc(o[1]) + '" data-en="' + esc(o[0]) + '"><b>' + esc(o[0]) + '</b><i>' + esc(o[1]) + '</i></button>'; }).join('') + '</div></div>' +
         '<p class="fd-meta">' + esc(f.hr) + ' · ' + esc(f.bk) + '</p>' +
         '<p class="fd-dist">' + I.pin + esc(fromHotel(p)) + '</p>' +
-        '<div class="fd-acts"><a class="amap" href="' + esc(a.web) + '" data-ios="' + esc(a.ios) + '" target="_blank" rel="noopener">' + I.pin + 'Amap</a>' +
+        '<div class="fd-acts"><a class="amap" href="' + esc(a.web) + '" data-ios="' + esc(a.ios) + '" target="_blank" rel="noopener">' + I.pin + 'Map</a>' +
+        '<button type="button" class="amap tip-cp" data-copy="' + esc(p.q || p.zh) + '" aria-label="Copy the Chinese name and branch of ' + esc(p.n) + '" title="Copy the Chinese name and branch">' + I.copy + '</button>' +
         '<button type="button" class="amap didi didi-ic" data-didi="' + esc(p.q || p.zh) + '" aria-label="DiDi to ' + esc(p.n) + '">' + I.car + '</button>' +
         '<button type="button" class="amap fd-more" data-place="' + esc(p.n) + '">Details</button></div></article>';
     }
@@ -5554,8 +5623,12 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     }
     box.addEventListener('click', function (e) {
       var b = e.target.closest('[data-fc]'); if (!b) return;
-      sel = b.getAttribute('data-fc'); ls('china2026:food-city', sel); draw(true);
+      sel = b.getAttribute('data-fc'); ls('china2026:food-city', sel); draw(true); setCity(sel, 'food');
       var wrap = box.querySelector('.fd-wrap'); if (wrap && wrap.getBoundingClientRect().top < 0) jumpTo(wrap);
+    });
+    box.addEventListener('china2026:pick', function (e) {
+      var b = e.target.closest('[data-fc]'); if (!b) return;
+      sel = b.getAttribute('data-fc'); ls('china2026:food-city', sel); draw(false);
     });
     draw(false);
     // the tab may be hidden on first draw (no layout yet): centre the chip when it's shown
@@ -5646,6 +5719,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       el.classList.toggle('pg-off', !(el.getAttribute('data-pg') === p || (el.hasAttribute('data-pg-now') && p === now)));
     });
     page = p; pane.setAttribute('data-page', p); ls('china2026:page', p);
+    if (p !== 'over' && !(o && o.quiet)) setCity(p, 'trip');
     if (seg) selectChip(seg, 'data-page', p, o && o.smooth);
     if (o && o.top && seg) {
       // Already scrolled into the page? Jump back to its start, just under the page bar.
@@ -5658,6 +5732,11 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     if (s && s.classList.contains('pg-off')) setPage(s.getAttribute('data-pg'));
   }
   window.china2026Page = { reveal: revealPage, set: setPage, now: pageNow, get: function () { return page; } };
+  // A city picked on the Food tab or the map: the Trip tab follows, unless it is showing the overview.
+  document.addEventListener('china2026:city', function (e) {
+    var d = e.detail; if (!d || d.source === 'trip' || page === 'over' || page === d.id) return;
+    setPage(d.id, { quiet: true });
+  });
   function initPages() {
     var pane = document.getElementById('trip'), seg = pane && pane.querySelector('.seg'); if (!seg) return;
     var now = pageNow(), start = ls('china2026:page') || now || 'over';
@@ -5866,6 +5945,14 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   window.china2026Offline = { tiles: cityTiles, base: baseTiles, save: saveTiles, cache: TILE_CACHE, key: TILE_KEY };
   document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('[data-offline]')) openOffline(); });
 
+  // The Food tab follows a city picked on the Trip tab or the map.
+  document.addEventListener('china2026:city', function (e) {
+    var d = e.detail, b = d && d.source !== 'food' && document.querySelector('#eat [data-fc="' + d.id + '"]');
+    if (!b || b.classList.contains('on')) return;
+    var row = b.parentNode, list = document.querySelector('#eat .fd-list'); if (!row || !list) return;
+    b.dispatchEvent(new CustomEvent('china2026:pick', { bubbles: true }));
+  });
+
   // ---------- To do progress ----------
   function renderProgress() {
     var td = window.china2026Todo, head = document.querySelector('#book .large'); if (!td || !head) return;
@@ -5880,7 +5967,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   window.china2026Data = { MUST: MUST, TIPS: TIPS, CITIES: CITIES }; // read by tools/selftest.js
   function start() {
     // Each part draws on its own: if one fails, the rest still appear (the error is still reported).
-    [renderHero, renderPlaces, renderCityPages, renderTimelines, moneyTile, renderProgress, addShowButtons, addDidiButtons, renderFood, initPages, initSim, initFind, renderHotelList, renderRouteNow, initHome, decorate, importPicks].forEach(function (part) {
+    [renderHero, renderPlaces, renderCityPages, renderTimelines, moneyTile, renderProgress, addShowButtons, addDidiButtons, renderFood, initPages, initSim, initFind, renderHotelList, renderRouteNow, initHome, decorate, importPicks, initSlides].forEach(function (part) {
       try { part(); } catch (err) { setTimeout(function () { throw err; }, 0); }
     });
     setInterval(renderHero, 30000);
