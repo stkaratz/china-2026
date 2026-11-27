@@ -1868,6 +1868,10 @@ html.map-mode .home-fab, html.bs-open .home-fab, html.dt-open .home-fab, html.sw
 .seg button.hl { background: none; color: var(--jade); }
 .seg button.hl::after { background: none; box-shadow: inset 0 0 0 1.5px var(--jade); }
 .seg button.hl::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: var(--jade); vertical-align: 1px; }
+/* A highlighted chip that is also the selected one sits on the green pill: white text, white dot, no outline. */
+.seg button.hl.on { color: var(--surface); }
+.seg button.hl.on::after { box-shadow: none; }
+.seg button.hl.on::before { background: var(--surface); }
 .map-chips button.on { background: var(--jade); color: var(--surface); }
 /* ---- A three-way switch (About > Appearance): same green sliding pill as the chip rows ---- */
 .segc { position: relative; isolation: isolate; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; padding: 3px; border-radius: 15px; background: var(--surface); box-shadow: inset 0 0 0 0.5px var(--line); }
@@ -1911,7 +1915,8 @@ html.map-mode .home-fab, html.bs-open .home-fab, html.dt-open .home-fab, html.sw
 .srch-quick .srch-fav.on svg { fill: currentColor; }
 /* ---- Shadows above a sticky bar must not be cut off by the bar's background ---- */
 .seg:not(.stuck) { background: transparent; } /* solid only once it is stuck to the top */
-.fd-wrap .fd-cities { background: linear-gradient(to bottom, transparent, var(--bg) 12px); }
+.fd-wrap .fd-cities { background: transparent; transition: background-color 0.2s, box-shadow 0.2s; }
+.fd-wrap .fd-cities.stuck { background: var(--bg); box-shadow: 0 0.5px 0 var(--line); } /* solid once it is stuck to the top */
 .flag { box-shadow: 0 0 0 2.5px var(--surface), 0 0 0 3px var(--line), 0 5px 12px rgb(194 23 15 / 0.18); }
 /* ---- Small fixes ---- */
 button.amap { border: 0; cursor: pointer; }
@@ -2890,7 +2895,7 @@ p.sug { margin-top: 8px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271032">27 Nov 2026, 10:32</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271037">27 Nov 2026, 10:37</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -5392,7 +5397,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   // and that chip is picked when you let go. Near the ends of a long row it scrolls the row along.
   function dragSelect(row) {
     var g = null, skip = 0, raf = 0;
-    function chips() { return [].filter.call(row.children, function (b) { return b.tagName === 'BUTTON' && !b.hidden && b.offsetWidth && !b.classList.contains('hl') && !b.classList.contains('near-chip'); }); }
+    function chips() { return [].filter.call(row.children, function (b) { return b.tagName === 'BUTTON' && !b.hidden && b.offsetWidth && !/^(today|next)$/.test(b.getAttribute('data-go') || '') && !b.classList.contains('near-chip'); }); }
     function place() {
       if (!g || !g.on || !g.list.length) return;
       var r = row.getBoundingClientRect(), fx = g.cx - r.left + row.scrollLeft, best = g.list[0], bd = 1e9;
@@ -6096,6 +6101,19 @@ document.querySelectorAll('.copy').forEach(function (btn) {
     set(ls('china2026:theme') || 'system', false);
   }
 
+  // The Food city chips are solid only while stuck to the top. Not stuck, they are see-through so they never cut off the shadows above.
+  function watchStuck() {
+    var row = document.querySelector('#eat .fd-cities'), pane = document.getElementById('eat'); if (!row || !pane) return;
+    var pin = null;
+    function upd() {
+      if (pane.hidden) return;
+      if (pin === null) pin = parseFloat(getComputedStyle(row).top) || 0;
+      row.classList.toggle('stuck', window.scrollY > 0 && row.getBoundingClientRect().top <= pin + 0.5);
+    }
+    window.addEventListener('scroll', upd, { passive: true });
+    window.addEventListener('resize', function () { pin = null; upd(); });
+    upd();
+  }
   // The spice banner opens and closes, and remembers which.
   document.addEventListener('click', function (e) {
     var t = e.target.closest && e.target.closest('[data-spice-toggle]'); if (!t) return;
@@ -6117,7 +6135,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
   window.china2026Data = { MUST: MUST, TIPS: TIPS, CITIES: CITIES }; // read by tools/selftest.js
   function start() {
     // Each part draws on its own: if one fails, the rest still appear (the error is still reported).
-    [renderHero, renderPlaces, renderCityPages, renderTimelines, moneyTile, renderProgress, addShowButtons, addDidiButtons, renderFood, initPages, initSim, initFind, renderHotelList, renderRouteNow, initHome, decorate, importPicks, initSlides, initTheme].forEach(function (part) {
+    [renderHero, renderPlaces, renderCityPages, renderTimelines, moneyTile, renderProgress, addShowButtons, addDidiButtons, renderFood, initPages, initSim, initFind, renderHotelList, renderRouteNow, initHome, decorate, importPicks, initSlides, initTheme, watchStuck].forEach(function (part) {
       try { part(); } catch (err) { setTimeout(function () { throw err; }, 0); }
     });
     setInterval(renderHero, 30000);
