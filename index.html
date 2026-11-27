@@ -1937,6 +1937,8 @@ html.splashing #trip .brand { visibility: hidden; } /* the copy on the opening s
   .tab-ind { transition: transform 0.42s cubic-bezier(0.3, 1.3, 0.4, 1), width 0.42s cubic-bezier(0.3, 1.3, 0.4, 1), height 0.3s, background-color 0.35s, opacity 0.2s, scale 0.55s cubic-bezier(0.3, 1.9, 0.4, 1); }
   .chip-ind { transition: transform 0.34s cubic-bezier(0.3, 1.25, 0.4, 1), width 0.34s cubic-bezier(0.3, 1.25, 0.4, 1), opacity 0.15s, scale 0.5s cubic-bezier(0.3, 1.9, 0.4, 1); }
 }
+.scrub > .chip-ind { transition: opacity 0.15s; } /* its width is drawn frame by frame while dragged */
+.tabbar.scrub .tab-ind { box-shadow: inset 0 0.5px 0 var(--glass-hi), 0 4px 14px rgb(0 0 0 / 0.14); }
 /* ---- Small fixes ---- */
 button.amap { border: 0; cursor: pointer; }
 .day.today .amap { background: var(--surface); }
@@ -2915,7 +2917,7 @@ p.sug { margin-top: 8px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271141">27 Nov 2026, 11:41</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271217">27 Nov 2026, 12:17</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -4579,18 +4581,26 @@ document.querySelectorAll('.table-wrap table').forEach(function (t) {
       cancelAnimationFrame(raf);
       g = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY, on: false, pos: tabIndex(active), cur: tabIndex(active) } : null;
     }, { passive: true });
-    // The highlight trails the finger a little and stretches towards it: the further behind, the longer and flatter it gets.
-    var raf = 0, calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function flow() {
+    // While dragged, the highlight's front edge stays under the finger and its back edge catches up a moment later,
+    // so it stretches out in the direction you drag and gets a little flatter. Timed in milliseconds, so it looks the same at 60 and 120 Hz.
+    var raf = 0, calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches, TAIL = 130, REACH = 1.4;
+    function spot(pos) {
+      pos = Math.max(0, Math.min(tabs.length - 1, pos));
+      var i = Math.floor(pos), j = Math.min(i + 1, tabs.length - 1), k = pos - i, A = tabs[i], B = tabs[j];
+      return { x: A.offsetLeft + (B.offsetLeft - A.offsetLeft) * k, w: A.offsetWidth + (B.offsetWidth - A.offsetWidth) * k, y: A.offsetTop, h: A.offsetHeight };
+    }
+    function flow(now) {
       if (!g || !g.on) return;
-      var el = document.querySelector('.tab-ind'), lag = g.pos - g.cur;
-      g.cur = Math.abs(lag) < 0.004 ? g.pos : g.cur + lag * 0.3;
-      placeInd(Math.max(0, g.cur), false);
-      if (el) {
-        var pitch = tabs.length > 1 ? Math.abs(tabs[1].offsetLeft - tabs[0].offsetLeft) : 60;
-        var st = Math.min(0.45, Math.abs(g.pos - g.cur) * pitch / ((el.offsetWidth || 60) * 1.5));
-        el.style.scale = (1 + st).toFixed(3) + ' ' + (1 - st * 0.3).toFixed(3);
-      }
+      var el = document.querySelector('.tab-ind'); if (!el) return;
+      var dt = g.t ? Math.min(64, Math.max(1, now - g.t)) : 16; g.t = now;
+      var lag = g.pos - g.cur;
+      g.cur = Math.abs(lag) < 0.004 ? g.pos : g.cur + lag * (1 - Math.exp(-dt / TAIL));
+      if (g.pos - g.cur > REACH) g.cur = g.pos - REACH; else if (g.cur - g.pos > REACH) g.cur = g.pos + REACH;
+      var head = spot(g.pos), tail = spot(g.cur), left = Math.min(head.x, tail.x), w = Math.max(head.x + head.w, tail.x + tail.w) - left;
+      el.style.transition = 'none';
+      el.style.width = w + 'px'; el.style.height = head.h + 'px'; el.style.opacity = '1';
+      el.style.transform = 'translate3d(' + left + 'px,' + head.y + 'px,0)';
+      el.style.scale = '1 ' + (1 - Math.min(0.22, (w - head.w) / head.w * 0.2)).toFixed(3);
       raf = requestAnimationFrame(flow);
     }
     barEl.addEventListener('touchmove', function (e) {
@@ -5445,18 +5455,22 @@ document.querySelectorAll('.copy').forEach(function (btn) {
       var w = best.offsetWidth, first = g.list[0], last = g.list[g.list.length - 1];
       g.tx = Math.max(first.offsetLeft, Math.min(last.offsetLeft + last.offsetWidth - w, fx - w / 2)); g.tw = w; g.ty = best.offsetTop;
     }
-    function paint(x, stretch) {
-      g.ind.style.width = g.tw + 'px'; g.ind.style.transform = 'translate3d(' + x + 'px,' + g.ty + 'px,0)';
-      g.ind.style.scale = stretch ? (1 + stretch).toFixed(3) + ' ' + (1 - stretch * 0.3).toFixed(3) : '';
+    // The front of the pill is where the finger wants it (g.tx); the back (g.x) catches up a moment later.
+    function paint() {
+      var left = Math.min(g.x, g.tx), w = Math.max(g.x, g.tx) + g.tw - left;
+      g.ind.style.width = w + 'px'; g.ind.style.transform = 'translate3d(' + left + 'px,' + g.ty + 'px,0)';
+      g.ind.style.scale = '1 ' + (1 - Math.min(0.22, (w - g.tw) / g.tw * 0.2)).toFixed(3);
     }
-    // Every frame: scroll a long row along near its ends, and let the pill trail the finger and stretch towards it.
-    function flow() {
+    // Every frame: scroll a long row along near its ends, and let the back of the pill catch up with the front.
+    function flow(now) {
       if (!g || !g.on) return;
+      var dt = g.t ? Math.min(64, Math.max(1, now - g.t)) : 16; g.t = now;
       var r = row.getBoundingClientRect(), edge = 44, v = g.cx < r.left + edge ? g.cx - (r.left + edge) : g.cx > r.right - edge ? g.cx - (r.right - edge) : 0;
       if (v) { row.scrollLeft += Math.max(-10, Math.min(10, v / 4)); aim(); }
-      var lag = g.tx - g.x;
-      g.x = Math.abs(lag) < 0.4 ? g.tx : g.x + lag * 0.3;
-      paint(g.x, Math.min(0.45, Math.abs(g.tx - g.x) / ((g.tw || 60) * 1.5)));
+      var lag = g.tx - g.x, reach = g.tw * 1.4;
+      g.x = Math.abs(lag) < 0.5 ? g.tx : g.x + lag * (1 - Math.exp(-dt / 130));
+      if (g.tx - g.x > reach) g.x = g.tx - reach; else if (g.x - g.tx > reach) g.x = g.tx + reach;
+      paint();
       raf = requestAnimationFrame(flow);
     }
     row.addEventListener('touchstart', function (e) {
@@ -5476,7 +5490,7 @@ document.querySelectorAll('.copy').forEach(function (btn) {
         if (!calm) raf = requestAnimationFrame(flow);
       }
       e.preventDefault(); e.stopPropagation(); aim();
-      if (calm) { g.x = g.tx; paint(g.x, 0); }
+      if (calm) { g.x = g.tx; paint(); }
     }, { passive: false });
     function end() {
       var d = g; g = null; cancelAnimationFrame(raf);
