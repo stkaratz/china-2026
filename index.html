@@ -1219,14 +1219,14 @@ html.map-mode .sbar { display: none; }
 .todo-card { position: relative; display: grid; grid-template-columns: 28px 1fr; gap: 12px; background: var(--surface); border-radius: 16px; padding: 14px 14px 14px 12px; overflow: hidden; }
 .todo-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--line); }
 .g-missed .todo-card::before { background: #ff3b30; } .g-today .todo-card::before { background: var(--seal); } .g-tomorrow .todo-card::before { background: #f08a24; } .g-soon .todo-card::before { background: #e3b505; }
-.g-today .todo-card.hero { background: linear-gradient(135deg, var(--seal-soft), var(--surface) 70%); box-shadow: 0 6px 20px rgb(194 65 12 / 0.12); }
+.g-today .todo-card.due-now { background: linear-gradient(135deg, var(--seal-soft), var(--surface) 70%); box-shadow: 0 6px 20px rgb(194 65 12 / 0.12); }
 .todo-card input[type="checkbox"] { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--jade); cursor: pointer; }
 .todo-card .tc-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 .todo-card .tc-when { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 0.78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .todo-card .tc-when b { color: var(--ink); font-weight: 700; }
 .todo-card .tc-count { padding: 2px 8px; border-radius: 99px; background: var(--seal-soft); color: var(--seal); font-weight: 700; }
 .todo-card h4 { margin: 0; font: 700 1rem/1.3 var(--f-display); }
-.g-today .todo-card.hero h4 { font-size: 1.12rem; }
+.g-today .todo-card.due-now h4 { font-size: 1.12rem; }
 .todo-card p { font-size: 0.88rem; color: var(--muted); }
 .todo-card .tc-acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
 .todo-card .tc-acts a, .todo-card .tc-acts button { display: inline-flex; align-items: center; min-height: 30px; padding: 0 12px; border: 0; border-radius: 99px; background: var(--jade-soft); color: var(--jade); font: 600 0.8rem var(--f-body); text-decoration: none; cursor: pointer; }
@@ -2917,7 +2917,7 @@ p.sug { margin-top: 8px; }
       <section class="stop" aria-labelledby="about-version">
         <div class="stop-head"><h2 id="about-version">This version</h2></div>
         <div class="list">
-          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611271614">27 Nov 2026, 16:14</b></div>
+          <div class="row"><span>Updated</span><b id="app-updated" data-version="202611281307">28 Nov 2026, 13:07</b></div>
           <div class="row"><span>Status</span><b id="net-status">Checking…</b></div>
           <div class="row"><span>Screen</span><b id="screen-info" class="mono">–</b></div>
           <div class="row"><button type="button" class="btn" id="check-btn">Check for updates</button></div>
@@ -3101,7 +3101,7 @@ document.addEventListener('click', function (e) {
         var ext = /^https?:/.test(x[1]);
         return '<a href="' + esc(x[1]) + '"' + (ext ? ' target="_blank" rel="noopener"' : '') + '>' + esc(x[0]) + (ext ? ' ↗' : '') + '</a>';
       }).join('');
-      return '<div class="todo-card' + (hero ? ' hero' : '') + (e.done ? ' done' : '') + '"><input type="checkbox" data-todo="' + it.id + '" aria-label="Done: ' + esc(it.t) + '"' + (e.done ? ' checked' : '') + '>' +
+      return '<div class="todo-card' + (hero ? ' due-now' : '') + (e.done ? ' done' : '') + '"><input type="checkbox" data-todo="' + it.id + '" aria-label="Done: ' + esc(it.t) + '"' + (e.done ? ' checked' : '') + '>' +
         '<div class="tc-body"><div class="tc-when">' + when + '</div>' + tag + '<h4>' + esc(it.t) + '</h4><p>' + esc(it.d) + '</p>' + (acts ? '<div class="tc-acts">' + acts + '</div>' : '') + '</div></div>';
     }
     function group(key, title, items, opts) {

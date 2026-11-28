@@ -1,4 +1,4 @@
-const CACHE = 'china2026-202611271614';
+const CACHE = 'china2026-202611281307';
 const TILES = 'c26-tiles-v1'; // saved map tiles: kept across app updates
 const PHOTOS = 'c26-photos-v1'; // saved photos: kept across app updates
 const CORE = ['./', './apple-touch-icon.png', './manifest.webmanifest', './vendor/leaflet.js', './vendor/leaflet.markercluster.js'];
